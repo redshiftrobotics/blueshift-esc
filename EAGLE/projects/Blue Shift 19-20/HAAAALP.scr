@@ -1,0 +1,125 @@
+# NetScript
+# 
+# Exported from Bottom_PCB.sch at 12/26/19 6:30 PM
+# 
+# EAGLE Version 9.5.2 Copyright (c) 1988-2019 Autodesk, Inc.
+# 
+Change Class 1;
+Signal '+3V3'     'IMU'      'VIN' \
+                  'INTERBOARD_DATA' '3' \
+                  ;
+Change Class 0;
+Signal '+12V'     'ESC10-V'  '2' \
+                  'ESC11-V'  '2' \
+                  'ESC12-V'  '2' \
+                  'ESC7-V'   '2' \
+                  'ESC8-V'   '2' \
+                  'ESC9-V'   '2' \
+                  'INTERBOARD_POWER' '1A' \
+                  'INTERBOARD_POWER' '1B' \
+                  'POWER_IN' '2A' \
+                  'POWER_IN' '2B' \
+                  'U$1'      'VIN' \
+                  ;
+Change Class 0;
+Signal 'GND'      'ESC10-V'  '1' \
+                  'ESC11-V'  '1' \
+                  'ESC12-V'  '1' \
+                  'ESC7-V'   '1' \
+                  'ESC8-V'   '1' \
+                  'ESC9-V'   '1' \
+                  'IMU'      'GND' \
+                  'INTERBOARD_POWER' '2A' \
+                  'INTERBOARD_POWER' '2B' \
+                  'POWER_IN' '1A' \
+                  'POWER_IN' '1B' \
+                  'U$1'      'GND' \
+                  ;
+Change Class 0;
+Signal 'N$1'      'CONN2'    '1-A' \
+                  'ESC7-M'   '1' \
+                  ;
+Change Class 0;
+Signal 'N$2'      'CONN2'    '1-B' \
+                  'ESC7-M'   '2' \
+                  ;
+Change Class 0;
+Signal 'N$3'      'CONN2'    '1-C' \
+                  'ESC7-M'   '3' \
+                  ;
+Change Class 0;
+Signal 'N$4'      'CONN2'    '2-A' \
+                  'ESC8-M'   '1' \
+                  ;
+Change Class 0;
+Signal 'N$5'      'CONN2'    '2-B' \
+                  'ESC8-M'   '2' \
+                  ;
+Change Class 0;
+Signal 'N$6'      'CONN2'    '2-C' \
+                  'ESC8-M'   '3' \
+                  ;
+Change Class 0;
+Signal 'N$7'      'CONN3'    '1-A' \
+                  'ESC9-M'   '1' \
+                  ;
+Change Class 0;
+Signal 'N$8'      'CONN3'    '1-B' \
+                  'ESC9-M'   '2' \
+                  ;
+Change Class 0;
+Signal 'N$9'      'CONN3'    '1-C' \
+                  'ESC9-M'   '3' \
+                  ;
+Change Class 0;
+Signal 'N$10'     'CONN3'    '2-A' \
+                  'ESC10-M'  '1' \
+                  ;
+Change Class 0;
+Signal 'N$11'     'CONN3'    '2-B' \
+                  'ESC10-M'  '2' \
+                  ;
+Change Class 0;
+Signal 'N$12'     'CONN3'    '2-C' \
+                  'ESC10-M'  '3' \
+                  ;
+Change Class 0;
+Signal 'N$13'     'CONN1'    '2' \
+                  'U$1'      'PL_L' \
+                  ;
+Change Class 0;
+Signal 'N$14'     'CONN1'    '1' \
+                  'U$1'      'HV_SIGNAL' \
+                  ;
+Change Class 0;
+Signal 'N$15'     'CONN4'    '1-A' \
+                  'ESC11-M'  '1' \
+                  ;
+Change Class 0;
+Signal 'N$16'     'CONN4'    '1-B' \
+                  'ESC11-M'  '2' \
+                  ;
+Change Class 0;
+Signal 'N$17'     'CONN4'    '1-C' \
+                  'ESC11-M'  '3' \
+                  ;
+Change Class 0;
+Signal 'N$18'     'CONN4'    '2-A' \
+                  'ESC12-M'  '1' \
+                  ;
+Change Class 0;
+Signal 'N$19'     'CONN4'    '2-B' \
+                  'ESC12-M'  '2' \
+                  ;
+Change Class 0;
+Signal 'N$20'     'CONN4'    '2-C' \
+                  'ESC12-M'  '3' \
+                  ;
+Change Class 1;
+Signal 'N$37'     'IMU'      'SCL' \
+                  'INTERBOARD_DATA' '2' \
+                  ;
+Change Class 1;
+Signal 'N$38'     'IMU'      'SDA' \
+                  'INTERBOARD_DATA' '1' \
+                  ;
