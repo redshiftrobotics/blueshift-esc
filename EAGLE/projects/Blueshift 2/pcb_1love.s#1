@@ -1792,6 +1792,104 @@ with different sets of drill holes or mounting pads</description>
 </deviceset>
 </devicesets>
 </library>
+<library name="supply1" urn="urn:adsk.eagle:library:371">
+<description>&lt;b&gt;Supply Symbols&lt;/b&gt;&lt;p&gt;
+ GND, VCC, 0V, +5V, -5V, etc.&lt;p&gt;
+ Please keep in mind, that these devices are necessary for the
+ automatic wiring of the supply signals.&lt;p&gt;
+ The pin name defined in the symbol is identical to the net which is to be wired automatically.&lt;p&gt;
+ In this library the device names are the same as the pin names of the symbols, therefore the correct signal names appear next to the supply symbols in the schematic.&lt;p&gt;
+ &lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;</description>
+<packages>
+</packages>
+<symbols>
+<symbol name="GND" urn="urn:adsk.eagle:symbol:26925/1" library_version="1">
+<wire x1="-1.905" y1="0" x2="1.905" y2="0" width="0.254" layer="94"/>
+<text x="-2.54" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
+<pin name="GND" x="0" y="2.54" visible="off" length="short" direction="sup" rot="R270"/>
+</symbol>
+<symbol name="+12V" urn="urn:adsk.eagle:symbol:26931/1" library_version="1">
+<wire x1="1.27" y1="-1.905" x2="0" y2="0" width="0.254" layer="94"/>
+<wire x1="0" y1="0" x2="-1.27" y2="-1.905" width="0.254" layer="94"/>
+<wire x1="1.27" y1="-0.635" x2="0" y2="1.27" width="0.254" layer="94"/>
+<wire x1="0" y1="1.27" x2="-1.27" y2="-0.635" width="0.254" layer="94"/>
+<text x="-2.54" y="-5.08" size="1.778" layer="96" rot="R90">&gt;VALUE</text>
+<pin name="+12V" x="0" y="-2.54" visible="off" length="short" direction="sup" rot="R90"/>
+</symbol>
+<symbol name="+24V" urn="urn:adsk.eagle:symbol:26935/1" library_version="1">
+<wire x1="1.27" y1="-0.635" x2="0" y2="0" width="0.254" layer="94"/>
+<wire x1="0" y1="0" x2="-1.27" y2="-0.635" width="0.254" layer="94"/>
+<wire x1="1.27" y1="-0.635" x2="0" y2="1.27" width="0.254" layer="94"/>
+<wire x1="0" y1="1.27" x2="-1.27" y2="-0.635" width="0.254" layer="94"/>
+<text x="-2.54" y="-5.08" size="1.778" layer="96" rot="R90">&gt;VALUE</text>
+<pin name="+24V" x="0" y="-2.54" visible="off" length="short" direction="sup" rot="R90"/>
+</symbol>
+<symbol name="+18V" urn="urn:adsk.eagle:symbol:26933/1" library_version="1">
+<wire x1="1.27" y1="-1.905" x2="0" y2="0" width="0.254" layer="94"/>
+<wire x1="0" y1="0" x2="-1.27" y2="-1.905" width="0.254" layer="94"/>
+<wire x1="1.27" y1="-0.635" x2="0" y2="1.27" width="0.254" layer="94"/>
+<wire x1="0" y1="1.27" x2="-1.27" y2="-0.635" width="0.254" layer="94"/>
+<wire x1="0" y1="2.54" x2="-1.27" y2="0.635" width="0.254" layer="94"/>
+<wire x1="1.27" y1="0.635" x2="0" y2="2.54" width="0.254" layer="94"/>
+<text x="-2.54" y="-5.08" size="1.778" layer="96" rot="R90">&gt;VALUE</text>
+<pin name="+18V" x="0" y="-2.54" visible="off" length="short" direction="sup" rot="R90"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="GND" urn="urn:adsk.eagle:component:26954/1" prefix="GND" library_version="1">
+<description>&lt;b&gt;SUPPLY SYMBOL&lt;/b&gt;</description>
+<gates>
+<gate name="1" symbol="GND" x="0" y="0"/>
+</gates>
+<devices>
+<device name="">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="+12V" urn="urn:adsk.eagle:component:26959/1" prefix="P+" library_version="1">
+<description>&lt;b&gt;SUPPLY SYMBOL&lt;/b&gt;</description>
+<gates>
+<gate name="1" symbol="+12V" x="0" y="0"/>
+</gates>
+<devices>
+<device name="">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="+24V" urn="urn:adsk.eagle:component:26964/1" prefix="P+" library_version="1">
+<description>&lt;b&gt;SUPPLY SYMBOL&lt;/b&gt;</description>
+<gates>
+<gate name="1" symbol="+24V" x="0" y="0"/>
+</gates>
+<devices>
+<device name="">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="+18V" urn="urn:adsk.eagle:component:26960/1" prefix="P+" library_version="1">
+<description>&lt;b&gt;SUPPLY SYMBOL&lt;/b&gt;</description>
+<gates>
+<gate name="1" symbol="+18V" x="0" y="0"/>
+</gates>
+<devices>
+<device name="">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -1808,18 +1906,61 @@ with different sets of drill holes or mounting pads</description>
 <part name="U$1" library="FathomX" deviceset="FATHOM-X" device=""/>
 <part name="X1" library="raspberrypi" deviceset="RASPI_BOARD_B+" device="_F"/>
 <part name="POWER-IN" library="BlueShift" deviceset="2-CONTACT-SUPER" device=""/>
-<part name="CONN1" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
-<part name="CONN2" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
-<part name="CONN3" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
-<part name="CONN4" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
-<part name="CONN5" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
-<part name="CONN6" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
-<part name="CONN7" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
-<part name="CONN8" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
-<part name="CONN9" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
-<part name="CONN10" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
-<part name="CONN11" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
-<part name="CONN12" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
+<part name="TP_ESC_A" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
+<part name="TP_ESC_B" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
+<part name="TP_ESC_C" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
+<part name="TP_ESC_D" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
+<part name="TP_ESC_E" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
+<part name="BT_ESC_A" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
+<part name="BT_ESC_B" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
+<part name="BT_ESC_C" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
+<part name="BT_ESC_D" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
+<part name="BT_ESC_E" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
+<part name="BT_ESC_F" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
+<part name="TP_ESC_F" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
+<part name="CONN13" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
+<part name="GND1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="GND2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="GND3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="GND4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="GND5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="GND6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="GND7" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="GND8" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="GND9" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="GND10" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="GND11" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="GND12" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="P+1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
+<part name="P+2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
+<part name="P+3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
+<part name="P+4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
+<part name="P+5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
+<part name="P+6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
+<part name="P+7" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
+<part name="P+8" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
+<part name="P+9" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
+<part name="P+10" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
+<part name="P+11" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
+<part name="P+12" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
+<part name="P+13" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
+<part name="GND13" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="GND14" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="GND15" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="GND16" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="P+14" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+24V" device=""/>
+<part name="P+15" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+24V" device=""/>
+<part name="P+16" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+24V" device=""/>
+<part name="P+17" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+18V" device=""/>
+<part name="P+18" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+18V" device=""/>
+<part name="P+19" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+18V" device=""/>
+<part name="GND17" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="GND18" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="CONN14" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
+<part name="P+20" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
+<part name="GND19" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="P+21" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
+<part name="P+22" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -1827,9 +1968,9 @@ with different sets of drill holes or mounting pads</description>
 </plain>
 <instances>
 <instance part="PWM_EXT" gate="G$1" x="106.68" y="55.88" smashed="yes"/>
-<instance part="IMU" gate="G$1" x="78.74" y="86.36" smashed="yes">
-<attribute name="NAME" x="71.12" y="96.52" size="1.27" layer="94"/>
-<attribute name="VALUE" x="86.36" y="76.2" size="1.27" layer="94" rot="R180"/>
+<instance part="IMU" gate="G$1" x="0" y="0" smashed="yes" rot="R180">
+<attribute name="NAME" x="7.62" y="-10.16" size="1.27" layer="94" rot="R180"/>
+<attribute name="VALUE" x="-7.62" y="10.16" size="1.27" layer="94"/>
 </instance>
 <instance part="VCONVERTER" gate="G$1" x="78.74" y="45.72" smashed="yes">
 <attribute name="NAME" x="81.28" y="38.1" size="1.27" layer="94" rot="R180"/>
@@ -1844,61 +1985,391 @@ with different sets of drill holes or mounting pads</description>
 <attribute name="NAME" x="-71.12" y="142.24" size="1.27" layer="94"/>
 <attribute name="VALUE" x="-66.04" y="129.54" size="1.27" layer="94" rot="R180"/>
 </instance>
-<instance part="CONN1" gate="G$1" x="-66.04" y="106.68" smashed="yes">
+<instance part="TP_ESC_A" gate="G$1" x="-66.04" y="106.68" smashed="yes">
 <attribute name="NAME" x="-68.58" y="111.76" size="1.27" layer="94"/>
 <attribute name="VALUE" x="-63.5" y="109.22" size="1.27" layer="94" rot="R270"/>
 </instance>
-<instance part="CONN2" gate="G$1" x="-66.04" y="88.9" smashed="yes">
+<instance part="TP_ESC_B" gate="G$1" x="-66.04" y="88.9" smashed="yes">
 <attribute name="NAME" x="-68.58" y="93.98" size="1.27" layer="94"/>
 <attribute name="VALUE" x="-63.5" y="91.44" size="1.27" layer="94" rot="R270"/>
 </instance>
-<instance part="CONN3" gate="G$1" x="-66.04" y="71.12" smashed="yes">
+<instance part="TP_ESC_C" gate="G$1" x="-66.04" y="71.12" smashed="yes">
 <attribute name="NAME" x="-68.58" y="76.2" size="1.27" layer="94"/>
 <attribute name="VALUE" x="-63.5" y="73.66" size="1.27" layer="94" rot="R270"/>
 </instance>
-<instance part="CONN4" gate="G$1" x="-66.04" y="53.34" smashed="yes">
+<instance part="TP_ESC_D" gate="G$1" x="-66.04" y="53.34" smashed="yes">
 <attribute name="NAME" x="-68.58" y="58.42" size="1.27" layer="94"/>
 <attribute name="VALUE" x="-63.5" y="55.88" size="1.27" layer="94" rot="R270"/>
 </instance>
-<instance part="CONN5" gate="G$1" x="-66.04" y="33.02" smashed="yes">
+<instance part="TP_ESC_E" gate="G$1" x="-66.04" y="33.02" smashed="yes">
 <attribute name="NAME" x="-68.58" y="38.1" size="1.27" layer="94"/>
 <attribute name="VALUE" x="-63.5" y="35.56" size="1.27" layer="94" rot="R270"/>
 </instance>
-<instance part="CONN6" gate="G$1" x="-30.48" y="109.22" smashed="yes">
+<instance part="BT_ESC_A" gate="G$1" x="-30.48" y="109.22" smashed="yes">
 <attribute name="NAME" x="-33.02" y="114.3" size="1.27" layer="94"/>
 <attribute name="VALUE" x="-27.94" y="111.76" size="1.27" layer="94" rot="R270"/>
 </instance>
-<instance part="CONN7" gate="G$1" x="-30.48" y="91.44" smashed="yes">
+<instance part="BT_ESC_B" gate="G$1" x="-30.48" y="91.44" smashed="yes">
 <attribute name="NAME" x="-33.02" y="96.52" size="1.27" layer="94"/>
 <attribute name="VALUE" x="-27.94" y="93.98" size="1.27" layer="94" rot="R270"/>
 </instance>
-<instance part="CONN8" gate="G$1" x="-30.48" y="73.66" smashed="yes">
+<instance part="BT_ESC_C" gate="G$1" x="-30.48" y="73.66" smashed="yes">
 <attribute name="NAME" x="-33.02" y="78.74" size="1.27" layer="94"/>
 <attribute name="VALUE" x="-27.94" y="76.2" size="1.27" layer="94" rot="R270"/>
 </instance>
-<instance part="CONN9" gate="G$1" x="-30.48" y="58.42" smashed="yes">
+<instance part="BT_ESC_D" gate="G$1" x="-30.48" y="58.42" smashed="yes">
 <attribute name="NAME" x="-33.02" y="63.5" size="1.27" layer="94"/>
 <attribute name="VALUE" x="-27.94" y="60.96" size="1.27" layer="94" rot="R270"/>
 </instance>
-<instance part="CONN10" gate="G$1" x="-30.48" y="40.64" smashed="yes">
+<instance part="BT_ESC_E" gate="G$1" x="-30.48" y="40.64" smashed="yes">
 <attribute name="NAME" x="-33.02" y="45.72" size="1.27" layer="94"/>
 <attribute name="VALUE" x="-27.94" y="43.18" size="1.27" layer="94" rot="R270"/>
 </instance>
-<instance part="CONN11" gate="G$1" x="-30.48" y="22.86" smashed="yes">
+<instance part="BT_ESC_F" gate="G$1" x="-30.48" y="22.86" smashed="yes">
 <attribute name="NAME" x="-33.02" y="27.94" size="1.27" layer="94"/>
 <attribute name="VALUE" x="-27.94" y="25.4" size="1.27" layer="94" rot="R270"/>
 </instance>
-<instance part="CONN12" gate="G$1" x="-68.58" y="12.7" smashed="yes">
-<attribute name="NAME" x="-71.12" y="17.78" size="1.27" layer="94"/>
-<attribute name="VALUE" x="-66.04" y="15.24" size="1.27" layer="94" rot="R270"/>
+<instance part="TP_ESC_F" gate="G$1" x="-66.04" y="15.24" smashed="yes">
+<attribute name="NAME" x="-68.58" y="20.32" size="1.27" layer="94"/>
+<attribute name="VALUE" x="-63.5" y="17.78" size="1.27" layer="94" rot="R270"/>
+</instance>
+<instance part="CONN13" gate="G$1" x="-5.08" y="71.12" smashed="yes" rot="R180">
+<attribute name="NAME" x="-2.54" y="66.04" size="1.27" layer="94" rot="R180"/>
+<attribute name="VALUE" x="-7.62" y="68.58" size="1.27" layer="94" rot="R90"/>
+</instance>
+<instance part="GND1" gate="1" x="-76.2" y="109.22" smashed="yes" rot="R270">
+<attribute name="VALUE" x="-78.74" y="111.76" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="GND2" gate="1" x="-76.2" y="91.44" smashed="yes" rot="R270">
+<attribute name="VALUE" x="-78.74" y="93.98" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="GND3" gate="1" x="-76.2" y="73.66" smashed="yes" rot="R270">
+<attribute name="VALUE" x="-78.74" y="76.2" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="GND4" gate="1" x="-76.2" y="55.88" smashed="yes" rot="R270">
+<attribute name="VALUE" x="-78.74" y="58.42" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="GND5" gate="1" x="-76.2" y="35.56" smashed="yes" rot="R270">
+<attribute name="VALUE" x="-78.74" y="38.1" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="GND6" gate="1" x="-76.2" y="17.78" smashed="yes" rot="R270">
+<attribute name="VALUE" x="-78.74" y="20.32" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="GND7" gate="1" x="-40.64" y="106.68" smashed="yes" rot="R270">
+<attribute name="VALUE" x="-43.18" y="109.22" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="GND8" gate="1" x="-40.64" y="88.9" smashed="yes" rot="R270">
+<attribute name="VALUE" x="-43.18" y="91.44" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="GND9" gate="1" x="-40.64" y="71.12" smashed="yes" rot="R270">
+<attribute name="VALUE" x="-43.18" y="73.66" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="GND10" gate="1" x="-40.64" y="55.88" smashed="yes" rot="R270">
+<attribute name="VALUE" x="-43.18" y="58.42" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="GND11" gate="1" x="-40.64" y="38.1" smashed="yes" rot="R270">
+<attribute name="VALUE" x="-43.18" y="40.64" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="GND12" gate="1" x="-40.64" y="20.32" smashed="yes" rot="R270">
+<attribute name="VALUE" x="-43.18" y="22.86" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="P+1" gate="1" x="-76.2" y="104.14" smashed="yes" rot="R90">
+<attribute name="VALUE" x="-71.12" y="101.6" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="P+2" gate="1" x="-40.64" y="111.76" smashed="yes" rot="R90">
+<attribute name="VALUE" x="-35.56" y="109.22" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="P+3" gate="1" x="-40.64" y="93.98" smashed="yes" rot="R90">
+<attribute name="VALUE" x="-35.56" y="91.44" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="P+4" gate="1" x="-40.64" y="76.2" smashed="yes" rot="R90">
+<attribute name="VALUE" x="-35.56" y="73.66" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="P+5" gate="1" x="-40.64" y="60.96" smashed="yes" rot="R90">
+<attribute name="VALUE" x="-35.56" y="58.42" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="P+6" gate="1" x="-40.64" y="43.18" smashed="yes" rot="R90">
+<attribute name="VALUE" x="-35.56" y="40.64" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="P+7" gate="1" x="-40.64" y="25.4" smashed="yes" rot="R90">
+<attribute name="VALUE" x="-35.56" y="22.86" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="P+8" gate="1" x="-76.2" y="30.48" smashed="yes" rot="R90">
+<attribute name="VALUE" x="-71.12" y="27.94" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="P+9" gate="1" x="-76.2" y="50.8" smashed="yes" rot="R90">
+<attribute name="VALUE" x="-71.12" y="48.26" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="P+10" gate="1" x="-76.2" y="68.58" smashed="yes" rot="R90">
+<attribute name="VALUE" x="-71.12" y="66.04" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="P+11" gate="1" x="-76.2" y="86.36" smashed="yes" rot="R90">
+<attribute name="VALUE" x="-71.12" y="83.82" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="P+12" gate="1" x="-76.2" y="12.7" smashed="yes" rot="R90">
+<attribute name="VALUE" x="-71.12" y="10.16" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="P+13" gate="1" x="-55.88" y="132.08" smashed="yes" rot="R270">
+<attribute name="VALUE" x="-60.96" y="134.62" size="1.778" layer="96"/>
+</instance>
+<instance part="GND13" gate="1" x="-55.88" y="139.7" smashed="yes" rot="R90">
+<attribute name="VALUE" x="-53.34" y="137.16" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="GND14" gate="1" x="66.04" y="40.64" smashed="yes" rot="R270">
+<attribute name="VALUE" x="63.5" y="43.18" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="GND15" gate="1" x="25.4" y="66.04" smashed="yes" rot="R270">
+<attribute name="VALUE" x="22.86" y="68.58" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="GND16" gate="1" x="33.02" y="83.82" smashed="yes">
+<attribute name="VALUE" x="30.48" y="81.28" size="1.778" layer="96"/>
+</instance>
+<instance part="P+14" gate="1" x="15.24" y="5.08" smashed="yes" rot="R270">
+<attribute name="VALUE" x="10.16" y="7.62" size="1.778" layer="96"/>
+</instance>
+<instance part="P+15" gate="1" x="15.24" y="93.98" smashed="yes" rot="R90">
+<attribute name="VALUE" x="20.32" y="91.44" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="P+16" gate="1" x="91.44" y="63.5" smashed="yes" rot="R90">
+<attribute name="VALUE" x="96.52" y="60.96" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="P+17" gate="1" x="15.24" y="91.44" smashed="yes" rot="R90">
+<attribute name="VALUE" x="20.32" y="88.9" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="P+18" gate="1" x="15.24" y="2.54" smashed="yes" rot="R270">
+<attribute name="VALUE" x="10.16" y="5.08" size="1.778" layer="96"/>
+</instance>
+<instance part="P+19" gate="1" x="91.44" y="60.96" smashed="yes" rot="R90">
+<attribute name="VALUE" x="96.52" y="58.42" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="GND17" gate="1" x="15.24" y="-2.54" smashed="yes" rot="R90">
+<attribute name="VALUE" x="17.78" y="-5.08" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="GND18" gate="1" x="91.44" y="68.58" smashed="yes" rot="R270">
+<attribute name="VALUE" x="88.9" y="71.12" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="CONN14" gate="G$1" x="40.64" y="43.18" smashed="yes" rot="R180">
+<attribute name="NAME" x="43.18" y="38.1" size="1.27" layer="94" rot="R180"/>
+<attribute name="VALUE" x="38.1" y="40.64" size="1.27" layer="94" rot="R90"/>
+</instance>
+<instance part="P+20" gate="1" x="15.24" y="-7.62" smashed="yes" rot="R270">
+<attribute name="VALUE" x="10.16" y="-5.08" size="1.778" layer="96"/>
+</instance>
+<instance part="GND19" gate="1" x="50.8" y="40.64" smashed="yes" rot="R90">
+<attribute name="VALUE" x="53.34" y="38.1" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="P+21" gate="1" x="66.04" y="50.8" smashed="yes" rot="R90">
+<attribute name="VALUE" x="71.12" y="48.26" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="P+22" gate="1" x="25.4" y="63.5" smashed="yes" rot="R90">
+<attribute name="VALUE" x="30.48" y="60.96" size="1.778" layer="96" rot="R180"/>
 </instance>
 </instances>
 <busses>
 </busses>
 <nets>
+<net name="GND" class="0">
+<segment>
+<pinref part="TP_ESC_A" gate="G$1" pin="1"/>
+<pinref part="GND1" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="TP_ESC_B" gate="G$1" pin="1"/>
+<pinref part="GND2" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="TP_ESC_C" gate="G$1" pin="1"/>
+<pinref part="GND3" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="TP_ESC_D" gate="G$1" pin="1"/>
+<pinref part="GND4" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="TP_ESC_E" gate="G$1" pin="1"/>
+<pinref part="GND5" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="TP_ESC_F" gate="G$1" pin="1"/>
+<pinref part="GND6" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="BT_ESC_A" gate="G$1" pin="2"/>
+<pinref part="GND7" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="BT_ESC_B" gate="G$1" pin="2"/>
+<pinref part="GND8" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="BT_ESC_C" gate="G$1" pin="2"/>
+<pinref part="GND9" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="BT_ESC_D" gate="G$1" pin="2"/>
+<pinref part="GND10" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="BT_ESC_E" gate="G$1" pin="2"/>
+<pinref part="GND11" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="BT_ESC_F" gate="G$1" pin="2"/>
+<pinref part="GND12" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="GND13" gate="1" pin="GND"/>
+<pinref part="POWER-IN" gate="G$1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="GND14" gate="1" pin="GND"/>
+<pinref part="VCONVERTER" gate="G$1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="GND16" gate="1" pin="GND"/>
+<pinref part="X1" gate="G$1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="GND17" gate="1" pin="GND"/>
+<pinref part="IMU" gate="G$1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="GND18" gate="1" pin="GND"/>
+<pinref part="PWM_EXT" gate="G$1" pin="R-GND"/>
+</segment>
+<segment>
+<pinref part="GND19" gate="1" pin="GND"/>
+<pinref part="CONN14" gate="G$1" pin="1"/>
+</segment>
+</net>
+<net name="+12V" class="0">
+<segment>
+<pinref part="TP_ESC_A" gate="G$1" pin="2"/>
+<pinref part="P+1" gate="1" pin="+12V"/>
+</segment>
+<segment>
+<pinref part="BT_ESC_A" gate="G$1" pin="1"/>
+<pinref part="P+2" gate="1" pin="+12V"/>
+</segment>
+<segment>
+<pinref part="BT_ESC_B" gate="G$1" pin="1"/>
+<pinref part="P+3" gate="1" pin="+12V"/>
+</segment>
+<segment>
+<pinref part="BT_ESC_C" gate="G$1" pin="1"/>
+<pinref part="P+4" gate="1" pin="+12V"/>
+</segment>
+<segment>
+<pinref part="BT_ESC_D" gate="G$1" pin="1"/>
+<pinref part="P+5" gate="1" pin="+12V"/>
+</segment>
+<segment>
+<pinref part="BT_ESC_E" gate="G$1" pin="1"/>
+<pinref part="P+6" gate="1" pin="+12V"/>
+</segment>
+<segment>
+<pinref part="BT_ESC_F" gate="G$1" pin="1"/>
+<pinref part="P+7" gate="1" pin="+12V"/>
+</segment>
+<segment>
+<pinref part="TP_ESC_E" gate="G$1" pin="2"/>
+<pinref part="P+8" gate="1" pin="+12V"/>
+</segment>
+<segment>
+<pinref part="TP_ESC_D" gate="G$1" pin="2"/>
+<pinref part="P+9" gate="1" pin="+12V"/>
+</segment>
+<segment>
+<pinref part="TP_ESC_C" gate="G$1" pin="2"/>
+<pinref part="P+10" gate="1" pin="+12V"/>
+</segment>
+<segment>
+<pinref part="TP_ESC_B" gate="G$1" pin="2"/>
+<pinref part="P+11" gate="1" pin="+12V"/>
+</segment>
+<segment>
+<pinref part="TP_ESC_F" gate="G$1" pin="2"/>
+<pinref part="P+12" gate="1" pin="+12V"/>
+</segment>
+<segment>
+<pinref part="POWER-IN" gate="G$1" pin="12V"/>
+<pinref part="P+13" gate="1" pin="+12V"/>
+</segment>
+<segment>
+<pinref part="P+20" gate="1" pin="+12V"/>
+<pinref part="IMU" gate="G$1" pin="VIN"/>
+</segment>
+<segment>
+<pinref part="P+21" gate="1" pin="+12V"/>
+<pinref part="VCONVERTER" gate="G$1" pin="VIN"/>
+</segment>
+</net>
+<net name="+24V" class="0">
+<segment>
+<pinref part="IMU" gate="G$1" pin="SCL"/>
+<pinref part="P+14" gate="1" pin="+24V"/>
+</segment>
+<segment>
+<pinref part="X1" gate="G$1" pin="SCL"/>
+<pinref part="P+15" gate="1" pin="+24V"/>
+</segment>
+<segment>
+<pinref part="PWM_EXT" gate="G$1" pin="R-SCL"/>
+<pinref part="P+16" gate="1" pin="+24V"/>
+</segment>
+</net>
+<net name="+18V" class="0">
+<segment>
+<pinref part="X1" gate="G$1" pin="SDA"/>
+<pinref part="P+17" gate="1" pin="+18V"/>
+</segment>
+<segment>
+<pinref part="IMU" gate="G$1" pin="SDA"/>
+<pinref part="P+18" gate="1" pin="+18V"/>
+</segment>
+<segment>
+<pinref part="PWM_EXT" gate="G$1" pin="R-SDA"/>
+<pinref part="P+19" gate="1" pin="+18V"/>
+</segment>
+</net>
+<net name="N$1" class="0">
+<segment>
+<pinref part="CONN13" gate="G$1" pin="2"/>
+<pinref part="U$1" gate="G$1" pin="PL_L"/>
+<wire x1="2.54" y1="73.66" x2="33.02" y2="73.66" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$2" class="0">
+<segment>
+<pinref part="U$1" gate="G$1" pin="HV_SIGNAL"/>
+<wire x1="33.02" y1="71.12" x2="7.62" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="7.62" y1="71.12" x2="7.62" y2="68.58" width="0.1524" layer="91"/>
+<pinref part="CONN13" gate="G$1" pin="1"/>
+<wire x1="7.62" y1="68.58" x2="2.54" y2="68.58" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$3" class="0">
+<segment>
+<pinref part="VCONVERTER" gate="G$1" pin="VOUT"/>
+<pinref part="CONN14" gate="G$1" pin="2"/>
+<wire x1="68.58" y1="45.72" x2="48.26" y2="45.72" width="0.1524" layer="91"/>
+</segment>
+</net>
 </nets>
 </sheet>
 </sheets>
 </schematic>
 </drawing>
+<compatibility>
+<note version="8.2" severity="warning">
+Since Version 8.2, EAGLE supports online libraries. The ids
+of those online libraries will not be understood (or retained)
+with this version.
+</note>
+<note version="8.3" severity="warning">
+Since Version 8.3, EAGLE supports URNs for individual library
+assets (packages, symbols, and devices). The URNs of those assets
+will not be understood (or retained) with this version.
+</note>
+</compatibility>
 </eagle>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.5.2">
+<eagle version="9.6.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -1957,7 +1957,6 @@ with different sets of drill holes or mounting pads</description>
 <part name="GND17" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND18" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="CONN14" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device=""/>
-<part name="P+20" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
 <part name="GND19" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="P+21" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
 <part name="P+22" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
@@ -1967,10 +1966,10 @@ with different sets of drill holes or mounting pads</description>
 <plain>
 </plain>
 <instances>
-<instance part="PWM_EXT" gate="G$1" x="106.68" y="55.88" smashed="yes"/>
-<instance part="IMU" gate="G$1" x="0" y="0" smashed="yes" rot="R180">
-<attribute name="NAME" x="7.62" y="-10.16" size="1.27" layer="94" rot="R180"/>
-<attribute name="VALUE" x="-7.62" y="10.16" size="1.27" layer="94"/>
+<instance part="PWM_EXT" gate="G$1" x="63.5" y="167.64" smashed="yes"/>
+<instance part="IMU" gate="G$1" x="7.62" y="172.72" smashed="yes" rot="R180">
+<attribute name="NAME" x="15.24" y="162.56" size="1.27" layer="94" rot="R180"/>
+<attribute name="VALUE" x="0" y="182.88" size="1.27" layer="94"/>
 </instance>
 <instance part="VCONVERTER" gate="G$1" x="78.74" y="45.72" smashed="yes">
 <attribute name="NAME" x="81.28" y="38.1" size="1.27" layer="94" rot="R180"/>
@@ -2124,36 +2123,33 @@ with different sets of drill holes or mounting pads</description>
 <instance part="GND16" gate="1" x="33.02" y="83.82" smashed="yes">
 <attribute name="VALUE" x="30.48" y="81.28" size="1.778" layer="96"/>
 </instance>
-<instance part="P+14" gate="1" x="15.24" y="5.08" smashed="yes" rot="R270">
-<attribute name="VALUE" x="10.16" y="7.62" size="1.778" layer="96"/>
+<instance part="P+14" gate="1" x="22.86" y="177.8" smashed="yes" rot="R270">
+<attribute name="VALUE" x="17.78" y="180.34" size="1.778" layer="96"/>
 </instance>
 <instance part="P+15" gate="1" x="15.24" y="93.98" smashed="yes" rot="R90">
 <attribute name="VALUE" x="20.32" y="91.44" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="P+16" gate="1" x="91.44" y="63.5" smashed="yes" rot="R90">
-<attribute name="VALUE" x="96.52" y="60.96" size="1.778" layer="96" rot="R180"/>
+<instance part="P+16" gate="1" x="48.26" y="175.26" smashed="yes" rot="R90">
+<attribute name="VALUE" x="53.34" y="172.72" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="P+17" gate="1" x="15.24" y="91.44" smashed="yes" rot="R90">
 <attribute name="VALUE" x="20.32" y="88.9" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="P+18" gate="1" x="15.24" y="2.54" smashed="yes" rot="R270">
-<attribute name="VALUE" x="10.16" y="5.08" size="1.778" layer="96"/>
+<instance part="P+18" gate="1" x="22.86" y="175.26" smashed="yes" rot="R270">
+<attribute name="VALUE" x="17.78" y="177.8" size="1.778" layer="96"/>
 </instance>
-<instance part="P+19" gate="1" x="91.44" y="60.96" smashed="yes" rot="R90">
-<attribute name="VALUE" x="96.52" y="58.42" size="1.778" layer="96" rot="R180"/>
+<instance part="P+19" gate="1" x="48.26" y="172.72" smashed="yes" rot="R90">
+<attribute name="VALUE" x="53.34" y="170.18" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="GND17" gate="1" x="15.24" y="-2.54" smashed="yes" rot="R90">
-<attribute name="VALUE" x="17.78" y="-5.08" size="1.778" layer="96" rot="R90"/>
+<instance part="GND17" gate="1" x="22.86" y="170.18" smashed="yes" rot="R90">
+<attribute name="VALUE" x="25.4" y="167.64" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="GND18" gate="1" x="91.44" y="68.58" smashed="yes" rot="R270">
-<attribute name="VALUE" x="88.9" y="71.12" size="1.778" layer="96" rot="R270"/>
+<instance part="GND18" gate="1" x="48.26" y="180.34" smashed="yes" rot="R270">
+<attribute name="VALUE" x="45.72" y="182.88" size="1.778" layer="96" rot="R270"/>
 </instance>
 <instance part="CONN14" gate="G$1" x="40.64" y="43.18" smashed="yes" rot="R180">
 <attribute name="NAME" x="43.18" y="38.1" size="1.27" layer="94" rot="R180"/>
 <attribute name="VALUE" x="38.1" y="40.64" size="1.27" layer="94" rot="R90"/>
-</instance>
-<instance part="P+20" gate="1" x="15.24" y="-7.62" smashed="yes" rot="R270">
-<attribute name="VALUE" x="10.16" y="-5.08" size="1.778" layer="96"/>
 </instance>
 <instance part="GND19" gate="1" x="50.8" y="40.64" smashed="yes" rot="R90">
 <attribute name="VALUE" x="53.34" y="38.1" size="1.778" layer="96" rot="R90"/>
@@ -2296,10 +2292,6 @@ with different sets of drill holes or mounting pads</description>
 <pinref part="P+13" gate="1" pin="+12V"/>
 </segment>
 <segment>
-<pinref part="P+20" gate="1" pin="+12V"/>
-<pinref part="IMU" gate="G$1" pin="VIN"/>
-</segment>
-<segment>
 <pinref part="P+21" gate="1" pin="+12V"/>
 <pinref part="VCONVERTER" gate="G$1" pin="VIN"/>
 </segment>
@@ -2353,6 +2345,18 @@ with different sets of drill holes or mounting pads</description>
 <pinref part="VCONVERTER" gate="G$1" pin="VOUT"/>
 <pinref part="CONN14" gate="G$1" pin="2"/>
 <wire x1="68.58" y1="45.72" x2="48.26" y2="45.72" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$4" class="0">
+<segment>
+<pinref part="X1" gate="G$1" pin="3V3"/>
+<pinref part="PWM_EXT" gate="G$1" pin="R-VCC"/>
+<wire x1="38.1" y1="154.94" x2="38.1" y2="165.1" width="0.1524" layer="91"/>
+<wire x1="38.1" y1="165.1" x2="38.1" y2="170.18" width="0.1524" layer="91"/>
+<wire x1="38.1" y1="170.18" x2="50.8" y2="170.18" width="0.1524" layer="91"/>
+<pinref part="IMU" gate="G$1" pin="VIN"/>
+<wire x1="20.32" y1="165.1" x2="38.1" y2="165.1" width="0.1524" layer="91"/>
+<junction x="38.1" y="165.1"/>
 </segment>
 </net>
 </nets>

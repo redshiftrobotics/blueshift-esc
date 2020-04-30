@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="50" unitdist="mil" unit="mil" style="lines" multiple="1" display="no" altdistance="5" altunitdist="mil" altunit="mil"/>
+<grid distance="50" unitdist="mil" unit="inch" style="lines" multiple="1" display="no" altdistance="5" altunitdist="mil" altunit="mil"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="2" name="Route2" color="16" fill="1" visible="no" active="no"/>
@@ -73,10 +73,10 @@
 </layers>
 <board>
 <plain>
-<wire x1="0" y1="0" x2="160" y2="0" width="0" layer="20"/>
-<wire x1="160" y1="0" x2="160" y2="100" width="0" layer="20"/>
-<wire x1="160" y1="100" x2="0" y2="100" width="0" layer="20"/>
-<wire x1="0" y1="100" x2="0" y2="0" width="0" layer="20"/>
+<wire x1="0" y1="0" x2="96.52" y2="0" width="0" layer="20"/>
+<wire x1="96.52" y1="0" x2="96.52" y2="228.6" width="0" layer="20"/>
+<wire x1="96.52" y1="228.6" x2="0" y2="228.6" width="0" layer="20"/>
+<wire x1="0" y1="228.6" x2="0" y2="0" width="0" layer="20"/>
 </plain>
 <libraries>
 <library name="BlueShift">
@@ -549,80 +549,80 @@ design rules under a new name.</description>
 </pass>
 </autorouter>
 <elements>
-<element name="BT_ESC_A" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="-53.34" y="176.53" smashed="yes">
-<attribute name="NAME" x="-57.15" y="176.53" size="1.27" layer="25"/>
-<attribute name="VALUE" x="-57.15" y="158.75" size="1.27" layer="25"/>
+<element name="BT_ESC_A" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="8.89" y="130.81" smashed="yes" rot="MR0">
+<attribute name="NAME" x="12.7" y="130.81" size="1.27" layer="26" rot="MR0"/>
+<attribute name="VALUE" x="12.7" y="113.03" size="1.27" layer="26" rot="MR0"/>
 </element>
-<element name="BT_ESC_B" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="-64.77" y="176.53" smashed="yes">
-<attribute name="NAME" x="-68.58" y="176.53" size="1.27" layer="25"/>
-<attribute name="VALUE" x="-68.58" y="158.75" size="1.27" layer="25"/>
+<element name="BT_ESC_B" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="24.13" y="113.03" smashed="yes">
+<attribute name="NAME" x="20.32" y="113.03" size="1.27" layer="25"/>
+<attribute name="VALUE" x="20.32" y="95.25" size="1.27" layer="25"/>
 </element>
-<element name="BT_ESC_C" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="-132.08" y="147.32" smashed="yes">
-<attribute name="NAME" x="-135.89" y="147.32" size="1.27" layer="25"/>
-<attribute name="VALUE" x="-135.89" y="129.54" size="1.27" layer="25"/>
+<element name="BT_ESC_C" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="41.91" y="130.81" smashed="yes">
+<attribute name="NAME" x="38.1" y="130.81" size="1.27" layer="25"/>
+<attribute name="VALUE" x="38.1" y="113.03" size="1.27" layer="25"/>
 </element>
-<element name="BT_ESC_D" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="-19.05" y="176.53" smashed="yes">
-<attribute name="NAME" x="-22.86" y="176.53" size="1.27" layer="25"/>
-<attribute name="VALUE" x="-22.86" y="158.75" size="1.27" layer="25"/>
+<element name="BT_ESC_D" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="57.15" y="113.03" smashed="yes">
+<attribute name="NAME" x="53.34" y="113.03" size="1.27" layer="25"/>
+<attribute name="VALUE" x="53.34" y="95.25" size="1.27" layer="25"/>
 </element>
-<element name="BT_ESC_E" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="-76.2" y="176.53" smashed="yes">
-<attribute name="NAME" x="-80.01" y="176.53" size="1.27" layer="25"/>
-<attribute name="VALUE" x="-80.01" y="158.75" size="1.27" layer="25"/>
+<element name="BT_ESC_E" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="76.2" y="130.81" smashed="yes">
+<attribute name="NAME" x="72.39" y="130.81" size="1.27" layer="25"/>
+<attribute name="VALUE" x="72.39" y="113.03" size="1.27" layer="25"/>
 </element>
-<element name="BT_ESC_F" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="-120.65" y="176.53" smashed="yes">
-<attribute name="NAME" x="-124.46" y="176.53" size="1.27" layer="25"/>
-<attribute name="VALUE" x="-124.46" y="158.75" size="1.27" layer="25"/>
+<element name="BT_ESC_F" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="90.17" y="113.03" smashed="yes">
+<attribute name="NAME" x="86.36" y="113.03" size="1.27" layer="25"/>
+<attribute name="VALUE" x="86.36" y="95.25" size="1.27" layer="25"/>
 </element>
-<element name="CONN13" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="-17.78" y="194.31" smashed="yes">
-<attribute name="NAME" x="-21.59" y="194.31" size="1.27" layer="25"/>
-<attribute name="VALUE" x="-21.59" y="176.53" size="1.27" layer="25"/>
+<element name="CONN13" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="7.62" y="16.51" smashed="yes">
+<attribute name="NAME" x="3.81" y="16.51" size="1.27" layer="25"/>
+<attribute name="VALUE" x="3.81" y="-1.27" size="1.27" layer="25"/>
 </element>
-<element name="CONN14" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="-26.67" y="194.31" smashed="yes">
-<attribute name="NAME" x="-30.48" y="194.31" size="1.27" layer="25"/>
-<attribute name="VALUE" x="-30.48" y="176.53" size="1.27" layer="25"/>
+<element name="CONN14" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="90.17" y="165.1" smashed="yes">
+<attribute name="NAME" x="86.36" y="165.1" size="1.27" layer="25"/>
+<attribute name="VALUE" x="86.36" y="147.32" size="1.27" layer="25"/>
 </element>
-<element name="IMU" library="BlueShift" package="IMU" value="" x="-102.87" y="132.08" smashed="yes">
-<attribute name="NAME" x="-92.71" y="153.67" size="1.27" layer="25"/>
-<attribute name="VALUE" x="-93.98" y="129.54" size="1.27" layer="25"/>
+<element name="IMU" library="BlueShift" package="IMU" value="" x="66.04" y="147.32" smashed="yes" rot="R270">
+<attribute name="NAME" x="87.63" y="137.16" size="1.27" layer="25" rot="R270"/>
+<attribute name="VALUE" x="63.5" y="138.43" size="1.27" layer="25" rot="R270"/>
 </element>
-<element name="POWER-IN" library="BlueShift" package="2-CONTACT-SUPER" value="" x="-106.68" y="149.86" smashed="yes"/>
-<element name="PWM_EXT" library="BlueShift" package="PWM_EXTENDER-SIMPLE" value="" x="-73.66" y="138.43" smashed="yes">
-<attribute name="NAME" x="-48.26" y="158.75" size="1.27" layer="21"/>
-<attribute name="VALUE" x="-48.26" y="129.54" size="1.27" layer="21"/>
+<element name="POWER-IN" library="BlueShift" package="2-CONTACT-SUPER" value="" x="73.66" y="3.81" smashed="yes" rot="R180"/>
+<element name="PWM_EXT" library="BlueShift" package="PWM_EXTENDER-SIMPLE" value="" x="3.81" y="140.97" smashed="yes">
+<attribute name="NAME" x="29.21" y="161.29" size="1.27" layer="21"/>
+<attribute name="VALUE" x="29.21" y="132.08" size="1.27" layer="21"/>
 </element>
-<element name="TP_ESC_A" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="-87.63" y="176.53" smashed="yes">
-<attribute name="NAME" x="-91.44" y="176.53" size="1.27" layer="25"/>
-<attribute name="VALUE" x="-91.44" y="158.75" size="1.27" layer="25"/>
+<element name="TP_ESC_A" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="8.89" y="113.03" smashed="yes">
+<attribute name="NAME" x="5.08" y="113.03" size="1.27" layer="25"/>
+<attribute name="VALUE" x="5.08" y="95.25" size="1.27" layer="25"/>
 </element>
-<element name="TP_ESC_B" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="-99.06" y="176.53" smashed="yes">
-<attribute name="NAME" x="-102.87" y="176.53" size="1.27" layer="25"/>
-<attribute name="VALUE" x="-102.87" y="158.75" size="1.27" layer="25"/>
+<element name="TP_ESC_B" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="24.13" y="130.81" smashed="yes">
+<attribute name="NAME" x="20.32" y="130.81" size="1.27" layer="25"/>
+<attribute name="VALUE" x="20.32" y="113.03" size="1.27" layer="25"/>
 </element>
-<element name="TP_ESC_C" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="-30.48" y="176.53" smashed="yes">
-<attribute name="NAME" x="-34.29" y="176.53" size="1.27" layer="25"/>
-<attribute name="VALUE" x="-34.29" y="158.75" size="1.27" layer="25"/>
+<element name="TP_ESC_C" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="41.91" y="113.03" smashed="yes">
+<attribute name="NAME" x="38.1" y="113.03" size="1.27" layer="25"/>
+<attribute name="VALUE" x="38.1" y="95.25" size="1.27" layer="25"/>
 </element>
-<element name="TP_ESC_D" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="-41.91" y="176.53" smashed="yes">
-<attribute name="NAME" x="-45.72" y="176.53" size="1.27" layer="25"/>
-<attribute name="VALUE" x="-45.72" y="158.75" size="1.27" layer="25"/>
+<element name="TP_ESC_D" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="57.15" y="130.81" smashed="yes">
+<attribute name="NAME" x="53.34" y="130.81" size="1.27" layer="25"/>
+<attribute name="VALUE" x="53.34" y="113.03" size="1.27" layer="25"/>
 </element>
-<element name="TP_ESC_E" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="-110.49" y="176.53" smashed="yes">
-<attribute name="NAME" x="-114.3" y="176.53" size="1.27" layer="25"/>
-<attribute name="VALUE" x="-114.3" y="158.75" size="1.27" layer="25"/>
+<element name="TP_ESC_E" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="76.2" y="113.03" smashed="yes">
+<attribute name="NAME" x="72.39" y="113.03" size="1.27" layer="25"/>
+<attribute name="VALUE" x="72.39" y="95.25" size="1.27" layer="25"/>
 </element>
-<element name="TP_ESC_F" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="-130.81" y="176.53" smashed="yes">
-<attribute name="NAME" x="-134.62" y="176.53" size="1.27" layer="25"/>
-<attribute name="VALUE" x="-134.62" y="158.75" size="1.27" layer="25"/>
+<element name="TP_ESC_F" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="91.44" y="130.81" smashed="yes">
+<attribute name="NAME" x="87.63" y="130.81" size="1.27" layer="25"/>
+<attribute name="VALUE" x="87.63" y="113.03" size="1.27" layer="25"/>
 </element>
-<element name="U$1" library="FathomX" package="FATHOM-X" value="FATHOM-X" x="-81.28" y="12.7" smashed="yes">
-<attribute name="NAME" x="-71.12" y="60.96" size="7.62" layer="21"/>
-<attribute name="VALUE" x="-71.12" y="2.54" size="7.62" layer="21"/>
+<element name="U$1" library="FathomX" package="FATHOM-X" value="FATHOM-X" x="3.81" y="172.72" smashed="yes">
+<attribute name="NAME" x="13.97" y="220.98" size="7.62" layer="21"/>
+<attribute name="VALUE" x="13.97" y="162.56" size="7.62" layer="21"/>
 </element>
-<element name="VCONVERTER" library="BlueShift" package="VOLTAGE_CONVERTERS" value="" x="-39.37" y="184.15" smashed="yes">
-<attribute name="NAME" x="-44.45" y="189.23" size="1.27" layer="21"/>
-<attribute name="VALUE" x="-34.29" y="179.07" size="1.27" layer="21" rot="R180"/>
+<element name="VCONVERTER" library="BlueShift" package="VOLTAGE_CONVERTERS" value="" x="72.39" y="160.02" smashed="yes">
+<attribute name="NAME" x="67.31" y="165.1" size="1.27" layer="21"/>
+<attribute name="VALUE" x="77.47" y="154.94" size="1.27" layer="21" rot="R180"/>
 </element>
-<element name="X1" library="raspberrypi" package="RASPI_BOARD_B+_FULL" value="RASPI_BOARD_B+_F" x="-100.33" y="74.93" smashed="yes"/>
+<element name="X1" library="raspberrypi" package="RASPI_BOARD_B+_FULL" value="RASPI_BOARD_B+_F" x="8.89" y="168.91" smashed="yes"/>
 </elements>
 <signals>
 <signal name="5V0">
@@ -650,23 +650,15 @@ design rules under a new name.</description>
 <contactref element="IMU" pad="GND"/>
 <contactref element="PWM_EXT" pad="R-GND"/>
 <contactref element="CONN14" pad="1"/>
-<wire x1="-41.91" y1="186.5" x2="-28.42" y2="191.81" width="0" layer="19" extent="1-1"/>
-<wire x1="-43.66" y1="174.03" x2="-41.91" y2="186.5" width="0" layer="19" extent="1-1"/>
-<wire x1="-51.59" y1="174.03" x2="-43.66" y2="174.03" width="0" layer="19" extent="1-1"/>
-<wire x1="-32.23" y1="174.03" x2="-43.66" y2="174.03" width="0" layer="19" extent="1-1"/>
-<wire x1="-63.02" y1="174.03" x2="-51.59" y2="174.03" width="0" layer="19" extent="1-1"/>
-<wire x1="-74.45" y1="174.03" x2="-63.02" y2="174.03" width="0" layer="19" extent="1-1"/>
-<wire x1="-17.3" y1="174.03" x2="-32.23" y2="174.03" width="0" layer="19" extent="1-1"/>
-<wire x1="-89.38" y1="174.03" x2="-74.45" y2="174.03" width="0" layer="19" extent="1-1"/>
-<wire x1="-100.81" y1="174.03" x2="-89.38" y2="174.03" width="0" layer="19" extent="1-1"/>
-<wire x1="-112.24" y1="174.03" x2="-100.81" y2="174.03" width="0" layer="19" extent="1-1"/>
-<wire x1="-118.9" y1="174.03" x2="-112.24" y2="174.03" width="0" layer="19" extent="1-1"/>
-<wire x1="-132.56" y1="174.03" x2="-118.9" y2="174.03" width="0" layer="19" extent="1-1"/>
-<wire x1="-15.24" y1="151.13" x2="-17.3" y2="174.03" width="0" layer="19" extent="1-1"/>
-<wire x1="-130.33" y1="144.82" x2="-132.56" y2="174.03" width="0" layer="19" extent="1-1"/>
-<wire x1="-111.48" y1="135.145" x2="-130.33" y2="144.82" width="0" layer="19" extent="1-1"/>
-<wire x1="-90.805" y1="133.35" x2="-111.48" y2="135.145" width="0" layer="19" extent="1-1"/>
-<wire x1="-86.88" y1="128.7" x2="-90.805" y2="133.35" width="0" layer="19" extent="1-1"/>
+<polygon width="0.1524" layer="1">
+<vertex x="-7.62" y="232.41"/>
+<vertex x="-7.62" y="-7.62"/>
+<vertex x="104.14" y="-7.62"/>
+<vertex x="106.68" y="-5.08"/>
+<vertex x="106.68" y="231.14"/>
+<vertex x="104.14" y="233.68"/>
+<vertex x="-6.35" y="233.68"/>
+</polygon>
 </signal>
 <signal name="+12V">
 <contactref element="TP_ESC_A" pad="2"/>
@@ -684,49 +676,61 @@ design rules under a new name.</description>
 <contactref element="POWER-IN" pad="12V"/>
 <contactref element="IMU" pad="VIN"/>
 <contactref element="VCONVERTER" pad="P$1"/>
-<wire x1="-28.73" y1="174.03" x2="-20.8" y2="174.03" width="0" layer="19" extent="1-1"/>
-<wire x1="-40.16" y1="174.03" x2="-28.73" y2="174.03" width="0" layer="19" extent="1-1"/>
-<wire x1="-39.37" y1="186.5" x2="-40.16" y2="174.03" width="0" layer="19" extent="1-1"/>
-<wire x1="-55.09" y1="174.03" x2="-40.16" y2="174.03" width="0" layer="19" extent="1-1"/>
-<wire x1="-66.52" y1="174.03" x2="-55.09" y2="174.03" width="0" layer="19" extent="1-1"/>
-<wire x1="-77.95" y1="174.03" x2="-66.52" y2="174.03" width="0" layer="19" extent="1-1"/>
-<wire x1="-85.88" y1="174.03" x2="-77.95" y2="174.03" width="0" layer="19" extent="1-1"/>
-<wire x1="-97.31" y1="174.03" x2="-85.88" y2="174.03" width="0" layer="19" extent="1-1"/>
-<wire x1="-108.74" y1="174.03" x2="-97.31" y2="174.03" width="0" layer="19" extent="1-1"/>
-<wire x1="-122.4" y1="174.03" x2="-108.74" y2="174.03" width="0" layer="19" extent="1-1"/>
-<wire x1="-129.06" y1="174.03" x2="-122.4" y2="174.03" width="0" layer="19" extent="1-1"/>
-<wire x1="-133.83" y1="144.82" x2="-129.06" y2="174.03" width="0" layer="19" extent="1-1"/>
-<wire x1="-118.97" y1="135.145" x2="-133.83" y2="144.82" width="0" layer="19" extent="1-1"/>
-<wire x1="-95.885" y1="133.35" x2="-118.97" y2="135.145" width="0" layer="19" extent="1-1"/>
+<wire x1="67.31" y1="140.335" x2="72.39" y2="162.37" width="0" layer="19" extent="1-1"/>
+<wire x1="74.45" y1="128.31" x2="67.31" y2="140.335" width="0" layer="19" extent="1-1"/>
+<wire x1="58.9" y1="128.31" x2="67.31" y2="140.335" width="0" layer="19" extent="1-1"/>
+<wire x1="77.95" y1="110.53" x2="74.45" y2="128.31" width="0" layer="19" extent="1-1"/>
+<wire x1="88.42" y1="110.53" x2="77.95" y2="110.53" width="0" layer="19" extent="1-1"/>
+<wire x1="55.4" y1="110.53" x2="58.9" y2="128.31" width="0" layer="19" extent="1-1"/>
+<wire x1="43.66" y1="110.53" x2="55.4" y2="110.53" width="0" layer="19" extent="1-1"/>
+<wire x1="40.16" y1="128.31" x2="43.66" y2="110.53" width="0" layer="19" extent="1-1"/>
+<wire x1="25.88" y1="128.31" x2="40.16" y2="128.31" width="0" layer="19" extent="1-1"/>
+<wire x1="10.64" y1="128.31" x2="25.88" y2="128.31" width="0" layer="19" extent="1-1"/>
+<wire x1="10.64" y1="110.53" x2="10.64" y2="128.31" width="0" layer="19" extent="1-1"/>
+<wire x1="22.38" y1="110.53" x2="10.64" y2="110.53" width="0" layer="19" extent="1-1"/>
+<wire x1="93.19" y1="128.31" x2="88.42" y2="110.53" width="0" layer="19" extent="1-1"/>
+<wire x1="85.95" y1="18.525" x2="88.42" y2="110.53" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="+24V">
 <contactref element="IMU" pad="SCL"/>
 <contactref element="X1" pad="5"/>
 <contactref element="PWM_EXT" pad="R-SCL"/>
-<wire x1="-85.725" y1="133.35" x2="-15.24" y2="146.05" width="0" layer="19" extent="1-1"/>
-<wire x1="-86.88" y1="126.16" x2="-85.725" y2="133.35" width="0" layer="19" extent="1-1"/>
+<wire x1="62.23" y1="148.59" x2="22.34" y2="220.14" width="0" layer="19" extent="1-1"/>
+<wire x1="67.31" y1="130.175" x2="62.23" y2="148.59" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="+18V">
 <contactref element="X1" pad="3"/>
 <contactref element="IMU" pad="SDA"/>
 <contactref element="PWM_EXT" pad="R-SDA"/>
-<wire x1="-88.265" y1="133.35" x2="-15.24" y2="143.51" width="0" layer="19" extent="1-1"/>
-<wire x1="-89.42" y1="126.16" x2="-88.265" y2="133.35" width="0" layer="19" extent="1-1"/>
+<wire x1="62.23" y1="146.05" x2="19.8" y2="220.14" width="0" layer="19" extent="1-1"/>
+<wire x1="67.31" y1="132.715" x2="62.23" y2="146.05" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="N$1">
 <contactref element="CONN13" pad="2"/>
 <contactref element="U$1" pad="PL_L"/>
-<wire x1="-46.99" y1="21.2725" x2="-16.03" y2="191.81" width="0" layer="19" extent="1-1"/>
+<wire x1="9.37" y1="14.01" x2="38.1" y2="181.2925" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="N$2">
 <contactref element="U$1" pad="HV_SIGNAL"/>
 <contactref element="CONN13" pad="1"/>
-<wire x1="-36.83" y1="21.2725" x2="-19.53" y2="191.81" width="0" layer="19" extent="1-1"/>
+<wire x1="5.87" y1="14.01" x2="48.26" y2="181.2925" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="N$3">
 <contactref element="VCONVERTER" pad="P$3"/>
 <contactref element="CONN14" pad="2"/>
-<wire x1="-36.83" y1="186.5" x2="-24.92" y2="191.81" width="0" layer="19" extent="1-1"/>
+<wire x1="91.92" y1="162.6" x2="74.93" y2="162.37" width="0" layer="19" extent="1-1"/>
+</signal>
+<signal name="12V">
+<polygon width="0.1524" layer="16">
+<vertex x="-6.35" y="232.41"/>
+<vertex x="-6.35" y="-2.54"/>
+<vertex x="-1.27" y="-7.62"/>
+<vertex x="99.06" y="-7.62"/>
+<vertex x="107.95" y="1.27"/>
+<vertex x="107.95" y="228.6"/>
+<vertex x="102.87" y="233.68"/>
+<vertex x="-5.08" y="233.68"/>
+</polygon>
 </signal>
 </signals>
 <mfgpreviewcolors>
