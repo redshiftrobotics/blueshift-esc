@@ -577,18 +577,18 @@ design rules under a new name.</description>
 <attribute name="NAME" x="11.43" y="16.51" size="1.27" layer="26" rot="MR0"/>
 <attribute name="VALUE" x="11.43" y="-1.27" size="1.27" layer="26" rot="MR0"/>
 </element>
-<element name="CONN14" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="23.495" y="153.67" smashed="yes">
-<attribute name="NAME" x="19.685" y="153.67" size="1.27" layer="25"/>
-<attribute name="VALUE" x="19.685" y="135.89" size="1.27" layer="25"/>
+<element name="CONN14" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="88.9" y="151.765" smashed="yes">
+<attribute name="NAME" x="85.09" y="151.765" size="1.27" layer="25"/>
+<attribute name="VALUE" x="85.09" y="133.985" size="1.27" layer="25"/>
 </element>
-<element name="IMU" library="BlueShift" package="IMU" value="" x="34.29" y="170.18" smashed="yes" rot="R90">
-<attribute name="NAME" x="12.7" y="180.34" size="1.27" layer="25" rot="R90"/>
-<attribute name="VALUE" x="36.83" y="179.07" size="1.27" layer="25" rot="R90"/>
+<element name="IMU" library="BlueShift" package="IMU" value="" x="62.865" y="191.135" smashed="yes" rot="R270">
+<attribute name="NAME" x="84.455" y="180.975" size="1.27" layer="25" rot="R270"/>
+<attribute name="VALUE" x="60.325" y="182.245" size="1.27" layer="25" rot="R270"/>
 </element>
 <element name="POWER-IN" library="BlueShift" package="2-CONTACT-SUPER" value="" x="73.66" y="3.81" smashed="yes" rot="R180"/>
-<element name="PWM_EXT" library="BlueShift" package="PWM_EXTENDER-SIMPLE" value="" x="6.35" y="222.885" smashed="yes" rot="R270">
-<attribute name="NAME" x="26.67" y="197.485" size="1.27" layer="21" rot="R270"/>
-<attribute name="VALUE" x="-2.54" y="197.485" size="1.27" layer="21" rot="R270"/>
+<element name="PWM_EXT" library="BlueShift" package="PWM_EXTENDER-SIMPLE" value="" x="89.535" y="218.44" smashed="yes" rot="MR270">
+<attribute name="NAME" x="69.215" y="193.04" size="1.27" layer="22" rot="MR270"/>
+<attribute name="VALUE" x="98.425" y="193.04" size="1.27" layer="22" rot="MR270"/>
 </element>
 <element name="TP_ESC_A" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="12.7" y="113.03" smashed="yes">
 <attribute name="NAME" x="8.89" y="113.03" size="1.27" layer="25"/>
@@ -614,12 +614,12 @@ design rules under a new name.</description>
 <attribute name="NAME" x="86.36" y="130.81" size="1.27" layer="25"/>
 <attribute name="VALUE" x="86.36" y="113.03" size="1.27" layer="25"/>
 </element>
-<element name="U$1" library="FathomX" package="FATHOM-X" value="FATHOM-X" x="-15.875" y="154.94" smashed="yes" rot="R90"/>
-<element name="VCONVERTER" library="BlueShift" package="VOLTAGE_CONVERTERS" value="" x="8.255" y="142.875" smashed="yes">
-<attribute name="NAME" x="3.175" y="147.955" size="1.27" layer="21"/>
-<attribute name="VALUE" x="13.335" y="137.795" size="1.27" layer="21" rot="R180"/>
+<element name="U$1" library="FathomX" package="FATHOM-X" value="FATHOM-X" x="54.61" y="132.08" smashed="yes" rot="R90"/>
+<element name="VCONVERTER" library="BlueShift" package="VOLTAGE_CONVERTERS" value="" x="74.93" y="142.875" smashed="yes">
+<attribute name="NAME" x="69.85" y="147.955" size="1.27" layer="21"/>
+<attribute name="VALUE" x="80.01" y="137.795" size="1.27" layer="21" rot="R180"/>
 </element>
-<element name="X1" library="raspberrypi" package="RASPI_BOARD_B+_FULL" value="RASPI_BOARD_B+_F" x="40.64" y="139.7" smashed="yes" rot="MR90"/>
+<element name="X1" library="raspberrypi" package="RASPI_BOARD_B+_FULL" value="RASPI_BOARD_B+_F" x="59.055" y="136.525" smashed="yes" rot="R90"/>
 </elements>
 <signals>
 <signal name="5V0">
@@ -683,37 +683,37 @@ design rules under a new name.</description>
 <contactref element="IMU" pad="SCL"/>
 <contactref element="X1" pad="5"/>
 <contactref element="PWM_EXT" pad="R-SCL"/>
-<wire x1="13.97" y1="164.465" x2="91.87" y2="153.15" width="0" layer="19" extent="1-1"/>
-<wire x1="33.02" y1="187.325" x2="91.87" y2="153.15" width="0" layer="19" extent="1-1"/>
+<wire x1="64.135" y1="173.99" x2="81.915" y2="160.02" width="0" layer="19" extent="1-1"/>
+<wire x1="7.825" y1="149.975" x2="81.915" y2="160.02" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="+18V">
 <contactref element="X1" pad="3"/>
 <contactref element="IMU" pad="SDA"/>
 <contactref element="PWM_EXT" pad="R-SDA"/>
-<wire x1="11.43" y1="164.465" x2="91.87" y2="150.61" width="0" layer="19" extent="1-1"/>
-<wire x1="33.02" y1="184.785" x2="91.87" y2="150.61" width="0" layer="19" extent="1-1"/>
+<wire x1="64.135" y1="176.53" x2="84.455" y2="160.02" width="0" layer="19" extent="1-1"/>
+<wire x1="7.825" y1="147.435" x2="84.455" y2="160.02" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="N$1">
 <contactref element="CONN13" pad="2"/>
 <contactref element="U$1" pad="PL_L"/>
-<wire x1="5.87" y1="14.01" x2="-24.4475" y2="189.23" width="0" layer="19" extent="1-1"/>
+<wire x1="5.87" y1="14.01" x2="46.0375" y2="166.37" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="N$2">
 <contactref element="U$1" pad="HV_SIGNAL"/>
 <contactref element="CONN13" pad="1"/>
-<wire x1="9.37" y1="14.01" x2="-24.4475" y2="199.39" width="0" layer="19" extent="1-1"/>
+<wire x1="9.37" y1="14.01" x2="46.0375" y2="176.53" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="N$3">
 <contactref element="VCONVERTER" pad="P$3"/>
 <contactref element="CONN14" pad="2"/>
-<wire x1="25.245" y1="151.17" x2="10.795" y2="145.225" width="0" layer="19" extent="1-1"/>
+<wire x1="90.65" y1="149.265" x2="77.47" y2="145.225" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="N$4">
 <contactref element="X1" pad="1"/>
 <contactref element="PWM_EXT" pad="R-VCC"/>
 <contactref element="IMU" pad="VIN"/>
-<wire x1="91.87" y1="148.07" x2="33.02" y2="177.165" width="0" layer="19" extent="1-1"/>
-<wire x1="8.89" y1="164.465" x2="91.87" y2="148.07" width="0" layer="19" extent="1-1"/>
+<wire x1="64.135" y1="184.15" x2="86.995" y2="160.02" width="0" layer="19" extent="1-1"/>
+<wire x1="7.825" y1="144.895" x2="86.995" y2="160.02" width="0" layer="19" extent="1-1"/>
 </signal>
 </signals>
 <mfgpreviewcolors>
