@@ -75,12 +75,12 @@
 <plain>
 <wire x1="0" y1="0" x2="96.52" y2="0" width="0" layer="20"/>
 <wire x1="96.52" y1="0" x2="96.52" y2="164.465" width="0" layer="20"/>
-<wire x1="96.52" y1="164.465" x2="85.09" y2="164.465" width="0" layer="20"/>
-<wire x1="85.09" y1="164.465" x2="84.455" y2="165.1" width="0" layer="20"/>
-<wire x1="84.455" y1="165.1" x2="84.455" y2="211.455" width="0" layer="20"/>
-<wire x1="84.455" y1="211.455" x2="85.09" y2="212.09" width="0" layer="20"/>
-<wire x1="85.09" y1="212.09" x2="96.52" y2="212.09" width="0" layer="20"/>
-<wire x1="96.52" y1="212.09" x2="96.52" y2="226.06" width="0" layer="20"/>
+<wire x1="96.52" y1="164.465" x2="86.995" y2="164.465" width="0" layer="20"/>
+<wire x1="86.995" y1="164.465" x2="84.455" y2="167.005" width="0" layer="20"/>
+<wire x1="84.455" y1="167.005" x2="84.455" y2="211.455" width="0" layer="20"/>
+<wire x1="84.455" y1="211.455" x2="86.995" y2="213.995" width="0" layer="20"/>
+<wire x1="86.995" y1="213.995" x2="96.52" y2="213.995" width="0" layer="20"/>
+<wire x1="96.52" y1="213.995" x2="96.52" y2="226.06" width="0" layer="20"/>
 <wire x1="96.52" y1="226.06" x2="55.88" y2="226.06" width="0" layer="20"/>
 <wire x1="55.88" y1="226.06" x2="55.88" y2="204.47" width="0" layer="20"/>
 <wire x1="55.88" y1="204.47" x2="56.515" y2="203.835" width="0" layer="20"/>
@@ -582,17 +582,17 @@ design rules under a new name.</description>
 <attribute name="NAME" x="93.98" y="113.03" size="1.27" layer="26" rot="MR0"/>
 <attribute name="VALUE" x="93.98" y="95.25" size="1.27" layer="26" rot="MR0"/>
 </element>
-<element name="CONN13" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="7.62" y="16.51" smashed="yes" rot="MR0">
-<attribute name="NAME" x="11.43" y="16.51" size="1.27" layer="26" rot="MR0"/>
-<attribute name="VALUE" x="11.43" y="-1.27" size="1.27" layer="26" rot="MR0"/>
+<element name="CONN13" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="7.62" y="16.51" smashed="yes">
+<attribute name="NAME" x="3.81" y="16.51" size="1.27" layer="25"/>
+<attribute name="VALUE" x="3.81" y="-1.27" size="1.27" layer="25"/>
 </element>
-<element name="CONN14" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="88.9" y="151.765" smashed="yes">
-<attribute name="NAME" x="85.09" y="151.765" size="1.27" layer="25"/>
-<attribute name="VALUE" x="85.09" y="133.985" size="1.27" layer="25"/>
+<element name="CONN14" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="72.39" y="151.13" smashed="yes">
+<attribute name="NAME" x="68.58" y="151.13" size="1.27" layer="25"/>
+<attribute name="VALUE" x="68.58" y="133.35" size="1.27" layer="25"/>
 </element>
-<element name="IMU" library="BlueShift" package="IMU" value="" x="62.865" y="191.135" smashed="yes" rot="R270">
-<attribute name="NAME" x="84.455" y="180.975" size="1.27" layer="25" rot="R270"/>
-<attribute name="VALUE" x="60.325" y="182.245" size="1.27" layer="25" rot="R270"/>
+<element name="IMU" library="BlueShift" package="IMU" value="" x="60.325" y="202.565" smashed="yes" rot="R270">
+<attribute name="NAME" x="81.915" y="192.405" size="1.27" layer="25" rot="R270"/>
+<attribute name="VALUE" x="57.785" y="193.675" size="1.27" layer="25" rot="R270"/>
 </element>
 <element name="POWER-IN" library="BlueShift" package="2-CONTACT-SUPER" value="" x="73.66" y="3.81" smashed="yes" rot="R180"/>
 <element name="PWM_EXT" library="BlueShift" package="PWM_EXTENDER-SIMPLE" value="" x="89.535" y="218.44" smashed="yes" rot="MR270">
@@ -624,9 +624,9 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="86.36" y="113.03" size="1.27" layer="25"/>
 </element>
 <element name="U$1" library="FathomX" package="FATHOM-X" value="FATHOM-X" x="55.88" y="132.08" smashed="yes" rot="R90"/>
-<element name="VCONVERTER" library="BlueShift" package="VOLTAGE_CONVERTERS" value="" x="74.93" y="142.875" smashed="yes">
-<attribute name="NAME" x="69.85" y="147.955" size="1.27" layer="21"/>
-<attribute name="VALUE" x="80.01" y="137.795" size="1.27" layer="21" rot="R180"/>
+<element name="VCONVERTER" library="BlueShift" package="VOLTAGE_CONVERTERS" value="" x="86.995" y="141.605" smashed="yes">
+<attribute name="NAME" x="81.915" y="146.685" size="1.27" layer="21"/>
+<attribute name="VALUE" x="92.075" y="136.525" size="1.27" layer="21" rot="R180"/>
 </element>
 <element name="X1" library="raspberrypi" package="RASPI_BOARD_B+_FULL" value="RASPI_BOARD_B+_F" x="57.15" y="139.065" smashed="yes" rot="R90"/>
 </elements>
@@ -692,37 +692,83 @@ design rules under a new name.</description>
 <contactref element="IMU" pad="SCL"/>
 <contactref element="X1" pad="5"/>
 <contactref element="PWM_EXT" pad="R-SCL"/>
-<wire x1="64.135" y1="173.99" x2="81.915" y2="160.02" width="0" layer="19" extent="1-1"/>
-<wire x1="5.92" y1="152.515" x2="81.915" y2="160.02" width="0" layer="19" extent="1-1"/>
+<wire x1="61.595" y1="185.42" x2="70.37605" y2="176.63895" width="1.27" layer="1"/>
+<wire x1="70.37605" y1="176.63895" x2="71.12" y2="174.842896875" width="1.27" layer="1" curve="-45"/>
+<wire x1="71.12" y1="171.867103125" x2="71.86395" y2="170.07105" width="1.27" layer="1" curve="45"/>
+<wire x1="71.86395" y1="170.07105" x2="81.915" y2="160.02" width="1.27" layer="1"/>
+<wire x1="71.12" y1="174.842896875" x2="71.12" y2="171.867103125" width="1.27" layer="1"/>
+<wire x1="5.92" y1="152.515" x2="27.637896875" y2="152.515" width="1.27" layer="16"/>
+<wire x1="27.637896875" y1="152.515" x2="29.43395" y2="153.25895" width="1.27" layer="16" curve="45"/>
+<wire x1="29.43395" y1="153.25895" x2="61.595" y2="185.42" width="1.27" layer="16"/>
 </signal>
 <signal name="+18V">
 <contactref element="X1" pad="3"/>
 <contactref element="IMU" pad="SDA"/>
 <contactref element="PWM_EXT" pad="R-SDA"/>
-<wire x1="64.135" y1="176.53" x2="84.455" y2="160.02" width="0" layer="19" extent="1-1"/>
-<wire x1="5.92" y1="149.975" x2="84.455" y2="160.02" width="0" layer="19" extent="1-1"/>
+<wire x1="61.595" y1="187.96" x2="72.28105" y2="177.27395" width="1.27" layer="1"/>
+<wire x1="72.28105" y1="177.27395" x2="73.025" y2="175.477896875" width="1.27" layer="1" curve="-45"/>
+<wire x1="73.025" y1="172.502103125" x2="73.76895" y2="170.70605" width="1.27" layer="1" curve="45"/>
+<wire x1="73.76895" y1="170.70605" x2="84.455" y2="160.02" width="1.27" layer="1"/>
+<wire x1="73.025" y1="175.477896875" x2="73.025" y2="172.502103125" width="1.27" layer="1"/>
+<wire x1="5.92" y1="149.975" x2="13.667896875" y2="149.975" width="1.27" layer="1"/>
+<wire x1="13.667896875" y1="149.975" x2="15.46395" y2="150.71895" width="1.27" layer="1" curve="45"/>
+<wire x1="44.97605" y1="180.23105" x2="46.772103125" y2="180.975" width="1.27" layer="1" curve="-45"/>
+<wire x1="53.557896875" y1="180.975" x2="55.35395" y2="181.71895" width="1.27" layer="1" curve="45"/>
+<wire x1="55.35395" y1="181.71895" x2="61.595" y2="187.96" width="1.27" layer="1"/>
+<wire x1="15.46395" y1="150.71895" x2="44.97605" y2="180.23105" width="1.27" layer="1"/>
+<wire x1="46.772103125" y1="180.975" x2="53.557896875" y2="180.975" width="1.27" layer="1"/>
 </signal>
 <signal name="N$1">
 <contactref element="CONN13" pad="2"/>
 <contactref element="U$1" pad="PL_L"/>
-<wire x1="5.87" y1="14.01" x2="47.3075" y2="166.37" width="0" layer="19" extent="1-1"/>
+<wire x1="47.3075" y1="166.37" x2="40.422103125" y2="166.37" width="1.27" layer="1"/>
+<wire x1="40.422103125" y1="166.37" x2="38.62605" y2="165.62605" width="1.27" layer="1" curve="45"/>
+<wire x1="5.82395" y1="132.82395" x2="5.08" y2="131.027896875" width="1.27" layer="1" curve="45"/>
+<wire x1="5.08" y1="19.352103125" x2="5.82395" y2="17.55605" width="1.27" layer="1" curve="45"/>
+<wire x1="5.82395" y1="17.55605" x2="9.37" y2="14.01" width="1.27" layer="1"/>
+<wire x1="38.62605" y1="165.62605" x2="5.82395" y2="132.82395" width="1.27" layer="1"/>
+<wire x1="5.08" y1="131.027896875" x2="5.08" y2="19.352103125" width="1.27" layer="1"/>
 </signal>
 <signal name="N$2">
 <contactref element="U$1" pad="HV_SIGNAL"/>
 <contactref element="CONN13" pad="1"/>
-<wire x1="9.37" y1="14.01" x2="47.3075" y2="176.53" width="0" layer="19" extent="1-1"/>
+<wire x1="47.3075" y1="176.53" x2="3.91895" y2="133.14145" width="1.27" layer="1"/>
+<wire x1="3.91895" y1="133.14145" x2="3.175" y2="131.345396875" width="1.27" layer="1" curve="45"/>
+<wire x1="3.175" y1="17.757103125" x2="3.91895" y2="15.96105" width="1.27" layer="1" curve="45"/>
+<wire x1="3.91895" y1="15.96105" x2="5.87" y2="14.01" width="1.27" layer="1"/>
+<wire x1="3.175" y1="131.345396875" x2="3.175" y2="17.757103125" width="1.27" layer="1"/>
 </signal>
 <signal name="N$3">
 <contactref element="VCONVERTER" pad="P$3"/>
 <contactref element="CONN14" pad="2"/>
-<wire x1="90.65" y1="149.265" x2="77.47" y2="145.225" width="0" layer="19" extent="1-1"/>
+<wire x1="74.14" y1="148.63" x2="83.807896875" y2="148.63" width="1.27" layer="1"/>
+<wire x1="83.807896875" y1="148.63" x2="85.60395" y2="147.88605" width="1.27" layer="1" curve="-45"/>
+<wire x1="85.60395" y1="147.88605" x2="89.535" y2="143.955" width="1.27" layer="1"/>
 </signal>
 <signal name="N$4">
 <contactref element="X1" pad="1"/>
 <contactref element="PWM_EXT" pad="R-VCC"/>
 <contactref element="IMU" pad="VIN"/>
-<wire x1="64.135" y1="184.15" x2="86.995" y2="160.02" width="0" layer="19" extent="1-1"/>
-<wire x1="5.92" y1="147.435" x2="86.995" y2="160.02" width="0" layer="19" extent="1-1"/>
+<wire x1="61.595" y1="195.58" x2="74.18605" y2="182.98895" width="1.27" layer="1"/>
+<wire x1="74.18605" y1="182.98895" x2="74.93" y2="181.192896875" width="1.27" layer="1" curve="-45"/>
+<wire x1="74.93" y1="173.137103125" x2="75.67395" y2="171.34105" width="1.27" layer="1" curve="45"/>
+<wire x1="75.67395" y1="171.34105" x2="86.995" y2="160.02" width="1.27" layer="1"/>
+<wire x1="74.93" y1="181.192896875" x2="74.93" y2="173.137103125" width="1.27" layer="1"/>
+<wire x1="5.92" y1="147.435" x2="14.302896875" y2="147.435" width="1.27" layer="1"/>
+<wire x1="14.302896875" y1="147.435" x2="16.09895" y2="148.17895" width="1.27" layer="1" curve="45"/>
+<wire x1="46.24605" y1="178.32605" x2="48.042103125" y2="179.07" width="1.27" layer="1" curve="-45"/>
+<wire x1="54.192896875" y1="179.07" x2="55.98895" y2="178.32605" width="1.27" layer="1" curve="-45"/>
+<wire x1="63.39105" y1="170.92395" x2="64.135" y2="169.127896875" width="1.27" layer="1" curve="-45"/>
+<wire x1="83.402896875" y1="157.48" x2="85.19895" y2="158.22395" width="1.27" layer="1" curve="45"/>
+<wire x1="85.19895" y1="158.22395" x2="86.995" y2="160.02" width="1.27" layer="1"/>
+<wire x1="16.09895" y1="148.17895" x2="46.24605" y2="178.32605" width="1.27" layer="1"/>
+<wire x1="48.042103125" y1="179.07" x2="54.192896875" y2="179.07" width="1.27" layer="1"/>
+<wire x1="55.98895" y1="178.32605" x2="63.39105" y2="170.92395" width="1.27" layer="1"/>
+<wire x1="64.135" y1="169.127896875" x2="64.135" y2="164.247103125" width="1.27" layer="1"/>
+<wire x1="64.135" y1="164.247103125" x2="64.87895" y2="162.45105" width="1.27" layer="1" curve="45"/>
+<wire x1="69.10605" y1="158.22395" x2="70.902103125" y2="157.48" width="1.27" layer="1" curve="45"/>
+<wire x1="70.902103125" y1="157.48" x2="83.402896875" y2="157.48" width="1.27" layer="1"/>
+<wire x1="64.87895" y1="162.45105" x2="69.10605" y2="158.22395" width="1.27" layer="1"/>
 </signal>
 </signals>
 <mfgpreviewcolors>
