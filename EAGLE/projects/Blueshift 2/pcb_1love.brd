@@ -72,9 +72,8 @@
 <layer number="98" name="Guide" color="6" fill="1" visible="no" active="no"/>
 </layers>
 <board>
-<fusionsync huburn="a.YnVzaW5lc3M6Z21haWw4NTczMzE" projecturn="a.YnVzaW5lc3M6Z21haWw4NTczMzEjMjAyMDA1MDQyOTQ0NDQ1MDE" f3durn="urn:adsk.wipprod:dm.lineage:yFlxF8sUSF--vyBRsOsgSQ" pcbguid="" lastpulledtime="" lastsyncedchangeguid="" latestrevisionid="8dcca4fc-ada2-4aae-9e31-0c933f3e94d0" lastsyncedrevisionid="8dcca4fc-ada2-4aae-9e31-0c933f3e94d0" lastboardhashguid="1e00b1b3-f31f-bda7-9e4b-9deb212cd7ea" lastpushedtime="2020-05-05T00:55:18Z" linktopcb3d="%12"/>
 <plain>
-<wire x1="0" y1="0" x2="96.52" y2="0" width="0" layer="20"/>
+<wire x1="0" y1="0" x2="96.52" y2="0" width="0" layer="21"/>
 <wire x1="96.52" y1="0" x2="96.52" y2="164.465" width="0" layer="20"/>
 <wire x1="96.52" y1="164.465" x2="86.995" y2="164.465" width="0" layer="20"/>
 <wire x1="86.995" y1="164.465" x2="84.455" y2="167.005" width="0" layer="20"/>
@@ -86,6 +85,8 @@
 <wire x1="55.88" y1="226.06" x2="55.88" y2="203.835" width="0" layer="20"/>
 <wire x1="55.88" y1="203.835" x2="0" y2="203.835" width="0" layer="20"/>
 <wire x1="0" y1="203.835" x2="0" y2="0" width="0" layer="20"/>
+<text x="15.875" y="11.43" size="3.81" layer="21">BLUESHIFT ROBOTICS</text>
+<text x="26.035" y="5.715" size="2.413" layer="21">Combined Board v3.0</text>
 </plain>
 <libraries>
 <library name="BlueShift">
@@ -657,8 +658,6 @@ design rules under a new name.</description>
 <vertex x="-7.62" y="232.41"/>
 <vertex x="-7.62" y="-7.62"/>
 <vertex x="104.14" y="-7.62"/>
-<vertex x="106.68" y="-5.08"/>
-<vertex x="106.68" y="231.14"/>
 <vertex x="104.14" y="233.68"/>
 <vertex x="-6.35" y="233.68"/>
 </polygon>
@@ -780,11 +779,4 @@ design rules under a new name.</description>
 </mfgpreviewcolors>
 </board>
 </drawing>
-<compatibility>
-<note version="8.3" severity="warning">
-Since Version 8.3, EAGLE supports Fusion synchronisation.
-This feature will not be available in this version and saving
-the document will break the link to the Fusion PCB feature.
-</note>
-</compatibility>
 </eagle>
