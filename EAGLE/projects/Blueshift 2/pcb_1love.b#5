@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.6.0">
+<eagle version="9.6.1">
 <drawing>
 <settings>
-<setting alwaysvectorfont="no"/>
+<setting alwaysvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
 <grid distance="0.025" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="5" altunitdist="mil" altunit="mil"/>
@@ -72,8 +72,8 @@
 <layer number="98" name="Guide" color="6" fill="1" visible="no" active="no"/>
 </layers>
 <board>
+<fusionsync huburn="a.YnVzaW5lc3M6Z21haWw4NTczMzE" projecturn="a.YnVzaW5lc3M6Z21haWw4NTczMzEjMjAyMDA1MDQyOTQ0NDQ1MDE" f3durn="urn:adsk.wipprod:dm.lineage:yFlxF8sUSF--vyBRsOsgSQ" pcbguid="" lastpulledtime="" lastsyncedchangeguid="" latestrevisionid="25a3068d-a5d2-4b38-8eb0-135d030e3c33" lastsyncedrevisionid="25a3068d-a5d2-4b38-8eb0-135d030e3c33" lastboardhashguid="dd7814ab-2bdb-7429-7558-b117e285ca9e" lastpushedtime="2020-05-08T22:55:24Z" linktopcb3d="%12"/>
 <plain>
-<wire x1="0" y1="0" x2="96.52" y2="0" width="0" layer="21"/>
 <wire x1="96.52" y1="0" x2="96.52" y2="164.465" width="0" layer="20"/>
 <wire x1="96.52" y1="164.465" x2="86.995" y2="164.465" width="0" layer="20"/>
 <wire x1="86.995" y1="164.465" x2="84.455" y2="167.005" width="0" layer="20"/>
@@ -81,17 +81,19 @@
 <wire x1="84.455" y1="211.455" x2="86.995" y2="213.995" width="0" layer="20"/>
 <wire x1="86.995" y1="213.995" x2="96.52" y2="213.995" width="0" layer="20"/>
 <wire x1="96.52" y1="213.995" x2="96.52" y2="226.06" width="0" layer="20"/>
-<wire x1="96.52" y1="226.06" x2="55.88" y2="226.06" width="0" layer="20"/>
-<wire x1="55.88" y1="226.06" x2="55.88" y2="203.835" width="0" layer="20"/>
-<wire x1="55.88" y1="203.835" x2="0" y2="203.835" width="0" layer="20"/>
+<wire x1="96.52" y1="226.06" x2="57.15" y2="226.06" width="0" layer="20"/>
+<wire x1="57.15" y1="226.06" x2="57.15" y2="203.835" width="0" layer="20"/>
+<wire x1="57.15" y1="203.835" x2="0" y2="203.835" width="0" layer="20"/>
 <wire x1="0" y1="203.835" x2="0" y2="0" width="0" layer="20"/>
-<text x="15.875" y="11.43" size="3.81" layer="21">BLUESHIFT ROBOTICS</text>
-<text x="26.035" y="5.715" size="2.413" layer="21">Combined Board v3.0</text>
+<text x="12.7" y="11.43" size="3.81" layer="21">BLUESHIFT ROBOTICS</text>
+<text x="12.7" y="5.715" size="2.413" layer="21">Combined Board v3.0</text>
+<wire x1="0" y1="0" x2="0" y2="-0.635" width="0" layer="20"/>
+<wire x1="0" y1="0" x2="96.52" y2="0" width="0" layer="20"/>
 </plain>
 <libraries>
 <library name="BlueShift">
 <packages>
-<package name="2CONTAC_ULTRAFIT_R/A">
+<package name="2CONTAC_ULTRAFIT_R/A" urn="urn:adsk.eagle:footprint:19990304/1">
 <pad name="1" x="-1.75" y="-2.5" drill="1.02"/>
 <pad name="2" x="1.75" y="-2.5" drill="1.02"/>
 <hole x="0" y="-10.5" drill="3.05"/>
@@ -181,6 +183,13 @@
 <text x="5.08" y="-5.08" size="1.27" layer="21" rot="R180">&gt;VALUE</text>
 </package>
 </packages>
+<packages3d>
+<package3d name="2CONTAC_ULTRAFIT_R/A" urn="urn:adsk.eagle:package:19990303/3" type="model">
+<packageinstances>
+<packageinstance name="2CONTAC_ULTRAFIT_R/A"/>
+</packageinstances>
+</package3d>
+</packages3d>
 </library>
 <library name="FathomX">
 <packages>
@@ -559,35 +568,35 @@ design rules under a new name.</description>
 </pass>
 </autorouter>
 <elements>
-<element name="BT_ESC_A" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="12.7" y="130.81" smashed="yes" rot="MR0">
+<element name="BT_ESC_A" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" package3d_urn="urn:adsk.eagle:package:19990303/3" value="" x="12.7" y="130.81" smashed="yes" rot="MR0">
 <attribute name="NAME" x="16.51" y="130.81" size="1.27" layer="26" rot="MR0"/>
 <attribute name="VALUE" x="16.51" y="113.03" size="1.27" layer="26" rot="MR0"/>
 </element>
-<element name="BT_ESC_B" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="24.13" y="113.03" smashed="yes" rot="MR0">
+<element name="BT_ESC_B" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" package3d_urn="urn:adsk.eagle:package:19990303/3" value="" x="24.13" y="113.03" smashed="yes" rot="MR0">
 <attribute name="NAME" x="27.94" y="113.03" size="1.27" layer="26" rot="MR0"/>
 <attribute name="VALUE" x="27.94" y="95.25" size="1.27" layer="26" rot="MR0"/>
 </element>
-<element name="BT_ESC_C" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="41.91" y="130.81" smashed="yes" rot="MR0">
+<element name="BT_ESC_C" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" package3d_urn="urn:adsk.eagle:package:19990303/3" value="" x="41.91" y="130.81" smashed="yes" rot="MR0">
 <attribute name="NAME" x="45.72" y="130.81" size="1.27" layer="26" rot="MR0"/>
 <attribute name="VALUE" x="45.72" y="113.03" size="1.27" layer="26" rot="MR0"/>
 </element>
-<element name="BT_ESC_D" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="57.15" y="113.03" smashed="yes" rot="MR0">
+<element name="BT_ESC_D" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" package3d_urn="urn:adsk.eagle:package:19990303/3" value="" x="57.15" y="113.03" smashed="yes" rot="MR0">
 <attribute name="NAME" x="60.96" y="113.03" size="1.27" layer="26" rot="MR0"/>
 <attribute name="VALUE" x="60.96" y="95.25" size="1.27" layer="26" rot="MR0"/>
 </element>
-<element name="BT_ESC_E" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="76.2" y="130.81" smashed="yes" rot="MR0">
+<element name="BT_ESC_E" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" package3d_urn="urn:adsk.eagle:package:19990303/3" value="" x="76.2" y="130.81" smashed="yes" rot="MR0">
 <attribute name="NAME" x="80.01" y="130.81" size="1.27" layer="26" rot="MR0"/>
 <attribute name="VALUE" x="80.01" y="113.03" size="1.27" layer="26" rot="MR0"/>
 </element>
-<element name="BT_ESC_F" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="90.17" y="113.03" smashed="yes" rot="MR0">
+<element name="BT_ESC_F" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" package3d_urn="urn:adsk.eagle:package:19990303/3" value="" x="90.17" y="113.03" smashed="yes" rot="MR0">
 <attribute name="NAME" x="93.98" y="113.03" size="1.27" layer="26" rot="MR0"/>
 <attribute name="VALUE" x="93.98" y="95.25" size="1.27" layer="26" rot="MR0"/>
 </element>
-<element name="CONN13" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="7.62" y="16.51" smashed="yes">
+<element name="CONN13" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" package3d_urn="urn:adsk.eagle:package:19990303/3" value="" x="7.62" y="16.51" smashed="yes">
 <attribute name="NAME" x="3.81" y="16.51" size="1.27" layer="25"/>
 <attribute name="VALUE" x="3.81" y="-1.27" size="1.27" layer="25"/>
 </element>
-<element name="CONN14" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="72.39" y="151.13" smashed="yes">
+<element name="CONN14" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" package3d_urn="urn:adsk.eagle:package:19990303/3" value="" x="72.39" y="151.13" smashed="yes">
 <attribute name="NAME" x="68.58" y="151.13" size="1.27" layer="25"/>
 <attribute name="VALUE" x="68.58" y="133.35" size="1.27" layer="25"/>
 </element>
@@ -595,32 +604,33 @@ design rules under a new name.</description>
 <attribute name="NAME" x="81.915" y="192.405" size="1.27" layer="25" rot="R270"/>
 <attribute name="VALUE" x="57.785" y="193.675" size="1.27" layer="25" rot="R270"/>
 </element>
-<element name="POWER-IN" library="BlueShift" package="2-CONTACT-SUPER" value="" x="73.66" y="3.81" smashed="yes" rot="R180"/>
+<element name="POWER-IN" library="BlueShift" package="2-CONTACT-SUPER" override_package3d_urn="urn:adsk.eagle:package:19991152/2" override_package_urn="urn:adsk.eagle:footprint:19991153/1" value="" x="73.66" y="3.81" smashed="yes" rot="R180"/>
 <element name="PWM_EXT" library="BlueShift" package="PWM_EXTENDER-SIMPLE" value="" x="89.535" y="218.44" smashed="yes" rot="MR270">
 <attribute name="NAME" x="69.215" y="193.04" size="1.27" layer="22" rot="MR270"/>
 <attribute name="VALUE" x="98.425" y="193.04" size="1.27" layer="22" rot="MR270"/>
 </element>
-<element name="TP_ESC_A" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="12.7" y="113.03" smashed="yes">
+<element name="TP_ESC_A" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" package3d_urn="urn:adsk.eagle:package:19990303/3" value="" x="12.7" y="113.03" smashed="yes">
 <attribute name="NAME" x="8.89" y="113.03" size="1.27" layer="25"/>
+<attribute name="SPICEPREFIX" value="B" x="12.7" y="113.03" size="1.778" layer="27" display="off"/>
 <attribute name="VALUE" x="8.89" y="95.25" size="1.27" layer="25"/>
 </element>
-<element name="TP_ESC_B" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="24.13" y="130.81" smashed="yes">
+<element name="TP_ESC_B" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" package3d_urn="urn:adsk.eagle:package:19990303/3" value="" x="24.13" y="130.81" smashed="yes">
 <attribute name="NAME" x="20.32" y="130.81" size="1.27" layer="25"/>
 <attribute name="VALUE" x="20.32" y="113.03" size="1.27" layer="25"/>
 </element>
-<element name="TP_ESC_C" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="41.91" y="113.03" smashed="yes">
+<element name="TP_ESC_C" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" package3d_urn="urn:adsk.eagle:package:19990303/3" value="" x="41.91" y="113.03" smashed="yes">
 <attribute name="NAME" x="38.1" y="113.03" size="1.27" layer="25"/>
 <attribute name="VALUE" x="38.1" y="95.25" size="1.27" layer="25"/>
 </element>
-<element name="TP_ESC_D" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="57.15" y="130.81" smashed="yes">
+<element name="TP_ESC_D" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" package3d_urn="urn:adsk.eagle:package:19990303/3" value="" x="57.15" y="130.81" smashed="yes">
 <attribute name="NAME" x="53.34" y="130.81" size="1.27" layer="25"/>
 <attribute name="VALUE" x="53.34" y="113.03" size="1.27" layer="25"/>
 </element>
-<element name="TP_ESC_E" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="76.2" y="113.03" smashed="yes">
+<element name="TP_ESC_E" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" package3d_urn="urn:adsk.eagle:package:19990303/3" value="" x="76.2" y="113.03" smashed="yes">
 <attribute name="NAME" x="72.39" y="113.03" size="1.27" layer="25"/>
 <attribute name="VALUE" x="72.39" y="95.25" size="1.27" layer="25"/>
 </element>
-<element name="TP_ESC_F" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" value="" x="90.17" y="130.81" smashed="yes">
+<element name="TP_ESC_F" library="BlueShift" package="2CONTAC_ULTRAFIT_R/A" package3d_urn="urn:adsk.eagle:package:19990303/3" value="" x="90.17" y="130.81" smashed="yes">
 <attribute name="NAME" x="86.36" y="130.81" size="1.27" layer="25"/>
 <attribute name="VALUE" x="86.36" y="113.03" size="1.27" layer="25"/>
 </element>
@@ -779,4 +789,26 @@ design rules under a new name.</description>
 </mfgpreviewcolors>
 </board>
 </drawing>
+<compatibility>
+<note version="8.3" severity="warning">
+Since Version 8.3, EAGLE supports Fusion synchronisation.
+This feature will not be available in this version and saving
+the document will break the link to the Fusion PCB feature.
+</note>
+<note version="8.3" severity="warning">
+Since Version 8.3, EAGLE supports URNs for individual library
+assets (packages, symbols, and devices). The URNs of those assets
+will not be understood (or retained) with this version.
+</note>
+<note version="8.3" severity="warning">
+Since Version 8.3, EAGLE supports the association of 3D packages
+with devices in libraries, schematics, and board files. Those 3D
+packages will not be understood (or retained) with this version.
+</note>
+<note version="9.4" severity="warning">
+Since Version 9.4, EAGLE supports the overriding of 3D packages
+in schematics and board files. Those overridden 3d packages
+will not be understood (or retained) with this version.
+</note>
+</compatibility>
 </eagle>

@@ -251,6 +251,7 @@
 <wire x1="-3.645" y1="2.42" x2="-4" y2="2.42" width="0.127" layer="21"/>
 <text x="-3" y="6" size="1.27" layer="21">&gt;NAME</text>
 <text x="3.5" y="-3" size="1.27" layer="21" rot="R180">&gt;VALUE</text>
+<hole x="0" y="-2.23" drill="1.02"/>
 </package>
 <package name="3CONTAC_ULTRAFIT_VERT">
 <pad name="1" x="-3.5" y="0" drill="1.02"/>
@@ -399,9 +400,9 @@
 <text x="5.08" y="12.7" size="1.778" layer="94" rot="R270">&gt;VALUE</text>
 </symbol>
 <symbol name="3CONTACT_ULTRAFIT">
-<pin name="1" x="-7.62" y="2.54" length="middle"/>
+<pin name="3" x="-7.62" y="2.54" length="middle"/>
 <pin name="2" x="-7.62" y="0" length="middle"/>
-<pin name="3" x="-7.62" y="-2.54" length="middle"/>
+<pin name="1" x="-7.62" y="-2.54" length="middle"/>
 <wire x1="-2.54" y1="5.08" x2="-2.54" y2="-5.08" width="0.254" layer="94"/>
 <wire x1="-2.54" y1="-5.08" x2="2.54" y2="-5.08" width="0.254" layer="94"/>
 <wire x1="2.54" y1="-5.08" x2="2.54" y2="5.08" width="0.254" layer="94"/>
@@ -684,9 +685,9 @@ All Molex Connectors on Digikey: https://www.digikey.com/en/product-highlight/m/
 <devices>
 <device name="" package="3CONTAC_ULTRAFIT_R/A">
 <connects>
-<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="1" pad="3"/>
 <connect gate="G$1" pin="2" pad="2"/>
-<connect gate="G$1" pin="3" pad="3"/>
+<connect gate="G$1" pin="3" pad="1"/>
 </connects>
 <technologies>
 <technology name=""/>

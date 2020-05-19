@@ -134,19 +134,19 @@
 <text x="-5.08" y="5.08" size="1.27" layer="21">&gt;NAME</text>
 <text x="5.08" y="-5.08" size="1.27" layer="21" rot="R180">&gt;VALUE</text>
 </package>
-<package name="2-CONTACT-SUPER" urn="urn:adsk.eagle:footprint:19991153/1">
+<package name="2-CONTACT-SUPER">
 <hole x="0" y="0" drill="3"/>
-<hole x="-17.09" y="0" drill="3"/>
 <pad name="GND" x="-4.8" y="-14.715" drill="0.6" diameter="2.65" shape="long" rot="R90"/>
-<pad name="12V" x="-12.29" y="-14.715" drill="0.6" diameter="2.65" shape="long" rot="R90"/>
 <wire x1="-5.05" y1="-12.39" x2="-4.55" y2="-12.39" width="0.127" layer="46" curve="-180"/>
 <wire x1="-4.55" y1="-12.39" x2="-4.55" y2="-17.04" width="0.127" layer="46"/>
 <wire x1="-4.55" y1="-17.04" x2="-5.05" y2="-17.04" width="0.127" layer="46" curve="-180"/>
 <wire x1="-5.05" y1="-17.04" x2="-5.05" y2="-12.39" width="0.127" layer="46"/>
+<pad name="12V" x="-12.29" y="-14.715" drill="0.6" diameter="2.65" shape="long" rot="R90"/>
 <wire x1="-12.54" y1="-12.39" x2="-12.04" y2="-12.39" width="0.127" layer="46" curve="-180"/>
 <wire x1="-12.04" y1="-12.39" x2="-12.04" y2="-17.04" width="0.127" layer="46"/>
 <wire x1="-12.04" y1="-17.04" x2="-12.54" y2="-17.04" width="0.127" layer="46" curve="-180"/>
 <wire x1="-12.54" y1="-17.04" x2="-12.54" y2="-12.39" width="0.127" layer="46"/>
+<hole x="-17.09" y="0" drill="3"/>
 <wire x1="-19.08" y1="2.77" x2="1.99" y2="2.77" width="0.127" layer="21"/>
 <wire x1="1.99" y1="2.77" x2="1.99" y2="-11.98" width="0.127" layer="21"/>
 <wire x1="1.99" y1="-11.98" x2="-19.08" y2="-11.98" width="0.127" layer="21"/>
@@ -169,11 +169,6 @@
 <package3d name="2CONTAC_ULTRAFIT_R/A" urn="urn:adsk.eagle:package:19990303/3" type="model">
 <packageinstances>
 <packageinstance name="2CONTAC_ULTRAFIT_R/A"/>
-</packageinstances>
-</package3d>
-<package3d name="2-CONTACT-SUPER" urn="urn:adsk.eagle:package:19991152/2" type="model">
-<packageinstances>
-<packageinstance name="2-CONTACT-SUPER"/>
 </packageinstances>
 </package3d>
 </packages3d>
@@ -315,9 +310,6 @@ github.com/adafruit/Adafruit-BNO055-Breakout-PCB</description>
 <connect gate="G$1" pin="12V" pad="12V"/>
 <connect gate="G$1" pin="GND" pad="GND"/>
 </connects>
-<package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:19991152/2"/>
-</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -370,10 +362,10 @@ github.com/adafruit/Adafruit-BNO055-Breakout-PCB</description>
 <wire x1="12.7" y1="7.62" x2="33.02" y2="7.62" width="0.254" layer="94"/>
 <wire x1="33.02" y1="7.62" x2="33.02" y2="0" width="0.254" layer="94"/>
 <wire x1="33.02" y1="0" x2="12.7" y2="0" width="0.254" layer="94"/>
-<pin name="VIN" x="27.94" y="-5.08" length="middle" rot="R90"/>
-<pin name="GND" x="25.4" y="-5.08" length="middle" rot="R90"/>
-<pin name="HV_SIGNAL" x="20.32" y="-5.08" length="middle" rot="R90"/>
-<pin name="PL_L" x="17.78" y="-5.08" length="middle" rot="R90"/>
+<pin name="VIN" x="27.94" y="0" length="middle" rot="R270"/>
+<pin name="GND" x="25.4" y="0" length="middle" rot="R270"/>
+<pin name="HV_SIGNAL" x="20.32" y="0" length="middle" rot="R270"/>
+<pin name="PL_L" x="17.78" y="0" length="middle" rot="R270"/>
 <text x="17.78" y="10.16" size="1.27" layer="95">&gt;NAME</text>
 <text x="17.78" y="-22.86" size="1.27" layer="96">&gt;VALUE</text>
 </symbol>
@@ -1923,7 +1915,7 @@ with different sets of drill holes or mounting pads</description>
 <part name="VCONVERTER" library="BlueShift" deviceset="VOLTAGE_CONVERTER" device=""/>
 <part name="U$1" library="FathomX" deviceset="FATHOM-X" device=""/>
 <part name="X1" library="raspberrypi" deviceset="RASPI_BOARD_B+" device="_F"/>
-<part name="POWER-IN" library="BlueShift" deviceset="2-CONTACT-SUPER" device="" package3d_urn="urn:adsk.eagle:package:19991152/2"/>
+<part name="POWER-IN" library="BlueShift" deviceset="2-CONTACT-SUPER" device="" override_package3d_urn="urn:adsk.eagle:package:19991152/2" override_package_urn="urn:adsk.eagle:footprint:19991153/1"/>
 <part name="TP_ESC_A" library="BlueShift" deviceset="2CONTACT_ULTRAFIT_R/A" device="" package3d_urn="urn:adsk.eagle:package:19990303/3">
 <attribute name="SPICEPREFIX" value="B"/>
 </part>
@@ -1997,7 +1989,7 @@ with different sets of drill holes or mounting pads</description>
 </instance>
 <instance part="U$1" gate="G$1" x="33.02" y="91.44" smashed="yes" rot="R270">
 <attribute name="NAME" x="43.18" y="73.66" size="1.27" layer="95" rot="R270"/>
-<attribute name="VALUE" x="38.1" y="76.2" size="1.27" layer="96" rot="R270"/>
+<attribute name="VALUE" x="10.16" y="73.66" size="1.27" layer="96" rot="R270"/>
 </instance>
 <instance part="X1" gate="G$1" x="33.02" y="127" smashed="yes"/>
 <instance part="POWER-IN" gate="G$1" x="-68.58" y="134.62" smashed="yes">
@@ -2257,10 +2249,6 @@ with different sets of drill holes or mounting pads</description>
 <pinref part="GND19" gate="1" pin="GND"/>
 <pinref part="CONN14" gate="G$1" pin="1"/>
 </segment>
-<segment>
-<pinref part="U$1" gate="G$1" pin="GND"/>
-<pinref part="GND15" gate="1" pin="GND"/>
-</segment>
 </net>
 <net name="+12V" class="0">
 <segment>
@@ -2319,10 +2307,6 @@ with different sets of drill holes or mounting pads</description>
 <pinref part="P+21" gate="1" pin="+12V"/>
 <pinref part="VCONVERTER" gate="G$1" pin="VIN"/>
 </segment>
-<segment>
-<pinref part="U$1" gate="G$1" pin="VIN"/>
-<pinref part="P+22" gate="1" pin="+12V"/>
-</segment>
 </net>
 <net name="+24V" class="0">
 <segment>
@@ -2356,13 +2340,13 @@ with different sets of drill holes or mounting pads</description>
 <segment>
 <pinref part="CONN13" gate="G$1" pin="2"/>
 <pinref part="U$1" gate="G$1" pin="PL_L"/>
-<wire x1="2.54" y1="73.66" x2="27.94" y2="73.66" width="0.1524" layer="91"/>
+<wire x1="2.54" y1="73.66" x2="33.02" y2="73.66" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$2" class="0">
 <segment>
 <pinref part="U$1" gate="G$1" pin="HV_SIGNAL"/>
-<wire x1="27.94" y1="71.12" x2="7.62" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="33.02" y1="71.12" x2="7.62" y2="71.12" width="0.1524" layer="91"/>
 <wire x1="7.62" y1="71.12" x2="7.62" y2="68.58" width="0.1524" layer="91"/>
 <pinref part="CONN13" gate="G$1" pin="1"/>
 <wire x1="7.62" y1="68.58" x2="2.54" y2="68.58" width="0.1524" layer="91"/>
@@ -2407,6 +2391,11 @@ will not be understood (or retained) with this version.
 Since Version 8.3, EAGLE supports the association of 3D packages
 with devices in libraries, schematics, and board files. Those 3D
 packages will not be understood (or retained) with this version.
+</note>
+<note version="9.4" severity="warning">
+Since Version 9.4, EAGLE supports the overriding of 3D packages
+in schematics and board files. Those overridden 3d packages
+will not be understood (or retained) with this version.
 </note>
 </compatibility>
 </eagle>
