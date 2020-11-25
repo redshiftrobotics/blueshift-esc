@@ -20,8 +20,8 @@ float readCurrent(){
   return current;
 }
 
-float betterPostition(){
-  float betterPosition = (pos - 1500)/400;
+float remapPostition(a){
+  float betterPosition = (a - 1500)/400;
   return betterPosition;
 }
 
@@ -36,7 +36,7 @@ void setup() {
   for (pos = 1900; pos >= 1500; pos -= 1) {
     myservo.writeMicroseconds(pos);            
     delay(delayTime);
-    Serial.println(String(betterPosition) + " " + String(readVoltage()) + " " + String(readCurrent()));  
+    Serial.println(String(remapPosition(pos)) + " " + String(readVoltage()) + " " + String(readCurrent()));  
   }
 
   delay(3000);
@@ -46,7 +46,7 @@ void setup() {
     // in steps of 1 degree
     myservo.writeMicroseconds(pos);              // tell servo to go to position in variable 'pos'
     delay(delayTime);                       // waits 15ms for the servo to reach the position
-    Serial.println(String(betterPosition) + " " + String(readVoltage()) + " " + String(readCurrent()));
+    Serial.println(String(remapPosition(pos)) + " " + String(readVoltage()) + " " + String(readCurrent()));
   }
 
   delay(3000);
@@ -56,7 +56,7 @@ void setup() {
     // in steps of 1 degree
     myservo.writeMicroseconds(pos);             
     delay(delayTime);  
-    Serial.println(String(betterPosition) + " " + String(readVoltage()) + " " + String(readCurrent()));                     
+    Serial.println(String(remapPosition(pos)) + " " + String(readVoltage()) + " " + String(readCurrent()));                     
   }  
 
   delay(3000);
@@ -65,7 +65,7 @@ void setup() {
   for (pos = 1500; pos >= 1100; pos -= 1) { 
     myservo.writeMicroseconds(pos);              
     delay(delayTime);
-    Serial.println(String(betterPosition) + " " + String(readVoltage()) + " " + String(readCurrent()));                      
+    Serial.println(String(remapPosition(pos)) + " " + String(readVoltage()) + " " + String(readCurrent()));                      
   }
  
 }
