@@ -5,6 +5,7 @@ Servo myservo;  // create servo object to control a servo
 
 int pos = 1500;    // variable to store the servo position
 int delayTime = 10;
+String serial_read = "";
 
 float readVoltage() {
   float voltage = analogRead(A0);       // reads pin A0
@@ -25,14 +26,11 @@ float remapPosition(int input_pos) {
   return betterPosition;
 }
 
-void setup() {
-  Serial.begin(9600);
+void testMotor() {
+  Serial.println(";STRT;");
   
-  myservo.attach(9);  // attaches the servo on pin 9 to the servo object
-  
-  myservo.writeMicroseconds(1500); // sets motor to start at stopped
-
   // motor jumps to full speed and slows down to stopped
+  Serial.println(";JMP 1 SLD 0;");
   for (pos = 1900; pos >= 1500; pos -= 1) {
     myservo.writeMicroseconds(pos);            
     delay(delayTime);
@@ -42,6 +40,7 @@ void setup() {
   delay(3000);
   
   // motor speeds up to full speed from stopped
+  Serial.println(";JMP 0 SLD 1;");
   for (pos = 1500; pos <= 1900; pos += 1) { // goes from 0 degrees to 180 degrees
     // in steps of 1 degree
     myservo.writeMicroseconds(pos);              // tell servo to go to position in variable 'pos'
@@ -52,6 +51,7 @@ void setup() {
   delay(3000);
 
   // motor jumps to full reverse speed and slows to stopped
+  Serial.println(";JMP -1 SLD 0;");
   for (pos = 1100; pos <= 1500; pos += 1) { 
     // in steps of 1 degree
     myservo.writeMicroseconds(pos);             
@@ -62,14 +62,29 @@ void setup() {
   delay(3000);
 
   // motor speeds up to full reverse speed from stopped
+  Serial.println(";JMP 0 SLD -1;");
   for (pos = 1500; pos >= 1100; pos -= 1) { 
     myservo.writeMicroseconds(pos);              
     delay(delayTime);
     Serial.println(String(remapPosition(pos)) + " " + String(readVoltage()) + " " + String(readCurrent()));                      
   }
- 
+
+  Serial.println(";END;");
+}
+
+void setup() {
+  Serial.begin(9600);
+
+  myservo.attach(9);  // attaches the servo on pin 9 to the servo object
+
+  myservo.writeMicroseconds(1500); // sets motor to start at stopped
 }
 
 void loop() {
-  
+  if (Serial.available() > 0) {
+    serial_read = Serial.readStringUntil(';');
+    if (serial_read == "STRT TST") {
+      testMotor();
+    }
+  }
 }
