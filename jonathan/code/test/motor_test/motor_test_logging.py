@@ -5,14 +5,10 @@ import csv
 import os
 
 parser = argparse.ArgumentParser(description='Gather motor data from an arduino')
-parser.add_argument('port', type=str, help='Arduino serial port')
+parser.add_argument('port', type=str, help='Arduino serial port. python -m serial.tools.list_ports lists the available ports')
 parser.add_argument('--save-dir', type=str, default="data", help="Arduino serial port (Default: 'data/')")
 
 args = parser.parse_args()
-
-# When running this program, specify the arduino port as a command line argument ex:
-# * python motor_test_logging.py COM5
-# * Run `python -m serial.tools.list_ports` to list the available ports
 
 data_folder = "data"
 lines = []
@@ -47,7 +43,6 @@ for line in lines:
         if not current_test in tests:
             tests[current_test] = [["speed", "amps", "volts"]]
         tests[current_test].append(parsed_line)
-
 
 data_path = os.path.join(data_folder, str(time.time()))
 if not os.path.exists(data_path):
