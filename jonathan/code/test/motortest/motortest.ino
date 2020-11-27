@@ -6,22 +6,22 @@ Servo myservo;  // create servo object to control a servo
 int pos = 1500;    // variable to store the servo position
 int delayTime = 10;
 
-float readVoltage(){
+float readVoltage() {
   float voltage = analogRead(A0);       // reads pin A0
   voltage = (5*voltage)/1024; // output voltage from pin
   voltage = voltage/.2423;          // source voltage before divider
   return voltage;
 }
 
-float readCurrent(){
+float readCurrent() {
   float current = analogRead(A1);       // reads pin A1
   current = (5*current)/1024; // output from pin
   current = current/.0732;          // source voltage before divider
   return current;
 }
 
-float remapPostition(a){
-  float betterPosition = (a - 1500)/400;
+float remapPosition(int input_pos) {
+  float betterPosition = (input_pos - 1500.0)/400.0;
   return betterPosition;
 }
 
