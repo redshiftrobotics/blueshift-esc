@@ -1,3 +1,6 @@
 *.DS_Store
 *.epf
 *.vscode
+*.generated_files
+*build
+*dist
