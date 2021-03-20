@@ -700,8 +700,6 @@
         <property key="memories.programmemory.ranges" value="0-17ef"/>
         <property key="memories.rww" value="true"/>
         <property key="poweroptions.powerenable" value="false"/>
-        <property key="programmerToGoFilePath"
-                  value="D:/MATE/blueshift-pcb/jonathan/code/test/led_test.X/debug/default/led_test_ptg"/>
         <property key="programmerToGoImageName" value="led_test_ptg"/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>

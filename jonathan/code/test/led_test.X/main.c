@@ -12,9 +12,9 @@
 
 // FOSC
 #pragma config POSCMD = NONE            // Primary Oscillator Mode Select bits (Primary Oscillator disabled)
-#pragma config OSCIOFNC = OFF           // OSC2 Pin Function bit (OSC2 is clock output)
-#pragma config IOL1WAY = ON             // Peripheral pin select configuration (Allow only one reconfiguration)
-#pragma config FCKSM = CSDCMD           // Clock Switching Mode bits (Both Clock switching and Fail-safe Clock Monitor are disabled)
+#pragma config OSCIOFNC = ON            // OSC2 Pin Function bit (OSC2 is general purpose digital I/O pin)
+#pragma config IOL1WAY = OFF            // Peripheral pin select configuration (Allow multiple reconfigurations)
+#pragma config FCKSM = CSECME           // Clock Switching Mode bits (Both Clock switching and Fail-safe Clock Monitor are enabled)
 
 // FOSCSEL
 #pragma config FNOSC = FRC              // Oscillator Source Selection (Internal Fast RC (FRC))
@@ -29,17 +29,15 @@
 
 #include <xc.h>
 
-
 int main(void) {
+    ADPCFG = 0xFFFF; // Set all ADC pins in digital mode
+    
     TRISA = 0x0000; // Set all pins on the A register as output
-    ADPCFG = 0xFF; // Set all ADC pins in digital mode
+    TRISAbits.TRISA0 = 1;
     
     while (1) {
-        LATAbits.LATA0 = 1; // Turn on RA0
-        __delay32(1500000); // delay in instruction cycles
-        
-        LATAbits.LATA0 = 0; // Turn off RA0
-        __delay32(1500000); // delay in instruction cycles
+        // In general, I think you want to set digital outputs with the LATx register, and read them with the PORTx register
+        LATAbits.LATA1 = !PORTAbits.RA0;
     }
 
     return 1;
