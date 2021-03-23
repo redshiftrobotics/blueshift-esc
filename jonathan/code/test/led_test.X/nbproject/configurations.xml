@@ -103,7 +103,7 @@
         <property key="pre-instruction-scheduling" value="default"/>
         <property key="preprocessor-macros" value=""/>
         <property key="scalar-model" value="default"/>
-        <property key="use-cci" value="false"/>
+        <property key="use-cci" value="true"/>
         <property key="use-iar" value="false"/>
       </C30>
       <C30-AR>
@@ -180,7 +180,7 @@
       <C30Global>
         <property key="common-include-directories" value=""/>
         <property key="dual-boot-partition" value="0"/>
-        <property key="fast-math" value="false"/>
+        <property key="fast-math" value="true"/>
         <property key="generic-16-bit" value="false"/>
         <property key="legacy-libc" value="true"/>
         <property key="mpreserve-all" value="false"/>

@@ -29,16 +29,27 @@
 
 #include <xc.h>
 
+// Interrupt function
+// no_auto_psv explanation: https://electronics.stackexchange.com/a/190325
+void __interrupt(no_auto_psv) _T1Interrupt(void){
+    LATAbits.LATA1 ^= 1; // Toggle RA1. ^ is an excluse or operation, so it reads from whatever was last set to the pin, and assigns the opposite of that
+    
+    _T1IF = 0; // Reset the Timer1 interrupt
+}
+
 int main(void) {
     ADPCFG = 0xFFFF; // Set all ADC pins in digital mode
-    
     TRISA = 0x0000; // Set all pins on the A register as output
-    TRISAbits.TRISA0 = 1;
     
-    while (1) {
-        // In general, I think you want to set digital outputs with the LATx register, and read them with the PORTx register
-        LATAbits.LATA1 = !PORTAbits.RA0;
-    }
+    // I think its good practice to turn of the timer before changing the parameters so it doesn't generate unintended interrups
+    T1CONbits.TON = 0; // Turn off Timer 1
+    T1CONbits.TCKPS = 0b10; // Set the pre-scaler to 1:8
+    INTCON1bits.NSTDIS = 1; // Disable interrupt nesting
+    IPC0bits.T1IP = 0b001; // Set priority to 1
+    IFS0bits.T1IF = 0;// clear interrupt
+    IEC0bits.T1IE = 1; // enable interrupt source
+    T1CONbits.TON = 1; // Turn on Timer 1
+    while (1);
 
     return 1;
 }
