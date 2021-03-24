@@ -29,27 +29,62 @@
 
 #include <xc.h>
 
-// Interrupt function
-// no_auto_psv explanation: https://electronics.stackexchange.com/a/190325
-void __interrupt(no_auto_psv) _T1Interrupt(void){
-    LATAbits.LATA1 ^= 1; // Toggle RA1. ^ is an excluse or operation, so it reads from whatever was last set to the pin, and assigns the opposite of that
-    
-    _T1IF = 0; // Reset the Timer1 interrupt
-}
-
 int main(void) {
-    ADPCFG = 0xFFFF; // Set all ADC pins in digital mode
-    TRISA = 0x0000; // Set all pins on the A register as output
+    // IO Setup
+    TRISA = 0x0000; // Set PWM pins as outputs
+    LATA = 0x0000; // Clear those pins
     
-    // I think its good practice to turn of the timer before changing the parameters so it doesn't generate unintended interrups
-    T1CONbits.TON = 0; // Turn off Timer 1
-    T1CONbits.TCKPS = 0b10; // Set the pre-scaler to 1:8
-    INTCON1bits.NSTDIS = 1; // Disable interrupt nesting
-    IPC0bits.T1IP = 0b001; // Set priority to 1
-    IFS0bits.T1IF = 0;// clear interrupt
-    IEC0bits.T1IE = 1; // enable interrupt source
-    T1CONbits.TON = 1; // Turn on Timer 1
-    while (1);
+    // FRC Oscillator Setup
+    // FRC nominal frequency is 7.37MHz. TUN updates the frequency to be 7.37 + (TUN * 0.00375 * 7.37)
+    OSCTUNbits.TUN = 4; // Update the frequency to 7.49
+    // Setting the frequency to 7.49 allows for the maximum PWM resolution of 1.04 ns
+   
+    // Auxiliary Clock setup
+    // Info on ACLKCON is in the Oscillator Datasheet, not oin the PWM one
+    ACLKCONbits.FRCSEL = 1; // FRC is input to Auxiliary PLL
+    ACLKCONbits.SELACLK = 1; // Auxiliary Oscillator provides the clock source
+    ACLKCONbits.APSTSCLR = 0b111; // Divide Auxiliary clock by 1
+    ACLKCONbits.ENAPLL = 1; // Enable Auxiliary PLL
+    while(ACLKCONbits.APLLCK != 1); // Wait for Auxiliary PLL to Lock
+    // ACLK: (FRC * 16) / APSTSCLR = (7.49 * 16) / 1 = 119.84 MHz
+    
+    // PWM Setup
+    PTCONbits.PTEN = 0; // Disable PWM before changing any settings
+    PTCON2bits.PCLKDIV = 0b001; // Set PWM clock prescaler to 2
+    
+    PWMCON1bits.MDCS = 0; // Set duty cycle based on the PDC1 and SDC1 register rather than the Master Duty Cycle
+    
+    //PWMCON1bits.CAM = 1; // Enable Center Aligned Mode
+    PWMCON1bits.ITB = 1; // Enable Independent Time Base (Necessary for Center Aligned Mode)
+    
+    PWMCON1bits.IUE = 1; //  Update active duty cycle, phase offset, and independent time period registers immediately
+    PTCONbits.EIPU = 1; //Update Active period register immediately
+    
+    PWMCON1bits.DTC = 0b00; // Enable positive dead time generation
+    
+    // Set PWM period
+    // ((ACLK * 8 * desired_pwm_period_탎) / PCLKDIV) - 8 = PHASE1 and SPHASE1
+    // ((119.84 * 8 * desired_pwm_period_탎) / 2) - 8 = PHASE1 and SPHASE1
+    // ((119.84 * 8 * 10 탎) / 2) - 8 = 4785.6
+    PHASE1 = 4785; // Set PWM1H frequency to 100 kHz
+    SPHASE1 = 4785; // SET PWM1L frequency to 100 kHz
+    
+    // Set PWM Duty Cycle
+    // (ACLK * 8 * desired_duty_cycle_탎) / PCLKDIV = PDC1 and SDC1
+    // (119.84 * 8 * desired_duty_cycle_탎) / 2 = PDC1 and SDC1
+    // (119.84 * 8 * 5 탎) / 2 = 2396.8
+    MDC = 0; // Zero out the Master Duty Cycle
+    PDC1 = 2396; // Set PWM1H duty cycle to 5 탎
+    SDC1 = 2396; // Set PWM1L duty cycle to 5 탎
+    
+    // Setup PWM IO
+    IOCON1bits.PENH = 1; // Enable PWM1H
+    IOCON1bits.PENL = 1; // Enable PWM1L
+    IOCON1bits.POLH = 0; // PWM1H active high
+    IOCON1bits.POLL = 0; // PWM1L active high
+    IOCON1bits.PMOD = 3; // True Independent Output Mode
+    
+    PTCONbits.PTEN = 1; // Enable PWM
 
     return 1;
 }
