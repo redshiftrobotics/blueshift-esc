@@ -105,6 +105,7 @@
         <property key="scalar-model" value="default"/>
         <property key="use-cci" value="true"/>
         <property key="use-iar" value="false"/>
+        <appendMe value=" -std=gnu99"/>
       </C30>
       <C30-AR>
         <property key="additional-options-chop-files" value="false"/>

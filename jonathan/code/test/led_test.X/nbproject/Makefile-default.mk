@@ -95,18 +95,18 @@ MP_LINKER_FILE_OPTION=,--script=p33FJ09GS302.gld
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-${OBJECTDIR}/main.o: main.c  .generated_files/196316e0308dc290f1b33f7f4520e14ecc065d3d.flag .generated_files/ab45662ada914c2e896843d2db05f2b03ac7dd6f.flag
+${OBJECTDIR}/main.o: main.c  .generated_files/f9065a0348117c4281960915b2e31d1344f3cdbc.flag .generated_files/ab45662ada914c2e896843d2db05f2b03ac7dd6f.flag
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/main.o.d 
 	@${RM} ${OBJECTDIR}/main.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  main.c  -o ${OBJECTDIR}/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/main.o.d"      -g -D__DEBUG     -omf=elf -fast-math -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -mcci -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  main.c  -o ${OBJECTDIR}/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/main.o.d"      -g -D__DEBUG     -omf=elf -fast-math -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -mcci -msmart-io=1 -Wall -msfr-warn=off    -std=gnu99  -mdfp="${DFP_DIR}/xc16"
 	
 else
-${OBJECTDIR}/main.o: main.c  .generated_files/9dc39b275f93ecf58c73ee0f74c81b5d6fbceab7.flag .generated_files/ab45662ada914c2e896843d2db05f2b03ac7dd6f.flag
+${OBJECTDIR}/main.o: main.c  .generated_files/42cbc807962b65a001015efbee5536f836cd6d95.flag .generated_files/ab45662ada914c2e896843d2db05f2b03ac7dd6f.flag
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/main.o.d 
 	@${RM} ${OBJECTDIR}/main.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  main.c  -o ${OBJECTDIR}/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/main.o.d"        -g -omf=elf -fast-math -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -mcci -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	${MP_CC} $(MP_EXTRA_CC_PRE)  main.c  -o ${OBJECTDIR}/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/main.o.d"        -g -omf=elf -fast-math -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -mcci -msmart-io=1 -Wall -msfr-warn=off    -std=gnu99  -mdfp="${DFP_DIR}/xc16"
 	
 endif
 

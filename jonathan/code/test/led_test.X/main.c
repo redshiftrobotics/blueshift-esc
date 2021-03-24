@@ -86,7 +86,14 @@ int main(void) {
     
     PTCONbits.PTEN = 1; // Enable PWM
     
-    while(1);
+    // This should theoretically start the LED at zero brightness, slowly goto full, turn off, and repeat
+    // There seems to be some bug with the loop itself, PWM is working though
+    while(1) {
+        for (int i = 0; i < 4785; i ++) {
+            PDC1 = i;
+            __delay32(1000);
+        }
+    }
 
     return 1;
 }
