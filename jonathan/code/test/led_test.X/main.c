@@ -54,7 +54,7 @@ int main(void) {
     
     PWMCON1bits.MDCS = 0; // Set duty cycle based on the PDC1 and SDC1 register rather than the Master Duty Cycle
     
-    //PWMCON1bits.CAM = 1; // Enable Center Aligned Mode
+    PWMCON1bits.CAM = 1; // Enable Center Aligned Mode
     PWMCON1bits.ITB = 1; // Enable Independent Time Base (Necessary for Center Aligned Mode)
     
     PWMCON1bits.IUE = 1; //  Update active duty cycle, phase offset, and independent time period registers immediately
@@ -85,6 +85,8 @@ int main(void) {
     IOCON1bits.PMOD = 3; // True Independent Output Mode
     
     PTCONbits.PTEN = 1; // Enable PWM
+    
+    while(1);
 
     return 1;
 }
