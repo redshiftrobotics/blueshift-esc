@@ -35,16 +35,19 @@
 
 int main(void) {
     // IO Setup
-    TRISA = 0x0000; // Set PWM pins as outputs
-    LATA = 0x0000; // Clear those pins
+    TRISA = 0x0000; // Set all of register A as outputs
+    TRISAbits.TRISA0 = 1; // Set AN0 as an input for the ADC
+    TRISAbits.TRISA1 = 1; // Set AN1 as an input for the ADC
+    LATA = 0x0000; // Clear all of register A
+    
     
     // FRC Oscillator Setup
     // FRC nominal frequency is 7.37MHz. TUN updates the frequency to be 7.37 + (TUN * 0.00375 * 7.37)
     OSCTUNbits.TUN = 4; // Update the frequency to 7.49
     // Setting the frequency to 7.49 allows for the maximum PWM resolution of 1.04 ns
    
-    // Auxiliary Clock setup
-    // Info on ACLKCON is in the Oscillator Datasheet, not oin the PWM one
+    // Auxiliary Clock setup (Used by the PWM generator)
+    // Info on ACLKCON is in the Oscillator Datasheet, not in the PWM one
     ACLKCONbits.FRCSEL = 1; // FRC is input to Auxiliary PLL
     ACLKCONbits.SELACLK = 1; // Auxiliary Oscillator provides the clock source
     ACLKCONbits.APSTSCLR = 0b111; // Divide Auxiliary clock by 1
@@ -66,6 +69,15 @@ int main(void) {
     
     PWMCON1bits.DTC = 0b00; // Enable positive dead time generation
     
+    // Setup PWM IO
+    IOCON1bits.PENH = 1; // Enable PWM1H
+    IOCON1bits.PENL = 1; // Enable PWM1L
+    IOCON1bits.POLH = 0; // PWM1H active high
+    IOCON1bits.POLL = 0; // PWM1L active high
+    IOCON1bits.PMOD = 3; // True Independent Output Mode
+    
+    PTCONbits.PTEN = 1; // Enable PWM now that setup is done
+    
     // Set PWM period
     // ((ACLK * 8 * desired_pwm_period_탎) / PCLKDIV) - 8 = PHASE1 and SPHASE1
     // ((119.84 * 8 * desired_pwm_period_탎) / 2) - 8 = PHASE1 and SPHASE1
@@ -81,14 +93,24 @@ int main(void) {
     PDC1 = 2396; // Set PWM1H duty cycle to 5 탎
     SDC1 = 2396; // Set PWM1L duty cycle to 5 탎
     
-    // Setup PWM IO
-    IOCON1bits.PENH = 1; // Enable PWM1H
-    IOCON1bits.PENL = 1; // Enable PWM1L
-    IOCON1bits.POLH = 0; // PWM1H active high
-    IOCON1bits.POLL = 0; // PWM1L active high
-    IOCON1bits.PMOD = 3; // True Independent Output Mode
+    // Setup ADC
+    ADCONbits.SLOWCLK = 0; // Set the ADC clock to the primary PLL (Fvco) instead of the auxiliary PLL (ACLK)
+    // I'm haven't gone through the math of both clocks to figure out what the frequency difference is, todo later
     
-    PTCONbits.PTEN = 1; // Enable PWM
+    ADCONbits.ADCS = 0b000; // Set the ADC clock divider ratio to 1:1. I'm not actually sure what the clock does in the ADC, once we know we should update ADCS and SLOWCLK
+    ADCONbits.FORM = 0 // Output in Integer Format (again this may need to be changed later depending on how the motor control math works)
+    
+    ADCONbits.ASYNCSAMP = ?;
+    
+    ADCONbits.EIE = 0; // Disable early interrupt
+    // On a 2 SAR PIC like we have, enabling this generates an interrupt after 7 Tad clock cycles, instead of waiting for the conversion to be done
+    // I don't know why you would want to do this...
+    
+    
+    ADPCFGbits.PCFG0 = 0; // Configure AN0 as an analog input
+    ADPCFGbits.PCFG1 = 0; // Configure AN1 as an analog input
+    
+    ADCONbits.ADON = 1; // Enable ADC now that setup is done
     
     // This should theoretically start the LED at zero brightness, slowly goto full, turn off, and repeat
     // There seems to be some bug with the loop itself, PWM is working though
