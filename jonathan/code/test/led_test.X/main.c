@@ -1,3 +1,7 @@
+// Necessary to use __delay_ms() [https://www.microchip.com/forums/m1055443.aspx, https://electronics.stackexchange.com/a/275627]
+#define FCY 7370000UL
+#include <libpic30.h>
+
 // DSPIC33FJ09GS302 Configuration Bit Settings
 // 'C' source line config statements
 // FICD
@@ -57,8 +61,8 @@ int main(void) {
     PWMCON1bits.CAM = 1; // Enable Center Aligned Mode
     PWMCON1bits.ITB = 1; // Enable Independent Time Base (Necessary for Center Aligned Mode)
     
-    PWMCON1bits.IUE = 1; //  Update active duty cycle, phase offset, and independent time period registers immediately
-    PTCONbits.EIPU = 1; //Update Active period register immediately
+    PWMCON1bits.IUE = 1; // Update active duty cycle, phase offset, and independent time period registers immediately
+    PTCONbits.EIPU = 1; // Update Active period register immediately
     
     PWMCON1bits.DTC = 0b00; // Enable positive dead time generation
     
@@ -89,9 +93,12 @@ int main(void) {
     // This should theoretically start the LED at zero brightness, slowly goto full, turn off, and repeat
     // There seems to be some bug with the loop itself, PWM is working though
     while(1) {
-        for (int i = 0; i < 4785; i ++) {
+        for (int i = 0; i < 4785; i++) {
             PDC1 = i;
-            __delay32(1000);
+            //__delay_ms(100); // Enabling this causes the whole MCU to lag a BUNCH
+            // * I think that its because the way it delays, is by stopping the MCU from doing anything using nops
+            // * So, the MCU is too busy doing nothing to update the PWM duty cycle and everything is sad
+            // * Right now the LED brightness to quickly to be visible by the human eye, but the changes in PWM duty cycle are visible on an oscilloscope
         }
     }
 
