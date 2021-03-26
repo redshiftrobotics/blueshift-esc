@@ -1,7 +1,3 @@
-// Necessary to use __delay_ms() [https://www.microchip.com/forums/m1055443.aspx, https://electronics.stackexchange.com/a/275627]
-#define FCY 7370000UL
-#include <libpic30.h>
-
 // DSPIC33FJ09GS302 Configuration Bit Settings
 // 'C' source line config statements
 // FICD
@@ -33,6 +29,15 @@
 
 #include <xc.h>
 
+void __interrupt(no_auto_psv) _ADCP0Interrupt(void) {
+    int an0, an1;
+    
+    an0 = ADCBUF0;
+    an1 = ADCBUF1;
+    
+    IFS6bits.ADCP0IF = 0; // Clear ADC Pair 0 interrupt flag
+}
+
 int main(void) {
     // IO Setup
     TRISA = 0x0000; // Set all of register A as outputs
@@ -45,6 +50,7 @@ int main(void) {
     // FRC nominal frequency is 7.37MHz. TUN updates the frequency to be 7.37 + (TUN * 0.00375 * 7.37)
     OSCTUNbits.TUN = 4; // Update the frequency to 7.49
     // Setting the frequency to 7.49 allows for the maximum PWM resolution of 1.04 ns
+    // Actually I don't know if this does anything, because the resolution is 8.32 ns in Center Aligned Mode
    
     // Auxiliary Clock setup (Used by the PWM generator)
     // Info on ACLKCON is in the Oscillator Datasheet, not in the PWM one
@@ -86,29 +92,45 @@ int main(void) {
     SPHASE1 = 4785; // SET PWM1L frequency to 100 kHz
     
     // Set PWM Duty Cycle
-    // (ACLK * 8 * desired_duty_cycle_탎) / PCLKDIV = PDC1 and SDC1
-    // (119.84 * 8 * desired_duty_cycle_탎) / 2 = PDC1 and SDC1
-    // (119.84 * 8 * 5 탎) / 2 = 2396.8
+    // Set Duty Cycle to a specific time
+    // * (ACLK * 8 * desired_duty_cycle_탎) / PCLKDIV = PDC1 and SDC1
+    // * (119.84 * 8 * desired_duty_cycle_탎) / 2 = PDC1 and SDC1
+    // * (119.84 * 8 * 5 탎) / 2 = 2396.8
+    // To set a duty cycle as a percentage, the formula should just be pwm_frequecy * duty_cycle_percentage
+    // * PHASE1 * 50% = PDC
+    // * 4785 * 0.5 = 2392.5
     MDC = 0; // Zero out the Master Duty Cycle
     PDC1 = 2396; // Set PWM1H duty cycle to 5 탎
     SDC1 = 2396; // Set PWM1L duty cycle to 5 탎
     
     // Setup ADC
     ADCONbits.SLOWCLK = 0; // Set the ADC clock to the primary PLL (Fvco) instead of the auxiliary PLL (ACLK)
-    // I'm haven't gone through the math of both clocks to figure out what the frequency difference is, todo later
+    // I'm haven't gone through the math of both clocks to figure out what the frequency difference is, TODO later
     
     ADCONbits.ADCS = 0b000; // Set the ADC clock divider ratio to 1:1. I'm not actually sure what the clock does in the ADC, once we know we should update ADCS and SLOWCLK
-    ADCONbits.FORM = 0 // Output in Integer Format (again this may need to be changed later depending on how the motor control math works)
+    ADCONbits.FORM = 0; // Output in Integer Format (again this may need to be changed later depending on how the motor control math works)
     
-    ADCONbits.ASYNCSAMP = ?;
+    // Both of these need to be checked with someone who knows what they are talking about, I'm not sure what the most efficient setup is
+    ADCONbits.ASYNCSAMP = 0; // Sample in synchronous mode
+    ADCONbits.SEQSAMP = 0; // Sample with simultaneous sampling
+    
+    ADCONbits.ORDER = 0; // Convert the even numbered input in the pair before the odd one
     
     ADCONbits.EIE = 0; // Disable early interrupt
-    // On a 2 SAR PIC like we have, enabling this generates an interrupt after 7 Tad clock cycles, instead of waiting for the conversion to be done
-    // I don't know why you would want to do this...
+    // On a 2 SAR PIC, enabling this generates an interrupt after 7 Tad clock cycles, instead of waiting for the conversion to be done
+    // On a 1 SAR PIC, enabling this generates an interrupt as soon as the first conversion is done without waiting for the second one
+    // In either case, I don't know why you would want to do this
     
+    ADCPC0bits.TRGSRC0 = 0b00100; // Use PWM Generator 1 primary to trigger conversion of ADC Pair 0
     
     ADPCFGbits.PCFG0 = 0; // Configure AN0 as an analog input
     ADPCFGbits.PCFG1 = 0; // Configure AN1 as an analog input
+    
+    
+    ADCPC0bits.IRQEN0 = 1; // Enable interrupt generation for ADC Pair 0
+    IPC27bits.ADCP0IP = 0x01; // This needs to be updated once we figure out the sampling order
+    IEC6bits.ADCP0IE = 1; // Enable ADC Pair 0 interrupt. I'm not sure if both this line and the previous one are necessary
+    IFS6bits.ADCP0IF = 0; // Clear ADC Pair 0 interrupt flag
     
     ADCONbits.ADON = 1; // Enable ADC now that setup is done
     
