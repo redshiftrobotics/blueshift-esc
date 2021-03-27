@@ -35,7 +35,9 @@ void __interrupt(no_auto_psv) _ADCP0Interrupt(void) {
     an0 = ADCBUF0;
     an1 = ADCBUF1;
     
-    PDC1 = 4785;
+    PDC1 = an0 * 4; // This is a really crude way of setting the pwm duty cycle based on the an0
+    // The duty cycle ranges from 0-4785 (PHASE1)
+    // The analog input (in integer mode) ranges from 0-1023, so by multiplying it by 4, we can roughly map the analog input to the pwm
     
     IFS6bits.ADCP0IF = 0; // Clear ADC Pair 0 interrupt flag
 }
