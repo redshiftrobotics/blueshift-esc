@@ -29,11 +29,15 @@
 
 #include <xc.h>
 
+int adc_complete = 0;
+
 void __interrupt(no_auto_psv) _ADCP0Interrupt(void) {
     int an0, an1;
     
     an0 = ADCBUF0;
     an1 = ADCBUF1;
+    
+    adc_complete = 1;
     
     IFS6bits.ADCP0IF = 0; // Clear ADC Pair 0 interrupt flag
 }
@@ -103,11 +107,23 @@ int main(void) {
     PDC1 = 2396; // Set PWM1H duty cycle to 5 µs
     SDC1 = 2396; // Set PWM1L duty cycle to 5 µs
     
+    // Set PWM triggers for ADC
+    TRIG1bits.TRGCMP = 8; // Set the point at which the ADC module is triggered by the primary PWM
+    STRIG1bits.STRGCMP = 8; // Set the point at which the ADC module is triggered by the secondary PWM
+    // This will definitely need to be adjusted later, we may even want to set it based on the duty cycle
+    
+    TRGCON1bits.TRGSTRT = 4; // Wait 4 PWM cycles before generating the first trigger event
+    TRGCON1bits.TRGDIV = 0b0000; // Trigger output every trigger event
+    TRGCON1bits.DTM = 0; // Disable dual trigger mode. I think this effectively disables trigger generation from the secondary pwm
+   
+    PWMCON1bits.TRGIEN = 1; // Trigger event generates interrupt request
+    while (PWMCON1bits.TRGSTAT == 0);
+    
     // Setup ADC
     ADCONbits.SLOWCLK = 0; // Set the ADC clock to the primary PLL (Fvco) instead of the auxiliary PLL (ACLK)
     // I'm haven't gone through the math of both clocks to figure out what the frequency difference is, TODO later
     
-    ADCONbits.ADCS = 0b000; // Set the ADC clock divider ratio to 1:1. I'm not actually sure what the clock does in the ADC, once we know we should update ADCS and SLOWCLK
+    ADCONbits.ADCS = 0b101; // Divide the ADC clock frequency by 6. I'm not actually sure what the clock does in the ADC, once we know we should update ADCS and SLOWCLK
     ADCONbits.FORM = 0; // Output in Integer Format (again this may need to be changed later depending on how the motor control math works)
     
     // Both of these need to be checked with someone who knows what they are talking about, I'm not sure what the most efficient setup is
@@ -121,22 +137,30 @@ int main(void) {
     // On a 1 SAR PIC, enabling this generates an interrupt as soon as the first conversion is done without waiting for the second one
     // In either case, I don't know why you would want to do this
     
-    ADCPC0bits.TRGSRC0 = 0b00100; // Use PWM Generator 1 primary to trigger conversion of ADC Pair 0
-    
     ADPCFGbits.PCFG0 = 0; // Configure AN0 as an analog input
     ADPCFGbits.PCFG1 = 0; // Configure AN1 as an analog input
     
-    
-    ADCPC0bits.IRQEN0 = 1; // Enable interrupt generation for ADC Pair 0
-    IPC27bits.ADCP0IP = 0x01; // This needs to be updated once we figure out the sampling order
+    IPC27bits.ADCP0IP = 5; // Set pair 0interrupt priority. This needs to be updated once we figure out the sampling order
     IEC6bits.ADCP0IE = 1; // Enable ADC Pair 0 interrupt. I'm not sure if both this line and the previous one are necessary
     IFS6bits.ADCP0IF = 0; // Clear ADC Pair 0 interrupt flag
     
+    ADSTATbits.P0RDY = 0; // Clear ADC Pair 0 data ready bit
+    ADCPC0bits.IRQEN0 = 1; // Enable interrupt generation for ADC Pair 0
+    ADCPC0bits.TRGSRC0 = 0b00001; // Use PWM Generator 1 primary to trigger conversion of ADC Pair 0
+    
     ADCONbits.ADON = 1; // Enable ADC now that setup is done
     
-    // This should theoretically start the LED at zero brightness, slowly goto full, turn off, and repeat
-    // There seems to be some bug with the loop itself, PWM is working though
+    ADCPC0bits.SWTRG0 = 1;
+    
     while(1) {
+        if (adc_complete) {
+            PDC1 = 4785;
+        } else {
+            PDC1 = 0;
+        }
+        
+        ADCPC0bits.SWTRG0 = 1;
+        /*
         for (int i = 0; i < 4785; i++) {
             PDC1 = i;
             //__delay_ms(100); // Enabling this causes the whole MCU to lag a BUNCH
@@ -144,6 +168,7 @@ int main(void) {
             // * So, the MCU is too busy doing nothing to update the PWM duty cycle and everything is sad
             // * Right now the LED brightness to quickly to be visible by the human eye, but the changes in PWM duty cycle are visible on an oscilloscope
         }
+        */
     }
 
     return 1;
