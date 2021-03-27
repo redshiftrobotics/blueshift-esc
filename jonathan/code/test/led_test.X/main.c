@@ -29,15 +29,13 @@
 
 #include <xc.h>
 
-int adc_complete = 0;
-
 void __interrupt(no_auto_psv) _ADCP0Interrupt(void) {
     int an0, an1;
     
     an0 = ADCBUF0;
     an1 = ADCBUF1;
     
-    adc_complete = 1;
+    PDC1 = 4785;
     
     IFS6bits.ADCP0IF = 0; // Clear ADC Pair 0 interrupt flag
 }
@@ -120,7 +118,7 @@ int main(void) {
     while (PWMCON1bits.TRGSTAT == 0);
     
     // Setup ADC
-    ADCONbits.SLOWCLK = 0; // Set the ADC clock to the primary PLL (Fvco) instead of the auxiliary PLL (ACLK)
+    ADCONbits.SLOWCLK = 1; // Set the ADC clock to the auxiliary PLL (ACLK) instead of the primary PLL (Fvco)
     // I'm haven't gone through the math of both clocks to figure out what the frequency difference is, TODO later
     
     ADCONbits.ADCS = 0b101; // Divide the ADC clock frequency by 6. I'm not actually sure what the clock does in the ADC, once we know we should update ADCS and SLOWCLK
@@ -140,26 +138,17 @@ int main(void) {
     ADPCFGbits.PCFG0 = 0; // Configure AN0 as an analog input
     ADPCFGbits.PCFG1 = 0; // Configure AN1 as an analog input
     
-    IPC27bits.ADCP0IP = 5; // Set pair 0interrupt priority. This needs to be updated once we figure out the sampling order
+    IPC27bits.ADCP0IP = 5; // Set pair 0 interrupt priority. This needs to be updated once we figure out the sampling order
     IEC6bits.ADCP0IE = 1; // Enable ADC Pair 0 interrupt. I'm not sure if both this line and the previous one are necessary
     IFS6bits.ADCP0IF = 0; // Clear ADC Pair 0 interrupt flag
     
     ADSTATbits.P0RDY = 0; // Clear ADC Pair 0 data ready bit
     ADCPC0bits.IRQEN0 = 1; // Enable interrupt generation for ADC Pair 0
-    ADCPC0bits.TRGSRC0 = 0b00001; // Use PWM Generator 1 primary to trigger conversion of ADC Pair 0
+    ADCPC0bits.TRGSRC0 = 0b00100; // Use PWM Generator 1 primary to trigger conversion of ADC Pair 0
     
     ADCONbits.ADON = 1; // Enable ADC now that setup is done
     
-    ADCPC0bits.SWTRG0 = 1;
-    
     while(1) {
-        if (adc_complete) {
-            PDC1 = 4785;
-        } else {
-            PDC1 = 0;
-        }
-        
-        ADCPC0bits.SWTRG0 = 1;
         /*
         for (int i = 0; i < 4785; i++) {
             PDC1 = i;
