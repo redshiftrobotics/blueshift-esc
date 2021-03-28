@@ -29,12 +29,86 @@
 
 #include <xc.h>
 
+static int speed = 1000;
+
+int step = 0;
+
+void __interrupt(no_auto_psv) _T1Interrupt(void) {
+    LATAbits.LATA0 ^= 1;
+    
+    step++;
+    
+    if (step > 5) {
+        step = 0;
+    }
+    
+    switch (step) {
+        case 0:
+            // A High; B Low; C Crossing
+            PDC1 = speed;
+            SDC1 = 0;
+            PDC2 = 0;
+            SDC2 = speed;
+            PDC4 = 0;
+            SDC4 = 0;
+            break;
+        case 1:
+            // A High; B Crossing; C Low
+            PDC1 = speed;
+            SDC1 = 0;
+            PDC2 = 0;
+            SDC2 = 0;
+            PDC4 = 0;
+            SDC4 = speed;
+            break;
+        case 2:
+            // A Crossing; B High; C Low
+            PDC1 = 0;
+            SDC1 = 0;
+            PDC2 = speed;
+            SDC2 = 0;
+            PDC4 = 0;
+            SDC4 = speed;
+            break;
+        case 3:
+            // A Low; B High; C Crossing
+            PDC1 = 0;
+            SDC1 = speed;
+            PDC2 = speed;
+            SDC2 = 0;
+            PDC4 = 0;
+            SDC4 = 0;
+            break;
+        case 4:
+            // A Low; B Crossing; C High
+            PDC1 = 0;
+            SDC1 = speed;
+            PDC2 = 0;
+            SDC2 = 0;
+            PDC4 = speed;
+            SDC4 = 0;
+            break;
+        case 5:
+            // A Crossing; B Low; C High
+            PDC1 = 0;
+            SDC1 = 0;
+            PDC2 = 0;
+            SDC2 = speed;
+            PDC4 = speed;
+            SDC4 = 0;
+            break;
+    }
+    
+    IFS0bits.T1IF = 0; // Reset the Timer1 interrupt
+}
+
 int main(void) {
     // IO Setup
     TRISA = 0x0000; // Set all of register A as outputs
-    TRISAbits.TRISA0 = 1; // Set AN0 as an input for the ADC
-    TRISAbits.TRISA1 = 1; // Set AN1 as an input for the ADC
     LATA = 0x0000; // Clear all of register A
+    
+    TRISB = 0x0000; // Set all of register B as outputs
+    LATB = 0x0000; // Clear all of register B
     
     
     // FRC Oscillator Setup
@@ -54,31 +128,71 @@ int main(void) {
     
     // PWM Setup
     PTCONbits.PTEN = 0; // Disable PWM before changing any settings
+    PTCONbits.EIPU = 1; // Update Active period register immediately
     PTCON2bits.PCLKDIV = 0b001; // Set PWM clock prescaler to 2
     
+    // PWM 1 Setup
     PWMCON1bits.MDCS = 0; // Set duty cycle based on the PDC1 and SDC1 register rather than the Master Duty Cycle
     
     PWMCON1bits.CAM = 1; // Enable Center Aligned Mode
     PWMCON1bits.ITB = 1; // Enable Independent Time Base (Necessary for Center Aligned Mode)
     
     PWMCON1bits.IUE = 1; // Update active duty cycle, phase offset, and independent time period registers immediately
-    PTCONbits.EIPU = 1; // Update Active period register immediately
     
     PWMCON1bits.DTC = 0b00; // Enable positive dead time generation
     
-    // Setup PWM IO
+    // Setup PWM 1 IO
     IOCON1bits.PENH = 1; // Enable PWM1H
     IOCON1bits.PENL = 1; // Enable PWM1L
     IOCON1bits.POLH = 0; // PWM1H active high
     IOCON1bits.POLL = 0; // PWM1L active high
     IOCON1bits.PMOD = 3; // True Independent Output Mode
     
+    // PWM 2 Setup
+    PWMCON2bits.MDCS = 0; // Set duty cycle based on the PDC1 and SDC1 register rather than the Master Duty Cycle
+    
+    PWMCON2bits.CAM = 1; // Enable Center Aligned Mode
+    PWMCON2bits.ITB = 1; // Enable Independent Time Base (Necessary for Center Aligned Mode)
+    
+    PWMCON2bits.IUE = 1; // Update active duty cycle, phase offset, and independent time period registers immediately
+    
+    PWMCON2bits.DTC = 0b00; // Enable positive dead time generation
+    
+    // Setup PWM 2 IO
+    IOCON2bits.PENH = 1; // Enable PWM1H
+    IOCON2bits.PENL = 1; // Enable PWM1L
+    IOCON2bits.POLH = 0; // PWM1H active high
+    IOCON2bits.POLL = 0; // PWM1L active high
+    IOCON2bits.PMOD = 3; // True Independent Output Mode
+    
+    
+    // Setup PWM 4 IO with PPS
+    RPOR5bits.RP11R = 0b101100; // Assign RP11 to PWM4H
+    RPOR6bits.RP12R = 0b101101; // Assign RP12 to PWM4L
+    
+    // PWM 4 Setup
+    PWMCON4bits.MDCS = 0; // Set duty cycle based on the PDC1 and SDC1 register rather than the Master Duty Cycle
+    
+    PWMCON4bits.CAM = 1; // Enable Center Aligned Mode
+    PWMCON4bits.ITB = 1; // Enable Independent Time Base (Necessary for Center Aligned Mode)
+    
+    PWMCON4bits.IUE = 1; // Update active duty cycle, phase offset, and independent time period registers immediately
+    
+    PWMCON4bits.DTC = 0b00; // Enable positive dead time generation
+    
+    // Setup PWM 4 IO
+    IOCON4bits.PENH = 1; // Enable PWM1H
+    IOCON4bits.PENL = 1; // Enable PWM1L
+    IOCON4bits.POLH = 0; // PWM1H active high
+    IOCON4bits.POLL = 0; // PWM1L active high
+    IOCON4bits.PMOD = 3; // True Independent Output Mode
+    
     PTCONbits.PTEN = 1; // Enable PWM now that setup is done
     
     // Set PWM period
-    // ((ACLK * 8 * desired_pwm_period_µs) / PCLKDIV) - 8 = PHASE1 and SPHASE1
-    // ((119.84 * 8 * desired_pwm_period_µs) / 2) - 8 = PHASE1 and SPHASE1
-    // ((119.84 * 8 * 10 µs) / 2) - 8 = 4785.6
+    // ((ACLK * 8 * desired_pwm_period_Î¼s) / PCLKDIV) - 8 = PHASE1 and SPHASE1
+    // ((119.84 * 8 * desired_pwm_period_Î¼s) / 2) - 8 = PHASE1 and SPHASE1
+    // ((119.84 * 8 * 10 Î¼s) / 2) - 8 = 4785.6
     PHASE1 = 4785; // Set PWM1H frequency to 100 kHz
     SPHASE1 = 4785; // SET PWM1L frequency to 100 kHz
     PHASE2 = 4785; // Set PWM2H frequency to 100 kHz
@@ -88,19 +202,28 @@ int main(void) {
     
     // Set PWM Duty Cycle
     // Set Duty Cycle to a specific time
-    // * (ACLK * 8 * desired_duty_cycle_µs) / PCLKDIV = PDC1 and SDC1
-    // * (119.84 * 8 * desired_duty_cycle_µs) / 2 = PDC1 and SDC1
-    // * (119.84 * 8 * 5 µs) / 2 = 2396.8
+    // * (ACLK * 8 * desired_duty_cycle_Î¼s) / PCLKDIV = PDC1 and SDC1
+    // * (119.84 * 8 * desired_duty_cycle_Î¼s) / 2 = PDC1 and SDC1
+    // * (119.84 * 8 * 5 Î¼s) / 2 = 2396.8
     // To set a duty cycle as a percentage, the formula should just be pwm_frequecy * duty_cycle_percentage
     // * PHASE1 * 50% = PDC
     // * 4785 * 0.5 = 2392.5
     MDC = 0; // Zero out the Master Duty Cycle
-    PDC1 = 0; // Set PWM1H duty cycle to 0 µs
-    SDC1 = 0; // Set PWM1L duty cycle to 0 µs
-    PDC2 = 0; // Set PWM2H duty cycle to 0 µs
-    SDC2 = 0; // Set PWM2L duty cycle to 0 µs
-    PDC4 = 0; // Set PWM4H duty cycle to 0 µs
-    SDC4 = 0; // Set PWM4L duty cycle to 0 µs
+    PDC1 = 0; // Set PWM1H duty cycle to 0 Î¼s
+    SDC1 = 0; // Set PWM1L duty cycle to 0 Î¼s
+    PDC2 = 0; // Set PWM2H duty cycle to 0 Î¼s
+    SDC2 = 0; // Set PWM2L duty cycle to 0 Î¼s
+    PDC4 = 0; // Set PWM4H duty cycle to 0 Î¼s
+    SDC4 = 0; // Set PWM4L duty cycle to 0 Î¼s
+    
+    
+    T1CONbits.TON = 0; // Turn off Timer 1
+    T1CONbits.TCKPS = 0b01; // Set the pre-scaler to 1:1
+    INTCON1bits.NSTDIS = 1; // Disable interrupt nesting
+    IPC0bits.T1IP = 0b001; // Set priority to 1
+    IFS0bits.T1IF = 0;// clear interrupt
+    IEC0bits.T1IE = 1; // enable interrupt source
+    T1CONbits.TON = 1; // Turn on Timer 1
     
     while (1);
 
