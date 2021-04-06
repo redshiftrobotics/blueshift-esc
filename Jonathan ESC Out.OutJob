@@ -20,7 +20,7 @@ Description=
 TargetOutputMedium=Folder Structure
 VariantName=[No Variations]
 VariantScope=2
-CurrentConfigurationName=Assembly
+CurrentConfigurationName=Sources
 TargetPrinter=Brother HL-L5200DW series
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintJobKind=1|PrintWhat=1
 OutputMedium1=Print Job
