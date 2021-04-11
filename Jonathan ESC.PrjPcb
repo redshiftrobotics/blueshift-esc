@@ -220,9 +220,7 @@ ParameterCount=0
 ConstraintFileCount=0
 ReleaseItemId=2D54E6CE-BA79-4F20-A16C-4445A9E4171A
 Variant=[No Variations]
-OutputJobsCount=1
-DocumentReferenceClass1=DocumentReference
-OutputJobFileName1=Jonathan ESC Out.OutJob
+OutputJobsCount=0
 ContentTypeGUID=CB6F2064-E317-11DF-B822-12313F0024A2
 ConfigurationType=Source
 
@@ -234,7 +232,7 @@ ReleaseItemId=FF8E97F2-4704-40B6-89E7-7438741709BD
 Variant=[No Variations]
 OutputJobsCount=1
 DocumentReferenceClass1=DocumentReference
-OutputJobFileName1=Jonathan ESC Out.OutJob
+OutputJobFileName1=Fabrication.OutJob
 ContentTypeGUID=0C520D2A-E60C-11DF-B822-12313F0024A2
 ConfigurationType=Fabrication
 
@@ -246,7 +244,7 @@ ReleaseItemId=9D3317A0-7A47-4D58-AF29-65468113A7CD
 Variant=[No Variations]
 OutputJobsCount=1
 DocumentReferenceClass1=DocumentReference
-OutputJobFileName1=Jonathan ESC Out.OutJob
+OutputJobFileName1=Assembly.OutJob
 ContentTypeGUID=0D12F8DC-E60C-11DF-B822-12313F0024A2
 ConfigurationType=Assembly
 
