@@ -29,7 +29,7 @@
 
 #include <xc.h>
 
-static int speed = 1000;
+static int speed = 3000;
 
 int step = 0;
 
@@ -218,7 +218,7 @@ int main(void) {
     
     
     T1CONbits.TON = 0; // Turn off Timer 1
-    T1CONbits.TCKPS = 0b01; // Set the pre-scaler to 1:1
+    T1CONbits.TCKPS = 0b10; // Set the pre-scaler to 1:1
     INTCON1bits.NSTDIS = 1; // Disable interrupt nesting
     IPC0bits.T1IP = 0b001; // Set priority to 1
     IFS0bits.T1IF = 0;// clear interrupt
