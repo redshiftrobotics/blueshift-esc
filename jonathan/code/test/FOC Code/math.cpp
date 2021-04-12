@@ -68,50 +68,44 @@ int number;
     PID_q.ki = 5;
     PID_q.kd = 2;
 
-    // while (true){
-//forward clarke
-    // float I_alpha = ((2.0 / 3.0) * Ia) - ((1.0 / 3.0) * (Ib - Ic));
-    float I_alpha = Ia;
-    cout << "\ni alpha: " << I_alpha;
 
-    float I_beta = ((Ib - Ic) / (sqrt(3.0)));
-    cout << "\ni beta: " << I_beta;
+float I_alpha;
+float I_beta;
+float Id;
+float Iq;
 
-//forward park
-    float Id = (((cos(theta)) * I_alpha) + ((sin(theta) * I_beta)));
-    cout << "\nid: " << Id;
+// Forward Clarke
+I_alpha = Ia;
+I_beta = (I_alpha + (Ib*2))/sqrt(3);
 
-    float Iq = (((-sin(theta)) * I_alpha) + ((cos(theta)) * I_beta));
-    cout << "\niq: " << Iq;
+cout << "\nAlpha: " << I_alpha;
+cout << "\nBeta: " << I_beta;
 
-    // cin >> input;
+// Park Transformation
+Id = (I_alpha * cos(theta)) + (I_beta * sin(theta));
+Iq = (I_beta * cos(theta)) - (I_alpha * sin(theta));
 
-    // do_PID ( PID_d );
-    // do_PID ( PID_q );
-
+cout << "\nId: " << Id;
+cout << "\nIq: " << Iq;
 
 //inverse park
-    I_alpha = (Id * cos(theta)) - (Iq * sin(theta));
-    cout << "\ninverse i alpha: " << I_alpha;
+I_alpha = ((Id * cos(theta))) - (Iq * sin(theta));
+I_beta = ((Iq * cos(theta)) + (Id * sin(theta)));
 
-    I_beta = (Id * sin(theta) + (Iq * cos(theta)));
-    cout << "\ninverse i beta: " << I_beta;
+cout << "\nInverse Alpha: " << I_alpha;
+cout << "\nInverse Beta: " << I_beta;
 
-//inverse clarke - this is the original that we manipulated
- //   Ia = I_alpha;
- //   cout << "\ninverse ia: " << Ia;
 
- //   Ib = (-I_alpha * (sqrt(3)) * I_beta);
- //   cout << "\ninverse ib: " << Ib;
+// Inverse Clarke
+Ia = Ia;
+Ib = (-Ia + (sqrt(3)*I_beta))/2;
+Ic = -(-Ia - (sqrt(3)*I_beta))/2;
 
- //   Ic = (-I_alpha - ((sqrt(3)) * I_beta));
- //   cout << "\ninverse ic: " << Ic;
-//}
+cout << "\nInverse A: " << Ia;
+cout << "\nInverse B: " << Ib;
+cout << "\nInverse C: " << Ic;
 
-Ia = I_alpha;
-Ib = (-I_beta/2 + sqrt(3)/2 * I_alpha);
-Ic = (-I_beta/2 - sqrt(3)/2 * I_alpha);
-cout << "\n inverse ia " << Ia << "\n inverse ib " << Ib << "\n inverse ic " << Ic;
+
 
 }
 
