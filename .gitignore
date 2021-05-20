@@ -2,6 +2,8 @@
 *.epf
 *.vscode
 *.generated_files
+*.generatd_files/*
 *build
 *dist
 *debug
+*nbproject
