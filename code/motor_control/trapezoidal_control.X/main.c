@@ -36,7 +36,6 @@ int step = 0;
 void __interrupt(no_auto_psv) _T1Interrupt(void) {
     LATAbits.LATA0 ^= 1;
     
-    /*
     step++;
     
     if (step > 5) {
@@ -46,60 +45,59 @@ void __interrupt(no_auto_psv) _T1Interrupt(void) {
     switch (step) {
         case 0:
             // A High; B Low; C Crossing
-            PDC1 = 0;
+            PDC1 = speed;
             SDC1 = 0;
-            PDC2 = speed;
+            PDC2 = 0;
             SDC2 = speed;
-            PDC4 = speed;
+            PDC4 = 0;
             SDC4 = 0;
             break;
         case 1:
             // A High; B Crossing; C Low
-            PDC1 = 0;
+            PDC1 = speed;
             SDC1 = 0;
-            PDC2 = speed;
+            PDC2 = 0;
             SDC2 = 0;
-            PDC4 = speed;
+            PDC4 = 0;
             SDC4 = speed;
             break;
         case 2:
             // A Crossing; B High; C Low
-            PDC1 = speed;
+            PDC1 = 0;
             SDC1 = 0;
-            PDC2 = 0;
+            PDC2 = speed;
             SDC2 = 0;
-            PDC4 = speed;
+            PDC4 = 0;
             SDC4 = speed;
             break;
         case 3:
             // A Low; B High; C Crossing
-            PDC1 = speed;
+            PDC1 = 0;
+            SDC1 = speed;
+            PDC2 = speed;
+            SDC2 = 0;
+            PDC4 = 0;
+            SDC4 = 0;
+            break;
+        case 4:
+            // A Low; B Crossing; C High
+            PDC1 = 0;
             SDC1 = speed;
             PDC2 = 0;
             SDC2 = 0;
             PDC4 = speed;
             SDC4 = 0;
             break;
-        case 4:
-            // A Low; B Crossing; C High
-            PDC1 = speed;
-            SDC1 = speed;
-            PDC2 = speed;
-            SDC2 = 0;
-            PDC4 = 0;
-            SDC4 = 0;
-            break;
         case 5:
             // A Crossing; B Low; C High
-            PDC1 = speed;
+            PDC1 = 0;
             SDC1 = 0;
-            PDC2 = speed;
+            PDC2 = 0;
             SDC2 = speed;
-            PDC4 = 0;
+            PDC4 = speed;
             SDC4 = 0;
             break;
     }
-    */
     
     PDC1 = 0;
     SDC1 = 0;
