@@ -29,7 +29,7 @@
 
 #include <xc.h>
 
-static int speed = 4000;
+static int speed = 20000;
 
 int step = 0;
 
@@ -99,12 +99,14 @@ void __interrupt(no_auto_psv) _T1Interrupt(void) {
             break;
     }
     
+    /*
     PDC1 = 0;
     SDC1 = 0;
     PDC2 = 0;
     SDC2 = 0;
     PDC4 = 0;
     SDC4 = 0;
+    */
     
     IFS0bits.T1IF = 0; // Reset the Timer1 interrupt
 }
@@ -133,10 +135,15 @@ int main(void) {
     while(ACLKCONbits.APLLCK != 1); // Wait for Auxiliary PLL to Lock
     // ACLK: (FRC * 16) / APSTSCLR = (7.49 * 16) / 1 = 119.84 MHz
     
+    
+    // ------------------------------------------------------------------- //
+    // The math in the comments does not match the values in the registers //
+    // ------------------------------------------------------------------- //
+    
     // PWM Setup
     PTCONbits.PTEN = 0; // Disable PWM before changing any settings
     PTCONbits.EIPU = 1; // Update Active period register immediately
-    PTCON2bits.PCLKDIV = 0b001; // Set PWM clock prescaler to 2
+    PTCON2bits.PCLKDIV = 0b110; // Set PWM clock prescaler to 2
     
     // PWM 1 Setup
     PWMCON1bits.MDCS = 0; // Set duty cycle based on the PDC1 and SDC1 register rather than the Master Duty Cycle
@@ -200,12 +207,13 @@ int main(void) {
     // ((ACLK * 8 * desired_pwm_period_μs) / PCLKDIV) - 8 = PHASE1 and SPHASE1
     // ((119.84 * 8 * desired_pwm_period_μs) / 2) - 8 = PHASE1 and SPHASE1
     // ((119.84 * 8 * 10 μs) / 2) - 8 = 4785.6
-    PHASE1 = 4785; // Set PWM1H frequency to 100 kHz
-    SPHASE1 = 4785; // SET PWM1L frequency to 100 kHz
-    PHASE2 = 4785; // Set PWM2H frequency to 100 kHz
-    SPHASE2 = 4785; // SET PWM2L frequency to 100 kHz
-    PHASE4 = 4785; // Set PWM4H frequency to 100 kHz
-    SPHASE4 = 4785; // SET PWM4L frequency to 100 kHz
+    int period = 40000;
+    PHASE1 = period; // Set PWM1H frequency to 100 kHz
+    SPHASE1 = period; // SET PWM1L frequency to 100 kHz
+    PHASE2 = period; // Set PWM2H frequency to 100 kHz
+    SPHASE2 = period; // SET PWM2L frequency to 100 kHz
+    PHASE4 = period; // Set PWM4H frequency to 100 kHz
+    SPHASE4 = period; // SET PWM4L frequency to 100 kHz
     
     // Set PWM Duty Cycle
     // Set Duty Cycle to a specific time
