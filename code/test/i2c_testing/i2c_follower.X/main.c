@@ -30,6 +30,18 @@
 #include <xc.h>
 #include <p33FJ09GS302.h>
 
+void __interrupt(no_auto_psv) _SI2C1IFInterrupt(void) {
+    
+    if (I2CSTATbits.R_W == 1) { // Leader wants to read from this device
+        I2C1CONbits.SCLREL = 1; // Release the clock
+    } else { // Leader wants to write to this device
+        I2C1CONbits.SCLREL = 1; // Release the clock
+    }
+    
+    // Clear I2C follower interrupt
+    _SI2C1IF = 0;
+}
+
 int main(void) {
     // IO Setup
     TRISA = 0x0000; // Set all of register A as outputs
@@ -56,8 +68,14 @@ int main(void) {
     
     // I2C Setup
     I2C1CONbits.I2CEN = 0; // Disable I2C during setup
-    
     I2C1CONbits.A10M = 0; // 7 bit follower address mode
+    I2C1CONbits.STREN = 1; // Enable clock stretching
+    I2C1CONbits.SMEN = 1; // Set high/low thresholds to match the SMBus specification
+    // I2C1CONbits.GCEN = 1; // Enables general call address (allows communication to all I2C devices on the bus at the same time)
+    I2C1CONbits.DISSLW = 1; // Disable slew rate control. I think this just allows a faster bus rate
+    
+    IEC1bits.SI2C1IE = 1; // Enable follower I2C event interrupts
+    //IPC4bits.SI2C1IP = 0b111; // Set follower I2C interrupt priority
     
     I2C1MSK = 0; // Disable follower address masking (each bit in the address has to match exactly)
     
