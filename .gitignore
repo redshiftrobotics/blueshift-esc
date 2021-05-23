@@ -1,7 +1,13 @@
 *.DS_Store
-*.epf
 *.vscode
+
 *.generated_files
 *build
 *dist
 *debug
+
+# https://electronics.stackexchange.com/a/241455
+**/nbproject/**
+!**/nbproject/configurations.xml
+!**/nbproject/project.properties
+!**/nbproject/project.xml
