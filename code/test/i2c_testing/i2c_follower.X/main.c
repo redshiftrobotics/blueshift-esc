@@ -1,3 +1,9 @@
+#include <xc.h>
+#include <stdint.h>
+
+// I2C Code is modified from Microchip Sample CE445
+#include "i2c/i2c.h"
+
 // DSPIC33FJ09GS302 Configuration Bit Settings
 // 'C' source line config statements
 // FICD
@@ -27,18 +33,10 @@
 // #pragma config statements should precede project file includes.
 // Use project enums instead of #define for ON and OFF.
 
-#include <xc.h>
 #include <p33FJ09GS302.h>
 
-int main(void) {
-    // IO Setup
-    TRISA = 0x0000; // Set all of register A as outputs
-    LATA = 0x0000; // Clear all of register A
-    
-    TRISB = 0x0000; // Set all of register B as outputs
-    LATB = 0x0000; // Clear all of register B
-    
-    
+int main (void)
+{
     // FRC Oscillator Setup
     // FRC nominal frequency is 7.37MHz. TUN updates the frequency to be 7.37 + (TUN * 0.00375 * 7.37)
     OSCTUNbits.TUN = 4; // Update the frequency to 7.49
@@ -53,19 +51,9 @@ int main(void) {
     ACLKCONbits.ENAPLL = 1; // Enable Auxiliary PLL
     while(ACLKCONbits.APLLCK != 1); // Wait for Auxiliary PLL to Lock
     // ACLK: (FRC * 16) / APSTSCLR = (7.49 * 16) / 1 = 119.84 MHz
-    
-    // I2C Setup
-    I2C1CONbits.I2CEN = 0; // Disable I2C during setup
-    
-    I2C1CONbits.A10M = 0; // 7 bit follower address mode
-    
-    I2C1MSK = 0; // Disable follower address masking (each bit in the address has to match exactly)
-    
-    I2C1ADD = 0x2A; // Set the follower address to 42 (in hex)
-    
-    I2C1CONbits.I2CEN = 1; // Enable I2C once setup is complete
-    
-    while (1);
 
+    I2C1_Init();
+    while(1);
+    
     return 1;
 }
