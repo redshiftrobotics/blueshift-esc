@@ -1,3 +1,7 @@
+#include <xc.h>
+
+#include "i2c/i2c.h"
+
 // DSPIC33FJ09GS302 Configuration Bit Settings
 // 'C' source line config statements
 // FICD
@@ -25,22 +29,25 @@
 #pragma config GCP = OFF                // General Segment Code-Protect bit (General Segment Code protect is Disabled)
 
 // #pragma config statements should precede project file includes.
-// Use project enums instead of #define for ON and OFF.
-
-#include <xc.h>
+// Use project enums instead of #define for ON and OFF.=
 
 static int period = 40000;
 static int speed = 30000;
 
 int step = 0;
+int step_dir = 1;
 
 void __interrupt(no_auto_psv) _T1Interrupt(void) {
     LATAbits.LATA0 ^= 1;
     
-    step++;
+    step += step_dir;
     
     if (step > 5) {
         step = 0;
+    }
+    
+    if (step < 0) {
+        step = 5;
     }
     
     switch (step) {
@@ -99,15 +106,6 @@ void __interrupt(no_auto_psv) _T1Interrupt(void) {
             SDC4 = 0;
             break;
     }
-    
-    /*
-    PDC1 = 0;
-    SDC1 = 0;
-    PDC2 = 0;
-    SDC2 = 0;
-    PDC4 = 0;
-    SDC4 = 0;
-    */
     
     IFS0bits.T1IF = 0; // Reset the Timer1 interrupt
 }
@@ -243,7 +241,14 @@ int main(void) {
     // this seems to change the timer frequency? 
     // What are the units? I think they are how many ticks it takes per timer cycle?
     
-    while (1);
+    while (1) {
+        PR1 = (ramBuffer[0] << 8) | ramBuffer[1];
+        if (ramBuffer[2] == 1) {
+            step_dir = -1;
+        } else {
+            step_dir = 1;
+        }
+    }
 
     return 1;
 }
