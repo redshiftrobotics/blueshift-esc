@@ -4,6 +4,9 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <logicalFolder name="i2c" displayName="i2c" projectFiles="true">
+        <itemPath>i2c/i2c.h</itemPath>
+      </logicalFolder>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -12,6 +15,9 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <logicalFolder name="i2c" displayName="i2c" projectFiles="true">
+        <itemPath>i2c/i2c.c</itemPath>
+      </logicalFolder>
       <itemPath>main.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
@@ -20,6 +26,9 @@
       <itemPath>Makefile</itemPath>
     </logicalFolder>
   </logicalFolder>
+  <sourceRootList>
+    <Elem>i2c</Elem>
+  </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="default" type="2">
@@ -28,10 +37,10 @@
         <targetDevice>dsPIC33FJ09GS302</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>pk4hybrid</platformTool>
+        <platformTool>noID</platformTool>
         <languageToolchain>XC16</languageToolchain>
         <languageToolchainVersion>1.61</languageToolchainVersion>
-        <platform>4</platform>
+        <platform>3</platform>
       </toolsSet>
       <packs>
         <pack name="dsPIC33F-GS_DFP" vendor="Microchip" version="1.3.63"/>
