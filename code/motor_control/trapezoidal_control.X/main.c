@@ -29,7 +29,8 @@
 
 #include <xc.h>
 
-static int speed = 20000;
+static int period = 40000;
+static int speed = 30000;
 
 int step = 0;
 
@@ -207,7 +208,6 @@ int main(void) {
     // ((ACLK * 8 * desired_pwm_period_μs) / PCLKDIV) - 8 = PHASE1 and SPHASE1
     // ((119.84 * 8 * desired_pwm_period_μs) / 2) - 8 = PHASE1 and SPHASE1
     // ((119.84 * 8 * 10 μs) / 2) - 8 = 4785.6
-    int period = 40000;
     PHASE1 = period; // Set PWM1H frequency to 100 kHz
     SPHASE1 = period; // SET PWM1L frequency to 100 kHz
     PHASE2 = period; // Set PWM2H frequency to 100 kHz
@@ -233,12 +233,15 @@ int main(void) {
     
     
     T1CONbits.TON = 0; // Turn off Timer 1
-    T1CONbits.TCKPS = 0b10; // Set the pre-scaler to 1:1
+    T1CONbits.TCKPS = 0b00; // Set the pre-scaler to 1:1
     INTCON1bits.NSTDIS = 1; // Disable interrupt nesting
     IPC0bits.T1IP = 0b001; // Set priority to 1
     IFS0bits.T1IF = 0;// clear interrupt
     IEC0bits.T1IE = 1; // enable interrupt source
     T1CONbits.TON = 1; // Turn on Timer 1
+    PR1 = 19000; // Load the period value. 
+    // this seems to change the timer frequency? 
+    // What are the units? I think they are how many ticks it takes per timer cycle?
     
     while (1);
 
