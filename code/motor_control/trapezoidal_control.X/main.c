@@ -1,4 +1,5 @@
 #include <xc.h>
+#include <stdbool.h>
 
 // Modified from Microchip Code Sample CE445
 #include "i2c/i2c.h"
@@ -33,12 +34,12 @@
 // Use project enums instead of #define for ON and OFF.=
 
 static int period = 23960;
-static int speed = 15000;
+static int speed = 20000;
 
 int step = 0;
-int step_dir = 1;
+int step_dir = -1;
 
-void __interrupt(no_auto_psv) _T1Interrupt(void) {
+void commutate(void) {
     step += step_dir;
     
     if (step > 5) {
@@ -48,6 +49,8 @@ void __interrupt(no_auto_psv) _T1Interrupt(void) {
     if (step < 0) {
         step = 5;
     }
+    
+    
     
     switch (step) {
         case 0:
@@ -105,8 +108,47 @@ void __interrupt(no_auto_psv) _T1Interrupt(void) {
             SDC4 = 0;
             break;
     }
+}
+
+void __interrupt(no_auto_psv) _T1Interrupt(void) {
+    
+    commutate();
     
     IFS0bits.T1IF = 0; // Reset the Timer1 interrupt
+}
+
+int last_a_c = 1024;
+int last_b_c = 1024;
+int c_threshold_low = 280;
+int c_threshold_high = 310;
+bool can_commutate = true;
+
+void __interrupt(no_auto_psv) _ADCP0Interrupt(void) {
+    /*
+    int phase_a_current, phase_b_current, phase_c_current;
+    
+    phase_a_current = ADCBUF0;
+    phase_b_current = ADCBUF1;
+    // We need to convert the current measurements from the amplifier range back to actual current range before we can use KCL to calculate phase C
+    // phase_c_current = -(phase_a_current + phase_b_current);
+    */
+    
+    int a_c, b_c;
+    a_c = ADCBUF0;
+    b_c = ADCBUF1;
+    
+    if (a_c > c_threshold_high) {
+        can_commutate = true;
+    }
+    
+    if (can_commutate) {
+        if (a_c < c_threshold_low) {
+            commutate();
+            can_commutate = false;
+        }
+    }
+    
+    IFS6bits.ADCP0IF = 0; // Clear ADC Pair 0 interrupt flag
 }
 
 int main(void) {
@@ -227,15 +269,57 @@ int main(void) {
     PDC4 = 0; // Set PWM4H duty cycle to 0 μs
     SDC4 = 0; // Set PWM4L duty cycle to 0 μs
     
+        // Set PWM triggers for ADC
+    TRIG1bits.TRGCMP = 8; // Set the point at which the ADC module is triggered by the primary PWM
+    STRIG1bits.STRGCMP = 8; // Set the point at which the ADC module is triggered by the secondary PWM
+    // This will definitely need to be adjusted later, we may even want to set it based on the duty cycle
+    
+    TRGCON1bits.TRGSTRT = 4; // Wait 4 PWM cycles before generating the first trigger event
+    TRGCON1bits.TRGDIV = 0b0000; // Trigger output every trigger event
+    TRGCON1bits.DTM = 0; // Disable dual trigger mode. I think this effectively disables trigger generation from the secondary pwm
+   
+    PWMCON1bits.TRGIEN = 1; // Trigger event generates interrupt request
+    while (PWMCON1bits.TRGSTAT == 0);
+    
+    // Setup ADC
+    ADCONbits.SLOWCLK = 1; // Set the ADC clock to the auxiliary PLL (ACLK) instead of the primary PLL (Fvco)
+    // I'm haven't gone through the math of both clocks to figure out what the frequency difference is, TODO later
+    
+    ADCONbits.ADCS = 0b101; // Divide the ADC clock frequency by 6. I'm not actually sure what the clock does in the ADC, once we know we should update ADCS and SLOWCLK
+    ADCONbits.FORM = 0; // Output in Integer Format (again this may need to be changed later depending on how the motor control math works)
+    
+    // Both of these need to be checked with someone who knows what they are talking about, I'm not sure what the most efficient setup is
+    ADCONbits.ASYNCSAMP = 0; // Sample in synchronous mode
+    ADCONbits.SEQSAMP = 0; // Sample with simultaneous sampling
+    
+    ADCONbits.ORDER = 0; // Convert the even numbered input in the pair before the odd one
+    
+    ADCONbits.EIE = 0; // Disable early interrupt
+    // On a 2 SAR PIC, enabling this generates an interrupt after 7 Tad clock cycles, instead of waiting for the conversion to be done
+    // On a 1 SAR PIC, enabling this generates an interrupt as soon as the first conversion is done without waiting for the second one
+    // In either case, I don't know why you would want to do this
+    
+    ADPCFGbits.PCFG0 = 0; // Configure AN0 as an analog input
+    ADPCFGbits.PCFG1 = 0; // Configure AN1 as an analog input
+    
+    IPC27bits.ADCP0IP = 5; // Set pair 0 interrupt priority. This needs to be updated once we figure out the sampling order
+    IEC6bits.ADCP0IE = 1; // Enable ADC Pair 0 interrupt. I'm not sure if both this line and the previous one are necessary
+    IFS6bits.ADCP0IF = 0; // Clear ADC Pair 0 interrupt flag
+    
+    ADSTATbits.P0RDY = 0; // Clear ADC Pair 0 data ready bit
+    ADCPC0bits.IRQEN0 = 1; // Enable interrupt generation for ADC Pair 0
+    ADCPC0bits.TRGSRC0 = 0b00100; // Use PWM Generator 1 primary to trigger conversion of ADC Pair 0
+    
+    ADCONbits.ADON = 1; // Enable ADC now that setup is done
     
     T1CONbits.TON = 0; // Turn off Timer 1
-    T1CONbits.TCKPS = 0b01; // Set the pre-scaler to 1:1
+    T1CONbits.TCKPS = 0b10; // Set the pre-scaler to 1:1
     INTCON1bits.NSTDIS = 1; // Disable interrupt nesting
     IPC0bits.T1IP = 0b001; // Set priority to 1
     IFS0bits.T1IF = 0;// clear interrupt
     IEC0bits.T1IE = 1; // enable interrupt source
     T1CONbits.TON = 1; // Turn on Timer 1
-    PR1 = 19000; // Load the period value. 
+    //PR1 = 8000; // Load the period value. 
     // this seems to change the timer frequency? 
     // What are the units? I think they are how many ticks it takes per timer cycle?
     
