@@ -1,5 +1,6 @@
 #include <xc.h>
 
+// Modified from Microchip Code Sample CE445
 #include "i2c/i2c.h"
 
 // DSPIC33FJ09GS302 Configuration Bit Settings
@@ -31,15 +32,13 @@
 // #pragma config statements should precede project file includes.
 // Use project enums instead of #define for ON and OFF.=
 
-static int period = 40000;
-static int speed = 30000;
+static int period = 23960;
+static int speed = 15000;
 
 int step = 0;
 int step_dir = 1;
 
 void __interrupt(no_auto_psv) _T1Interrupt(void) {
-    LATAbits.LATA0 ^= 1;
-    
     step += step_dir;
     
     if (step > 5) {
@@ -135,14 +134,10 @@ int main(void) {
     // ACLK: (FRC * 16) / APSTSCLR = (7.49 * 16) / 1 = 119.84 MHz
     
     
-    // ------------------------------------------------------------------- //
-    // The math in the comments does not match the values in the registers //
-    // ------------------------------------------------------------------- //
-    
     // PWM Setup
     PTCONbits.PTEN = 0; // Disable PWM before changing any settings
     PTCONbits.EIPU = 1; // Update Active period register immediately
-    PTCON2bits.PCLKDIV = 0b110; // Set PWM clock prescaler to 2
+    PTCON2bits.PCLKDIV = 0b000; // Set PWM clock prescaler to 2
     
     // PWM 1 Setup
     PWMCON1bits.MDCS = 0; // Set duty cycle based on the PDC1 and SDC1 register rather than the Master Duty Cycle
@@ -202,16 +197,19 @@ int main(void) {
     
     PTCONbits.PTEN = 1; // Enable PWM now that setup is done
     
+    // Something is wrong in this math, its 10kHz, not 20
+    // There is probably a divider somewhere that is twice what it should be
+    
     // Set PWM period
     // ((ACLK * 8 * desired_pwm_period_μs) / PCLKDIV) - 8 = PHASE1 and SPHASE1
     // ((119.84 * 8 * desired_pwm_period_μs) / 2) - 8 = PHASE1 and SPHASE1
-    // ((119.84 * 8 * 10 μs) / 2) - 8 = 4785.6
-    PHASE1 = period; // Set PWM1H frequency to 100 kHz
-    SPHASE1 = period; // SET PWM1L frequency to 100 kHz
-    PHASE2 = period; // Set PWM2H frequency to 100 kHz
-    SPHASE2 = period; // SET PWM2L frequency to 100 kHz
-    PHASE4 = period; // Set PWM4H frequency to 100 kHz
-    SPHASE4 = period; // SET PWM4L frequency to 100 kHz
+    // ((119.84 * 8 * 50 μs) / 2) - 8 = 23960
+    PHASE1 = period; // Set PWM1H frequency to 20 kHz
+    SPHASE1 = period; // SET PWM1L frequency to 20 kHz
+    PHASE2 = period; // Set PWM2H frequency to 20 kHz
+    SPHASE2 = period; // SET PWM2L frequency to 20 kHz
+    PHASE4 = period; // Set PWM4H frequency to 20 kHz
+    SPHASE4 = period; // SET PWM4L frequency to 20 kHz
     
     // Set PWM Duty Cycle
     // Set Duty Cycle to a specific time
@@ -219,8 +217,8 @@ int main(void) {
     // * (119.84 * 8 * desired_duty_cycle_μs) / 2 = PDC1 and SDC1
     // * (119.84 * 8 * 5 μs) / 2 = 2396.8
     // To set a duty cycle as a percentage, the formula should just be pwm_frequecy * duty_cycle_percentage
-    // * PHASE1 * 50% = PDC
-    // * 4785 * 0.5 = 2392.5
+    // * PHASEx * 50% = PDC
+    // * 23960 * 0.5 = 11980
     MDC = 0; // Zero out the Master Duty Cycle
     PDC1 = 0; // Set PWM1H duty cycle to 0 μs
     SDC1 = 0; // Set PWM1L duty cycle to 0 μs
@@ -231,7 +229,7 @@ int main(void) {
     
     
     T1CONbits.TON = 0; // Turn off Timer 1
-    T1CONbits.TCKPS = 0b00; // Set the pre-scaler to 1:1
+    T1CONbits.TCKPS = 0b01; // Set the pre-scaler to 1:1
     INTCON1bits.NSTDIS = 1; // Disable interrupt nesting
     IPC0bits.T1IP = 0b001; // Set priority to 1
     IFS0bits.T1IF = 0;// clear interrupt
@@ -241,13 +239,18 @@ int main(void) {
     // this seems to change the timer frequency? 
     // What are the units? I think they are how many ticks it takes per timer cycle?
     
+    //I2C1_Init();
+    
     while (1) {
+        /*
         PR1 = (ramBuffer[0] << 8) | ramBuffer[1];
+        
         if (ramBuffer[2] == 1) {
             step_dir = -1;
         } else {
             step_dir = 1;
         }
+        */
     }
 
     return 1;
