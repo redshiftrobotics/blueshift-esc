@@ -1,6 +1,10 @@
 #include <xc.h>
 #include <stdbool.h>
 
+// https://www.microchip.com/forums/m783008.aspx
+#define    FCY    16000000UL    // Instruction cycle frequency, Hz - required for __delayXXX() to work
+#include <libpic30.h>        // __delayXXX() functions macros defined here
+
 // Modified from Microchip Code Sample CE445
 #include "i2c/i2c.h"
 
@@ -38,7 +42,13 @@ static int speed = 15000;
 
 int step = 0;
 int step_dir = 1;
-int crossing_phase = 0; // 0 is a; 1 is b; 2 is c
+
+
+int half_dc_voltage = 503;
+
+int phase_a_current, phase_b_current, phase_c_current;
+int phase_a_voltage, phase_b_voltage, phase_c_voltage;
+int last_voltage = 503; //half_dc_voltage;
 
 void commutate(void) {
     step += step_dir;
@@ -51,8 +61,6 @@ void commutate(void) {
         step = 5;
     }
     
-    
-    
     switch (step) {
         case 0:
             // A High; B Low; C Crossing
@@ -62,7 +70,6 @@ void commutate(void) {
             SDC2 = speed;
             PDC4 = 0;
             SDC4 = 0;
-            crossing_phase = 2;
             break;
         case 1:
             // A High; B Crossing; C Low
@@ -72,7 +79,6 @@ void commutate(void) {
             SDC2 = 0;
             PDC4 = 0;
             SDC4 = speed;
-            crossing_phase = 1;
             break;
         case 2:
             // A Crossing; B High; C Low
@@ -82,7 +88,6 @@ void commutate(void) {
             SDC2 = 0;
             PDC4 = 0;
             SDC4 = speed;
-            crossing_phase = 0;
             break;
         case 3:
             // A Low; B High; C Crossing
@@ -92,7 +97,6 @@ void commutate(void) {
             SDC2 = 0;
             PDC4 = 0;
             SDC4 = 0;
-            crossing_phase = 2;
             break;
         case 4:
             // A Low; B Crossing; C High
@@ -102,7 +106,6 @@ void commutate(void) {
             SDC2 = 0;
             PDC4 = speed;
             SDC4 = 0;
-            crossing_phase = 1;
             break;
         case 5:
             // A Crossing; B Low; C High
@@ -112,7 +115,6 @@ void commutate(void) {
             SDC2 = speed;
             PDC4 = speed;
             SDC4 = 0;
-            crossing_phase = 0;
             break;
     }
 }
@@ -123,11 +125,6 @@ void __interrupt(no_auto_psv) _T1Interrupt(void) {
     
     IFS0bits.T1IF = 0; // Reset the Timer1 interrupt
 }
-
-int phase_a_current, phase_b_current, phase_c_current;
-int phase_a_voltage, phase_b_voltage, phase_c_voltage;
-
-static int half_dc_voltage = 503;
 
 void __interrupt(no_auto_psv) _ADCP0Interrupt(void) {
     // This math is all actually wrong, we need to convert it from ADC sampling range, to amplifier range, to raw current
@@ -151,6 +148,18 @@ void __interrupt(no_auto_psv) _ADCP3Interrupt(void) {
 }
 
 int main(void) {
+    // IO Setup
+    TRISA = 0x0000; // Set all of register A as outputs
+    TRISAbits.TRISA0 = 1; // Set AN0 as an input for the ADC
+    TRISAbits.TRISA1 = 1; // Set AN1 as an input for the ADC
+    TRISAbits.TRISA2 = 1; // Set AN2 as an input for the ADC
+    LATA = 0x0000; // Clear all of register A
+    
+    TRISB = 0x0000; // Set all of register A as outputs
+    TRISBbits.TRISB0 = 1; // Set AN3 as an input for the ADC
+    TRISBbits.TRISB2 = 1; // Set AN7 as an input for the ADC
+    LATB = 0x0000; // Clear all of register A
+    
     // FRC Oscillator Setup
     // FRC nominal frequency is 7.37MHz. TUN updates the frequency to be 7.37 + (TUN * 0.00375 * 7.37)
     OSCTUNbits.TUN = 4; // Update the frequency to 7.49
@@ -340,9 +349,7 @@ int main(void) {
     // What are the units? I think they are how many ticks it takes per timer cycle?
     
     //I2C1_Init();
-    
-    int last_voltage = half_dc_voltage;
-    
+    LATBbits.LATB4 = 1;
     while (1) {
         
         /*
@@ -354,24 +361,77 @@ int main(void) {
             step_dir = 1;
         }
         */
-        int current_voltage;
-        switch (crossing_phase) {
+
+        switch (step) {
             case 0:
-                current_voltage = phase_a_voltage;
+                // C crossing high -> low
+                if (last_voltage > half_dc_voltage && phase_c_voltage < half_dc_voltage) {
+                    //commutate();
+                    LATBbits.LATB4 = 1;
+                    __delay_ms(1);
+                    LATBbits.LATB4 = 0;
+                } else {
+                    last_voltage = phase_c_voltage;
+                }
                 break;
             case 1:
-                current_voltage = phase_c_voltage;
+                // B crossing low -> high
+                if (last_voltage < half_dc_voltage && phase_b_voltage > half_dc_voltage) {
+                    //commutate();
+                    LATBbits.LATB4 = 1;
+                    __delay_ms(1);
+                    LATBbits.LATB4 = 0;
+                } else {
+                    last_voltage = phase_b_voltage;
+                }
                 break;
             case 2:
-                current_voltage = phase_c_voltage;
+                // A crossing high -> low
+                if (last_voltage > half_dc_voltage && phase_a_voltage < half_dc_voltage) {
+                    //commutate();
+                    LATBbits.LATB4 = 1;
+                    __delay_ms(1);
+                    LATBbits.LATB4 = 0;
+                } else {
+                    last_voltage = phase_a_voltage;
+                }
+                break;
+            case 3:
+                // C crossing low -> high
+                if (last_voltage < half_dc_voltage && phase_c_voltage > half_dc_voltage) {
+                    //commutate();
+                    LATBbits.LATB4 = 1;
+                    __delay_ms(1);
+                    LATBbits.LATB4 = 0;
+                } else {
+                    last_voltage = phase_c_voltage;
+                }
+                break;
+            case 4:
+                // B crossing high -> low
+                if (last_voltage > half_dc_voltage && phase_b_voltage < half_dc_voltage) {
+                    //commutate();
+                    LATBbits.LATB4 = 1;
+                    __delay_ms(1);
+                    LATBbits.LATB4 = 0;
+                } else {
+                    last_voltage = phase_b_voltage;
+                }
+                break;
+            case 5:
+                // A crossing low -> high
+                if (last_voltage < half_dc_voltage && phase_a_voltage > half_dc_voltage) {
+                    //commutate();
+                    LATBbits.LATB4 = 1;
+                    __delay_ms(1);
+                    LATBbits.LATB4 = 0;
+                } else {
+                    last_voltage = phase_a_voltage;
+                }
                 break;
         }
-        if (((last_voltage < half_dc_voltage) && (current_voltage > half_dc_voltage)) || ((last_voltage > half_dc_voltage) && (current_voltage < half_dc_voltage))) {
-            commutate();
-        }
-        
-        last_voltage = current_voltage;
-    }
 
+    }
+    
     return 1;
 }
