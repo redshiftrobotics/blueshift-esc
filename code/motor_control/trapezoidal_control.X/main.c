@@ -38,6 +38,7 @@ static int speed = 15000;
 
 int step = 0;
 int step_dir = 1;
+int crossing_phase = 0; // 0 is a; 1 is b; 2 is c
 
 void commutate(void) {
     step += step_dir;
@@ -61,6 +62,7 @@ void commutate(void) {
             SDC2 = speed;
             PDC4 = 0;
             SDC4 = 0;
+            crossing_phase = 2;
             break;
         case 1:
             // A High; B Crossing; C Low
@@ -70,6 +72,7 @@ void commutate(void) {
             SDC2 = 0;
             PDC4 = 0;
             SDC4 = speed;
+            crossing_phase = 1;
             break;
         case 2:
             // A Crossing; B High; C Low
@@ -79,6 +82,7 @@ void commutate(void) {
             SDC2 = 0;
             PDC4 = 0;
             SDC4 = speed;
+            crossing_phase = 0;
             break;
         case 3:
             // A Low; B High; C Crossing
@@ -88,6 +92,7 @@ void commutate(void) {
             SDC2 = 0;
             PDC4 = 0;
             SDC4 = 0;
+            crossing_phase = 2;
             break;
         case 4:
             // A Low; B Crossing; C High
@@ -97,6 +102,7 @@ void commutate(void) {
             SDC2 = 0;
             PDC4 = speed;
             SDC4 = 0;
+            crossing_phase = 1;
             break;
         case 5:
             // A Crossing; B Low; C High
@@ -106,6 +112,7 @@ void commutate(void) {
             SDC2 = speed;
             PDC4 = speed;
             SDC4 = 0;
+            crossing_phase = 0;
             break;
     }
 }
@@ -117,38 +124,30 @@ void __interrupt(no_auto_psv) _T1Interrupt(void) {
     IFS0bits.T1IF = 0; // Reset the Timer1 interrupt
 }
 
-int last_a_c = 1024;
-int last_b_c = 1024;
-int c_threshold_low = 280;
-int c_threshold_high = 310;
-bool can_commutate = true;
+int phase_a_current, phase_b_current, phase_c_current;
+int phase_a_voltage, phase_b_voltage, phase_c_voltage;
+
+static int half_dc_voltage = 503;
 
 void __interrupt(no_auto_psv) _ADCP0Interrupt(void) {
-    /*
-    int phase_a_current, phase_b_current, phase_c_current;
-    
+    // This math is all actually wrong, we need to convert it from ADC sampling range, to amplifier range, to raw current
     phase_a_current = ADCBUF0;
     phase_b_current = ADCBUF1;
-    // We need to convert the current measurements from the amplifier range back to actual current range before we can use KCL to calculate phase C
-    // phase_c_current = -(phase_a_current + phase_b_current);
-    */
+    phase_c_current = -(phase_a_current-phase_c_current);
     
-    int a_c, b_c;
-    a_c = ADCBUF0;
-    b_c = ADCBUF1;
-    
-    if (a_c > c_threshold_high) {
-        can_commutate = true;
-    }
-    
-    if (can_commutate) {
-        if (a_c < c_threshold_low) {
-            //commutate();
-            can_commutate = false;
-        }
-    }
-    
-    IFS6bits.ADCP0IF = 0; // Clear ADC Pair 0 interrupt flag
+    _ADCP0IF = 0; // Clear ADC Pair 0 interrupt flag
+}
+
+void __interrupt(no_auto_psv) _ADCP1Interrupt(void) {
+    phase_c_voltage = ADCBUF2;
+    phase_b_voltage = ADCBUF3;
+    _ADCP1IF = 0; // Clear ADC Pair 1 interrupt flag
+}
+
+void __interrupt(no_auto_psv) _ADCP3Interrupt(void) {
+    int temp = ADCBUF6;
+    phase_a_voltage = ADCBUF7;
+    _ADCP3IF = 0; // Clear ADC Pair 3 interrupt flag
 }
 
 int main(void) {
@@ -302,6 +301,30 @@ int main(void) {
     ADCPC0bits.IRQEN0 = 1; // Enable interrupt generation for ADC Pair 0
     ADCPC0bits.TRGSRC0 = 0b00100; // Use PWM Generator 1 primary to trigger conversion of ADC Pair 0
     
+    
+    ADPCFGbits.PCFG2 = 0; // Configure AN2 as an analog input
+    ADPCFGbits.PCFG3 = 0; // Configure AN3 as an analog input
+    
+    IPC27bits.ADCP1IP = 4; // Set pair 1 interrupt priority. This needs to be updated once we figure out the sampling order
+    IEC6bits.ADCP1IE = 1; // Enable ADC Pair 1 interrupt. I'm not sure if both this line and the previous one are necessary
+    IFS6bits.ADCP1IF = 0; // Clear ADC Pair 1 interrupt flag
+    
+    ADSTATbits.P1RDY = 0; // Clear ADC Pair 1 data ready bit
+    ADCPC0bits.IRQEN1 = 1; // Enable interrupt generation for ADC Pair 1
+    ADCPC0bits.TRGSRC1 = 0b00100; // Use PWM Generator 1 primary to trigger conversion of ADC Pair 1
+    
+    
+    ADPCFGbits.PCFG6 = 0; // Configure AN6 as an analog input
+    ADPCFGbits.PCFG7 = 0; // Configure AN7 as an analog input
+    
+    IPC28bits.ADCP3IP = 3; // Set pair 1 interrupt priority. This needs to be updated once we figure out the sampling order
+    IEC7bits.ADCP3IE = 1; // Enable ADC Pair 1 interrupt. I'm not sure if both this line and the previous one are necessary
+    IFS7bits.ADCP3IF = 0; // Clear ADC Pair 1 interrupt flag
+    
+    ADSTATbits.P3RDY = 0; // Clear ADC Pair 1 data ready bit
+    ADCPC1bits.IRQEN3 = 1; // Enable interrupt generation for ADC Pair 1
+    ADCPC1bits.TRGSRC3 = 0b00100; // Use PWM Generator 1 primary to trigger conversion of ADC Pair 1
+    
     ADCONbits.ADON = 1; // Enable ADC now that setup is done
     
     T1CONbits.TON = 0; // Turn off Timer 1
@@ -318,7 +341,10 @@ int main(void) {
     
     //I2C1_Init();
     
+    int last_voltage = half_dc_voltage;
+    
     while (1) {
+        
         /*
         PR1 = (ramBuffer[0] << 8) | ramBuffer[1];
         
@@ -328,6 +354,23 @@ int main(void) {
             step_dir = 1;
         }
         */
+        int current_voltage;
+        switch (crossing_phase) {
+            case 0:
+                current_voltage = phase_a_voltage;
+                break;
+            case 1:
+                current_voltage = phase_c_voltage;
+                break;
+            case 2:
+                current_voltage = phase_c_voltage;
+                break;
+        }
+        if (((last_voltage < half_dc_voltage) && (current_voltage > half_dc_voltage)) || ((last_voltage > half_dc_voltage) && (current_voltage < half_dc_voltage))) {
+            commutate();
+        }
+        
+        last_voltage = current_voltage;
     }
 
     return 1;
