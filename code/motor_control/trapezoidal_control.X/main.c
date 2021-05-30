@@ -34,10 +34,10 @@
 // Use project enums instead of #define for ON and OFF.=
 
 static int period = 23960;
-static int speed = 20000;
+static int speed = 15000;
 
 int step = 0;
-int step_dir = -1;
+int step_dir = 1;
 
 void commutate(void) {
     step += step_dir;
@@ -143,7 +143,7 @@ void __interrupt(no_auto_psv) _ADCP0Interrupt(void) {
     
     if (can_commutate) {
         if (a_c < c_threshold_low) {
-            commutate();
+            //commutate();
             can_commutate = false;
         }
     }
@@ -152,14 +152,6 @@ void __interrupt(no_auto_psv) _ADCP0Interrupt(void) {
 }
 
 int main(void) {
-    // IO Setup
-    TRISA = 0x0000; // Set all of register A as outputs
-    LATA = 0x0000; // Clear all of register A
-    
-    TRISB = 0x0000; // Set all of register B as outputs
-    LATB = 0x0000; // Clear all of register B
-    
-    
     // FRC Oscillator Setup
     // FRC nominal frequency is 7.37MHz. TUN updates the frequency to be 7.37 + (TUN * 0.00375 * 7.37)
     OSCTUNbits.TUN = 4; // Update the frequency to 7.49
@@ -313,13 +305,14 @@ int main(void) {
     ADCONbits.ADON = 1; // Enable ADC now that setup is done
     
     T1CONbits.TON = 0; // Turn off Timer 1
-    T1CONbits.TCKPS = 0b10; // Set the pre-scaler to 1:1
+    T1CONbits.TCKPS = 0b01; // Set the pre-scaler to 1:1
     INTCON1bits.NSTDIS = 1; // Disable interrupt nesting
     IPC0bits.T1IP = 0b001; // Set priority to 1
     IFS0bits.T1IF = 0;// clear interrupt
     IEC0bits.T1IE = 1; // enable interrupt source
     T1CONbits.TON = 1; // Turn on Timer 1
     //PR1 = 8000; // Load the period value. 
+    PR1 = 10000;
     // this seems to change the timer frequency? 
     // What are the units? I think they are how many ticks it takes per timer cycle?
     
