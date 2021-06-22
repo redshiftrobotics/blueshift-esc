@@ -48,7 +48,6 @@ int half_dc_voltage = 503;
 
 int phase_a_current, phase_b_current, phase_c_current;
 int phase_a_voltage, phase_b_voltage, phase_c_voltage;
-int last_voltage = 503; //half_dc_voltage;
 
 void commutate(void) {
     step += step_dir;
@@ -270,8 +269,8 @@ int main(void) {
     SDC4 = 0; // Set PWM4L duty cycle to 0 μs
     
         // Set PWM triggers for ADC
-    TRIG1bits.TRGCMP = 8; // Set the point at which the ADC module is triggered by the primary PWM
-    STRIG1bits.STRGCMP = 8; // Set the point at which the ADC module is triggered by the secondary PWM
+    TRIG1bits.TRGCMP = period;//8; // Set the point at which the ADC module is triggered by the primary PWM
+    STRIG1bits.STRGCMP = period;//8; // Set the point at which the ADC module is triggered by the secondary PWM
     // This will definitely need to be adjusted later, we may even want to set it based on the duty cycle
     
     TRGCON1bits.TRGSTRT = 4; // Wait 4 PWM cycles before generating the first trigger event
@@ -326,13 +325,13 @@ int main(void) {
     ADPCFGbits.PCFG6 = 0; // Configure AN6 as an analog input
     ADPCFGbits.PCFG7 = 0; // Configure AN7 as an analog input
     
-    IPC28bits.ADCP3IP = 3; // Set pair 1 interrupt priority. This needs to be updated once we figure out the sampling order
-    IEC7bits.ADCP3IE = 1; // Enable ADC Pair 1 interrupt. I'm not sure if both this line and the previous one are necessary
-    IFS7bits.ADCP3IF = 0; // Clear ADC Pair 1 interrupt flag
+    IPC28bits.ADCP3IP = 3; // Set pair 3 interrupt priority. This needs to be updated once we figure out the sampling order
+    IEC7bits.ADCP3IE = 1; // Enable ADC Pair 3 interrupt. I'm not sure if both this line and the previous one are necessary
+    IFS7bits.ADCP3IF = 0; // Clear ADC Pair 3 interrupt flag
     
-    ADSTATbits.P3RDY = 0; // Clear ADC Pair 1 data ready bit
-    ADCPC1bits.IRQEN3 = 1; // Enable interrupt generation for ADC Pair 1
-    ADCPC1bits.TRGSRC3 = 0b00100; // Use PWM Generator 1 primary to trigger conversion of ADC Pair 1
+    ADSTATbits.P3RDY = 0; // Clear ADC Pair 3 data ready bit
+    ADCPC1bits.IRQEN3 = 1; // Enable interrupt generation for ADC Pair 3
+    ADCPC1bits.TRGSRC3 = 0b00100; // Use PWM Generator 1 primary to trigger conversion of ADC Pair 3
     
     ADCONbits.ADON = 1; // Enable ADC now that setup is done
     
@@ -349,7 +348,7 @@ int main(void) {
     // What are the units? I think they are how many ticks it takes per timer cycle?
     
     //I2C1_Init();
-    LATBbits.LATB4 = 1;
+    phase_c_voltage = 42;
     while (1) {
         
         /*
@@ -361,75 +360,59 @@ int main(void) {
             step_dir = 1;
         }
         */
-
+        
+        int should_commutate = 0;
+        /*
         switch (step) {
             case 0:
                 // C crossing high -> low
-                if (last_voltage > half_dc_voltage && phase_c_voltage < half_dc_voltage) {
+                if (phase_c_voltage < half_dc_voltage) {
                     //commutate();
-                    LATBbits.LATB4 = 1;
-                    __delay_ms(1);
-                    LATBbits.LATB4 = 0;
-                } else {
-                    last_voltage = phase_c_voltage;
+                    should_commutate = 1;
                 }
                 break;
             case 1:
                 // B crossing low -> high
-                if (last_voltage < half_dc_voltage && phase_b_voltage > half_dc_voltage) {
+                if (phase_b_voltage > half_dc_voltage) {
                     //commutate();
-                    LATBbits.LATB4 = 1;
-                    __delay_ms(1);
-                    LATBbits.LATB4 = 0;
-                } else {
-                    last_voltage = phase_b_voltage;
+                    should_commutate = 1;
                 }
                 break;
             case 2:
                 // A crossing high -> low
-                if (last_voltage > half_dc_voltage && phase_a_voltage < half_dc_voltage) {
+                if (phase_a_voltage < half_dc_voltage) {
                     //commutate();
-                    LATBbits.LATB4 = 1;
-                    __delay_ms(1);
-                    LATBbits.LATB4 = 0;
-                } else {
-                    last_voltage = phase_a_voltage;
+                    should_commutate = 1;
                 }
                 break;
             case 3:
                 // C crossing low -> high
-                if (last_voltage < half_dc_voltage && phase_c_voltage > half_dc_voltage) {
+                if (phase_c_voltage > half_dc_voltage) {
                     //commutate();
-                    LATBbits.LATB4 = 1;
-                    __delay_ms(1);
-                    LATBbits.LATB4 = 0;
-                } else {
-                    last_voltage = phase_c_voltage;
+                    should_commutate = 1;
                 }
                 break;
             case 4:
                 // B crossing high -> low
-                if (last_voltage > half_dc_voltage && phase_b_voltage < half_dc_voltage) {
+                if (phase_b_voltage < half_dc_voltage) {
                     //commutate();
-                    LATBbits.LATB4 = 1;
-                    __delay_ms(1);
-                    LATBbits.LATB4 = 0;
-                } else {
-                    last_voltage = phase_b_voltage;
+                    should_commutate = 1;
                 }
                 break;
             case 5:
                 // A crossing low -> high
-                if (last_voltage < half_dc_voltage && phase_a_voltage > half_dc_voltage) {
+                if (phase_a_voltage > half_dc_voltage) {
                     //commutate();
-                    LATBbits.LATB4 = 1;
-                    __delay_ms(1);
-                    LATBbits.LATB4 = 0;
-                } else {
-                    last_voltage = phase_a_voltage;
+                    should_commutate = 1;
                 }
                 break;
         }
+        */
+        if (phase_c_voltage == 42) {
+            should_commutate = 1;
+        }
+        
+        LATBbits.LATB4 = should_commutate;
 
     }
     
