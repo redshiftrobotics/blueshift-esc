@@ -38,7 +38,7 @@
 // Use project enums instead of #define for ON and OFF.=
 
 static int period = 23960;
-static int speed = 15000;
+static int speed = 18000;
 
 int step = 0;
 int step_dir = 1;
@@ -66,7 +66,7 @@ void commutate(void) {
             PDC1 = speed;
             SDC1 = 0;
             PDC2 = 0;
-            SDC2 = speed;
+            SDC2 = period;
             PDC4 = 0;
             SDC4 = 0;
             break;
@@ -77,7 +77,7 @@ void commutate(void) {
             PDC2 = 0;
             SDC2 = 0;
             PDC4 = 0;
-            SDC4 = speed;
+            SDC4 = period;
             break;
         case 2:
             // A Crossing; B High; C Low
@@ -86,12 +86,12 @@ void commutate(void) {
             PDC2 = speed;
             SDC2 = 0;
             PDC4 = 0;
-            SDC4 = speed;
+            SDC4 = period;
             break;
         case 3:
             // A Low; B High; C Crossing
             PDC1 = 0;
-            SDC1 = speed;
+            SDC1 = period;
             PDC2 = speed;
             SDC2 = 0;
             PDC4 = 0;
@@ -100,7 +100,7 @@ void commutate(void) {
         case 4:
             // A Low; B Crossing; C High
             PDC1 = 0;
-            SDC1 = speed;
+            SDC1 = period;
             PDC2 = 0;
             SDC2 = 0;
             PDC4 = speed;
@@ -111,7 +111,7 @@ void commutate(void) {
             PDC1 = 0;
             SDC1 = 0;
             PDC2 = 0;
-            SDC2 = speed;
+            SDC2 = period;
             PDC4 = speed;
             SDC4 = 0;
             break;
@@ -130,6 +130,7 @@ void __interrupt(no_auto_psv) _ADCP0Interrupt(void) {
     phase_a_current = ADCBUF0;
     phase_b_current = ADCBUF1;
     phase_c_current = -(phase_a_current-phase_c_current);
+    phase_c_voltage = 42;
     
     _ADCP0IF = 0; // Clear ADC Pair 0 interrupt flag
 }
@@ -336,19 +337,18 @@ int main(void) {
     ADCONbits.ADON = 1; // Enable ADC now that setup is done
     
     T1CONbits.TON = 0; // Turn off Timer 1
-    T1CONbits.TCKPS = 0b01; // Set the pre-scaler to 1:1
+    T1CONbits.TCKPS = 0b00; // Set the pre-scaler to 1:1
     INTCON1bits.NSTDIS = 1; // Disable interrupt nesting
     IPC0bits.T1IP = 0b001; // Set priority to 1
     IFS0bits.T1IF = 0;// clear interrupt
     IEC0bits.T1IE = 1; // enable interrupt source
     T1CONbits.TON = 1; // Turn on Timer 1
     //PR1 = 8000; // Load the period value. 
-    PR1 = 10000;
+    //PR1 = 10000;
     // this seems to change the timer frequency? 
     // What are the units? I think they are how many ticks it takes per timer cycle?
     
     //I2C1_Init();
-    phase_c_voltage = 42;
     while (1) {
         
         /*

@@ -31,15 +31,15 @@
 
 // Interrupt function
 // no_auto_psv explanation: https://electronics.stackexchange.com/a/190325
-void __interrupt(no_auto_psv) _T1Interrupt(void){
-    LATAbits.LATA1 ^= 1; // Toggle RA1. ^ is an excluse or operation, so it reads from whatever was last set to the pin, and assigns the opposite of that
+void __interrupt(no_auto_psv) _T2Interrupt(void){
+    LATBbits.LATB4 ^= 1; // Toggle RA1. ^ is an excluse or operation, so it reads from whatever was last set to the pin, and assigns the opposite of that
     
-    _T1IF = 0; // Reset the Timer1 interrupt
+    _T2IF = 0; // Reset the Timer1 interrupt
 }
 
 int main(void) {
     ADPCFG = 0xFFFF; // Set all ADC pins in digital mode
-    TRISA = 0x0000; // Set all pins on the A register as output
+    TRISB = 0x0000; // Set all pins on the A register as output
     
     // I think its good practice to turn of the timer before changing the parameters so it doesn't generate unintended interrups
     T2CONbits.TON = 0; // Turn off Timer 1
@@ -49,6 +49,7 @@ int main(void) {
     IFS0bits.T2IF = 0;// clear interrupt
     IEC0bits.T2IE = 1; // enable interrupt source
     T2CONbits.TON = 1; // Turn on Timer 1
+    //LATBbits.LATA4 = 1;
     while (1);
 
     return 1;
