@@ -122,7 +122,7 @@ void __interrupt(no_auto_psv) _T2Interrupt(void) {
     
     commutate();
     
-    IFS0bits.T1IF = 0; // Reset the Timer1 interrupt
+    _T2IF = 0; // Reset the Timer2 interrupt
 }
 
 void __interrupt(no_auto_psv) _ADCP0Interrupt(void) {
@@ -336,24 +336,18 @@ int main(void) {
     
     ADCONbits.ADON = 1; // Enable ADC now that setup is done
     
-    T1CONbits.TON = 0; // Turn off Timer 1
-    T1CONbits.TCKPS = 0b00; // Set the pre-scaler to 1:1
-    INTCON1bits.NSTDIS = 1; // Disable interrupt nesting
-    IPC0bits.T1IP = 0b001; // Set priority to 1
-    IFS0bits.T1IF = 0;// clear interrupt
-    IEC0bits.T1IE = 1; // enable interrupt source
-    T1CONbits.TON = 1; // Turn on Timer 1
-    //PR1 = 8000; // Load the period value. 
-    //PR1 = 10000;
-    // this seems to change the timer frequency? 
-    // What are the units? I think they are how many ticks it takes per timer cycle?
-    T2CONbits.TON = 0; // Turn off Timer 1
+    T2CONbits.TON = 0; // Turn off Timer 2
     T2CONbits.TCKPS = 0b00; // Set the pre-scaler to 1:1
     INTCON2bits.ALTIVT = 1; // Disable interrupt nesting
     IPC1bits.T2IP = 0b001; // Set priority to 1
     IFS0bits.T2IF = 0;// clear interrupt
     IEC0bits.T2IE = 1; // enable interrupt source
-    T2CONbits.TON = 1; // Turn on Timer 1
+    T2CONbits.TON = 1; // Turn on Timer 2
+    //PR2 = 8000; // Load the period value. 
+    //PR2 = 10000;
+    // this seems to change the timer frequency? 
+    // What are the units? I think they are how many ticks it takes per timer cycle?
+
     
     //I2C1_Init();
     while (1) {
