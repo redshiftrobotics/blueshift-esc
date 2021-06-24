@@ -4,6 +4,9 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <logicalFolder name="f1" displayName="adc" projectFiles="true">
+        <itemPath>adc/adc.h</itemPath>
+      </logicalFolder>
       <logicalFolder name="i2c" displayName="i2c" projectFiles="true">
         <itemPath>i2c/i2c.h</itemPath>
       </logicalFolder>
@@ -15,6 +18,9 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <logicalFolder name="f1" displayName="adc" projectFiles="true">
+        <itemPath>adc/adc.c</itemPath>
+      </logicalFolder>
       <logicalFolder name="i2c" displayName="i2c" projectFiles="true">
         <itemPath>i2c/i2c.c</itemPath>
       </logicalFolder>
@@ -28,6 +34,7 @@
   </logicalFolder>
   <sourceRootList>
     <Elem>i2c</Elem>
+    <Elem>adc</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>

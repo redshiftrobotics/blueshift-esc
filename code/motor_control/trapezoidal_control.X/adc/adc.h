@@ -1,6 +1,2 @@
-float convertToVoltage(float);
+float convertToVoltage(int);
 void ADC_Init(void);
-
-float oRange;
-float nRange;
-float volts;
