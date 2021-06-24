@@ -270,12 +270,11 @@ int main(void) {
     SDC4 = 0; // Set PWM4L duty cycle to 0 μs
     
         // Set PWM triggers for ADC
-    TRIG1bits.TRGCMP = period;//8; // Set the point at which the ADC module is triggered by the primary PWM
-    STRIG1bits.STRGCMP = period;//8; // Set the point at which the ADC module is triggered by the secondary PWM
+    TRIG1 = period;//8; // Set the point at which the ADC module is triggered by the primary PWM
     // This will definitely need to be adjusted later, we may even want to set it based on the duty cycle
     
-    TRGCON1bits.TRGSTRT = 4; // Wait 4 PWM cycles before generating the first trigger event
-    TRGCON1bits.TRGDIV = 0b0000; // Trigger output every trigger event
+    TRGCON1bits.TRGSTRT = 0; // Wait 0 PWM cycles before generating the first trigger event
+    TRGCON1bits.TRGDIV = 0; // Trigger output every trigger event
     TRGCON1bits.DTM = 0; // Disable dual trigger mode. I think this effectively disables trigger generation from the secondary pwm
    
     PWMCON1bits.TRGIEN = 1; // Trigger event generates interrupt request
@@ -302,7 +301,7 @@ int main(void) {
     ADPCFGbits.PCFG0 = 0; // Configure AN0 as an analog input
     ADPCFGbits.PCFG1 = 0; // Configure AN1 as an analog input
     
-    IPC27bits.ADCP0IP = 5; // Set pair 0 interrupt priority. This needs to be updated once we figure out the sampling order
+    IPC27bits.ADCP0IP = 0x01; // Set pair 0 interrupt priority. This needs to be updated once we figure out the sampling order
     IEC6bits.ADCP0IE = 1; // Enable ADC Pair 0 interrupt. I'm not sure if both this line and the previous one are necessary
     IFS6bits.ADCP0IF = 0; // Clear ADC Pair 0 interrupt flag
     
@@ -314,7 +313,7 @@ int main(void) {
     ADPCFGbits.PCFG2 = 0; // Configure AN2 as an analog input
     ADPCFGbits.PCFG3 = 0; // Configure AN3 as an analog input
     
-    IPC27bits.ADCP1IP = 4; // Set pair 1 interrupt priority. This needs to be updated once we figure out the sampling order
+    IPC27bits.ADCP1IP = 0x02; // Set pair 1 interrupt priority. This needs to be updated once we figure out the sampling order
     IEC6bits.ADCP1IE = 1; // Enable ADC Pair 1 interrupt. I'm not sure if both this line and the previous one are necessary
     IFS6bits.ADCP1IF = 0; // Clear ADC Pair 1 interrupt flag
     
@@ -326,7 +325,7 @@ int main(void) {
     ADPCFGbits.PCFG6 = 0; // Configure AN6 as an analog input
     ADPCFGbits.PCFG7 = 0; // Configure AN7 as an analog input
     
-    IPC28bits.ADCP3IP = 3; // Set pair 3 interrupt priority. This needs to be updated once we figure out the sampling order
+    IPC28bits.ADCP3IP = 0x03; // Set pair 3 interrupt priority. This needs to be updated once we figure out the sampling order
     IEC7bits.ADCP3IE = 1; // Enable ADC Pair 3 interrupt. I'm not sure if both this line and the previous one are necessary
     IFS7bits.ADCP3IF = 0; // Clear ADC Pair 3 interrupt flag
     
