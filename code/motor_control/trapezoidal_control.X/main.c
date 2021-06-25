@@ -46,7 +46,7 @@ int step_dir = 1;
 
 
 static int half_dc_voltage = 400;//503;
-int other_v = 300;
+int other_v = 10;
 
 int phase_a_current, phase_b_current, phase_c_current;
 int phase_a_voltage, phase_b_voltage, phase_c_voltage;
@@ -312,14 +312,14 @@ int main(void) {
         switch (step) {
             case 0:
                 // C crossing high -> low
-                if (phase_c_voltage > half_dc_voltage) {
+                if (phase_c_voltage < other_v) {
                     //commutate();
                     should_commutate = 1;
                 }
                 break;
             case 1:
                 // B crossing low -> high
-                if (phase_b_voltage < half_dc_voltage) {
+                if (phase_b_voltage > other_v) {
                     //commutate();
                     should_commutate = 1;
                 }
@@ -333,14 +333,14 @@ int main(void) {
                 break;
             case 3:
                 // C crossing low -> high
-                if (phase_c_voltage < half_dc_voltage) {
+                if (phase_c_voltage > other_v) {
                     //commutate();
                     should_commutate = 1;
                 }
                 break;
             case 4:
                 // B crossing high -> low
-                if (phase_b_voltage > half_dc_voltage) {
+                if (phase_b_voltage < other_v) {
                     //commutate();
                     should_commutate = 1;
                 }
@@ -355,10 +355,10 @@ int main(void) {
         }
 
         if (should_commutate) {
-            //LATBbits.LATB4 = should_commutate;
-            //__delay_ms(1);
-            //commutate();
-            //TMR2 = 0;
+            LATBbits.LATB4 = should_commutate;
+            __delay_ms(1);
+            commutate();
+            TMR2 = 0;
         }
         
         LATBbits.LATB4 = should_commutate;
