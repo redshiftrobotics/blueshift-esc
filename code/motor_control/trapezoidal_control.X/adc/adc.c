@@ -59,14 +59,14 @@ void ADC_Init(void){
 }
 
 float convertToVoltage(int adcU){
-    float oRange = 1024;
-    float nRange = 3.3;
-    float range = nRange / oRange;
+    // float oRange = 1024;
+    // float nRange = 3.3;
+    // float range = nRange / oRange;
 
-    float volts = adcU * range;
+    float volts = adcU * 0.00322266;
 
-    oRange = 3.243;
-    nRange = 12;
+    // oRange = 3.243;
+    // nRange = 12;
 
-   return volts * range;
+   return volts * 0.27025;
 }
