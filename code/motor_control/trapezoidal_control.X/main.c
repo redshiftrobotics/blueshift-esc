@@ -39,13 +39,14 @@
 // Use project enums instead of #define for ON and OFF.=
 
 static int period = 23960;
-static int speed = 23960;//18000;
+static int speed = 10000;//1500;//18000;
 
 int step = 0;
 int step_dir = 1;
 
 
-static int half_dc_voltage = 503;
+static int half_dc_voltage = 400;//503;
+int other_v = 300;
 
 int phase_a_current, phase_b_current, phase_c_current;
 int phase_a_voltage, phase_b_voltage, phase_c_voltage;
@@ -269,7 +270,7 @@ int main(void) {
     SDC4 = 0; // Set PWM4L duty cycle to 0 μs
     
         // Set PWM triggers for ADC
-    TRIG1 = speed;//8; // Set the point at which the ADC module is triggered by the primary PWM
+    TRIG1 = period;//8; // Set the point at which the ADC module is triggered by the primary PWM
     // This will definitely need to be adjusted later, we may even want to set it based on the duty cycle
     
     TRGCON1bits.TRGSTRT = 0; // Wait 0 PWM cycles before generating the first trigger event
@@ -283,7 +284,6 @@ int main(void) {
     
     T2CONbits.TON = 0; // Turn off Timer 2
     T2CONbits.TCKPS = 0b01; // Set the pre-scaler to 1:1
-    INTCON2bits.ALTIVT = 1; // Disable interrupt nesting
     IPC1bits.T2IP = 0b001; // Set priority to 1
     IFS0bits.T2IF = 0;// clear interrupt
     IEC0bits.T2IE = 1; // enable interrupt source
@@ -307,65 +307,67 @@ int main(void) {
         }
         */
         
-        /*
+        
         int should_commutate = 0;
         switch (step) {
             case 0:
                 // C crossing high -> low
-                if (phase_c_voltage < half_dc_voltage) {
+                if (phase_c_voltage > half_dc_voltage) {
                     //commutate();
                     should_commutate = 1;
                 }
                 break;
             case 1:
                 // B crossing low -> high
-                if (phase_b_voltage > half_dc_voltage) {
+                if (phase_b_voltage < half_dc_voltage) {
                     //commutate();
                     should_commutate = 1;
                 }
                 break;
             case 2:
                 // A crossing high -> low
-                if (phase_a_voltage < half_dc_voltage) {
+                if (phase_a_voltage > half_dc_voltage) {
                     //commutate();
                     should_commutate = 1;
                 }
                 break;
             case 3:
                 // C crossing low -> high
-                if (phase_c_voltage > half_dc_voltage) {
+                if (phase_c_voltage < half_dc_voltage) {
                     //commutate();
                     should_commutate = 1;
                 }
                 break;
             case 4:
                 // B crossing high -> low
-                if (phase_b_voltage < half_dc_voltage) {
+                if (phase_b_voltage > half_dc_voltage) {
                     //commutate();
                     should_commutate = 1;
                 }
                 break;
             case 5:
                 // A crossing low -> high
-                if (phase_a_voltage > half_dc_voltage) {
+                if (phase_a_voltage < half_dc_voltage) {
                     //commutate();
                     should_commutate = 1;
                 }
                 break;
         }
-        
+
         if (should_commutate) {
-            LATBbits.LATB4 = should_commutate;
-            __delay_ms(1);
+            //LATBbits.LATB4 = should_commutate;
+            //__delay_ms(1);
+            //commutate();
+            //TMR2 = 0;
         }
         
         LATBbits.LATB4 = should_commutate;
-        */
-        LATBbits.LATB4 = 1;
-        __delay_us(phase_b_voltage/5.84493043);
-        LATBbits.LATB4 = 0;
-        __delay_us(10/5.84493043);
-
+        
+        
+//        LATBbits.LATB4 = 1;
+//        __delay_us(phase_c_voltage/5.84493043);
+//        LATBbits.LATB4 = 0;
+//        __delay_us(10/5.84493043);
     }
     
     return 1;
