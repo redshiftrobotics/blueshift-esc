@@ -39,7 +39,7 @@
 // Use project enums instead of #define for ON and OFF.=
 
 static int period = 23960;
-static int speed = 10000;//1500;//18000;
+static int speed = 10000;
 
 int step = 0;
 int step_dir = 1;
@@ -355,8 +355,6 @@ int main(void) {
         }
 
         if (should_commutate) {
-            LATBbits.LATB4 = should_commutate;
-            __delay_ms(1);
             commutate();
             TMR2 = 0;
         }
