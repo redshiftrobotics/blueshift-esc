@@ -185,7 +185,7 @@ int main(void) {
     PWMCON1bits.MDCS = 0; // Set duty cycle based on the PDC1 and SDC1 register rather than the Master Duty Cycle
     
     PWMCON1bits.CAM = 1; // Enable Center Aligned Mode
-    PWMCON1bits.ITB = 1; // Enable Independent Time Base (Necessary for Center Aligned Mode)
+    //PWMCON1bits.ITB = 1; // Enable Independent Time Base (Necessary for Center Aligned Mode)
     
     PWMCON1bits.IUE = 1; // Update active duty cycle, phase offset, and independent time period registers immediately
     
@@ -283,13 +283,13 @@ int main(void) {
     ADC_Init();
     
     T2CONbits.TON = 0; // Turn off Timer 2
-    T2CONbits.TCKPS = 0b01; // Set the pre-scaler to 1:1
+    T2CONbits.TCKPS = 0b10; // Set the pre-scaler to 1:1
     IPC1bits.T2IP = 0b001; // Set priority to 1
     IFS0bits.T2IF = 0;// clear interrupt
     IEC0bits.T2IE = 1; // enable interrupt source
     T2CONbits.TON = 1; // Turn on Timer 2
     //PR2 = 8000; // Load the period value. 
-    PR2 = 10000;
+    PR2 = 7000;
     // this seems to change the timer frequency? 
     // What are the units? I think they are how many ticks it takes per timer cycle?
 
@@ -309,11 +309,12 @@ int main(void) {
         
         
         int should_commutate = 0;
+        LATBbits.LATB4 = 0;
         switch (step) {
             case 0:
                 // C crossing high -> low
                 if (phase_c_voltage < other_v) {
-                    //commutate();
+                    commutate();
                     should_commutate = 1;
                 }
                 break;
@@ -321,34 +322,35 @@ int main(void) {
                 // B crossing low -> high
                 if (phase_b_voltage > other_v) {
                     //commutate();
-                    should_commutate = 1;
+                    //LATBbits.LATB4 = 1;
+                    //should_commutate = 1;
                 }
                 break;
             case 2:
                 // A crossing high -> low
                 if (phase_a_voltage > half_dc_voltage) {
-                    //commutate();
+                    commutate();
                     should_commutate = 1;
                 }
                 break;
             case 3:
                 // C crossing low -> high
                 if (phase_c_voltage > other_v) {
-                    //commutate();
+                    commutate();
                     should_commutate = 1;
                 }
                 break;
             case 4:
                 // B crossing high -> low
                 if (phase_b_voltage < other_v) {
-                    //commutate();
+                    commutate();
                     should_commutate = 1;
                 }
                 break;
             case 5:
                 // A crossing low -> high
                 if (phase_a_voltage < half_dc_voltage) {
-                    //commutate();
+                    commutate();
                     should_commutate = 1;
                 }
                 break;
@@ -358,8 +360,9 @@ int main(void) {
             commutate();
             TMR2 = 0;
         }
-        
-        LATBbits.LATB4 = should_commutate;
+        //LATBbits.LATB4 = 0;
+        //should_commutate = 0;
+        //LATBbits.LATB4 = should_commutate;
         
         
 //        LATBbits.LATB4 = 1;
@@ -367,6 +370,6 @@ int main(void) {
 //        LATBbits.LATB4 = 0;
 //        __delay_us(10/5.84493043);
     }
-    
-    return 1;
+  
+   return 1;
 }
