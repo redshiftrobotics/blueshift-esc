@@ -77,16 +77,16 @@ int main(void) {
     PWMCON2bits.IUE = 1; // Update active duty cycle, phase offset, and independent time period registers immediately
     PTCONbits.EIPU = 1; // Update Active period register immediately
     
-    PWMCON1bits.DTC = 0b00; // Enable positive dead time generation
+    PWMCON2bits.DTC = 0b00; // Enable positive dead time generation
     
     // Setup PWM IO
-    IOCON1bits.PENH = 1; // Enable PWM1H
-    IOCON1bits.PENL = 0; // Enable PWM1L
-    IOCON1bits.POLH = 0; // PWM1H active high
-    IOCON1bits.POLL = 0; // PWM1L active high
-    IOCON1bits.PMOD = 3; // True Independent Output Mode
+    IOCON2bits.PENH = 1; // Enable PWM1H
+    IOCON2bits.PENL = 0; // Enable PWM1L
+    IOCON2bits.POLH = 0; // PWM1H active high
+    IOCON2bits.POLL = 0; // PWM1L active high
+    IOCON2bits.PMOD = 3; // True Independent Output Mode
     
-    PTCONbits.PTEN = 0; // Enable PWM now that setup is done
+    PTCONbits.PTEN = 1; // Enable PWM now that setup is done
     
     // Set PWM period
     // ((ACLK * 8 * desired_pwm_period_µs) / PCLKDIV) - 8 = PHASE1 and SPHASE1
@@ -108,16 +108,16 @@ int main(void) {
     SDC1 = 2396; // Set PWM1L duty cycle to 5 µs
     
     // Set PWM triggers for ADC
-    TRIG1bits.TRGCMP = 8; // Set the point at which the ADC module is triggered by the primary PWM
-    STRIG1bits.STRGCMP = 8; // Set the point at which the ADC module is triggered by the secondary PWM
+    TRIG2bits.TRGCMP = 8; // Set the point at which the ADC module is triggered by the primary PWM
+    STRIG2bits.STRGCMP = 8; // Set the point at which the ADC module is triggered by the secondary PWM
     // This will definitely need to be adjusted later, we may even want to set it based on the duty cycle
     
-    TRGCON1bits.TRGSTRT = 4; // Wait 4 PWM cycles before generating the first trigger event
-    TRGCON1bits.TRGDIV = 0b0000; // Trigger output every trigger event
-    TRGCON1bits.DTM = 0; // Disable dual trigger mode. I think this effectively disables trigger generation from the secondary pwm
+    TRGCON2bits.TRGSTRT = 4; // Wait 4 PWM cycles before generating the first trigger event
+    TRGCON2bits.TRGDIV = 0b0000; // Trigger output every trigger event
+    TRGCON2bits.DTM = 0; // Disable dual trigger mode. I think this effectively disables trigger generation from the secondary pwm
    
-    PWMCON1bits.TRGIEN = 1; // Trigger event generates interrupt request
-    while (PWMCON1bits.TRGSTAT == 0);
+    PWMCON2bits.TRGIEN = 1; // Trigger event generates interrupt request
+    while (PWMCON2bits.TRGSTAT == 0);
     
     // Setup ADC
     ADCONbits.SLOWCLK = 1; // Set the ADC clock to the auxiliary PLL (ACLK) instead of the primary PLL (Fvco)
