@@ -63,7 +63,9 @@ void __interrupt(no_auto_psv) _SI2C1Interrupt(void)
     {
         temp = I2C1RCV;
         I2C1TRN = *ramPtr; // Read data from RAM & send data to follower device
-        I2C1CONbits.SCLREL = 1; //Release SCL1 line
+        #if defined( USE_I2C_Clock_Stretch )
+            I2C1CONbits.SCLREL = 1; //Release SCL1 line
+        #endif
         while( I2C1STATbits.TBF );
 
         //Wait till all
