@@ -222,6 +222,14 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
+[GeneratedDocument1]
+DocumentPath=Project Outputs for Jonathan ESC\Design Rule Check - Jonathan ESC.html
+DItemRevisionGUID=
+
+[GeneratedDocument2]
+DocumentPath=Jonathan ESC 6-24-2022 10-41-49 PM.WAS
+DItemRevisionGUID=
+
 [Configuration1]
 Name=Sources
 ParameterCount=0
@@ -1203,7 +1211,6 @@ Type116=2
 Type117=3
 Type118=3
 Type119=3
-MultiChannelAlternate=2
 AlternateItemFail=3
 Type122=2
 Type123=1
