@@ -53,6 +53,7 @@ int phase_a_voltage, phase_b_voltage, phase_c_voltage;
 
 void commutate(void) {
     step += step_dir;
+//    step = 3 ;
     
     if (step > 5) {
         step = 0;
@@ -155,10 +156,10 @@ int main(void) {
     TRISAbits.TRISA2 = 1; // Set AN2 as an input for the ADC
     LATA = 0x0000; // Clear all of register A
     
-    TRISB = 0x0000; // Set all of register A as outputs
+    TRISB = 0x0000; // Set all of register B as outputs
     TRISBbits.TRISB0 = 1; // Set AN3 as an input for the ADC
     TRISBbits.TRISB2 = 1; // Set AN7 as an input for the ADC
-    LATB = 0x0000; // Clear all of register A
+    LATB = 0x0000; // Clear all of register B
     
     // FRC Oscillator Setup
     // FRC nominal frequency is 7.37MHz. TUN updates the frequency to be 7.37 + (TUN * 0.00375 * 7.37)
@@ -185,7 +186,7 @@ int main(void) {
     PWMCON1bits.MDCS = 0; // Set duty cycle based on the PDC1 and SDC1 register rather than the Master Duty Cycle
     
     PWMCON1bits.CAM = 1; // Enable Center Aligned Mode
-    //PWMCON1bits.ITB = 1; // Enable Independent Time Base (Necessary for Center Aligned Mode)
+    PWMCON1bits.ITB = 1; // Enable Independent Time Base (Necessary for Center Aligned Mode)
     
     PWMCON1bits.IUE = 1; // Update active duty cycle, phase offset, and independent time period registers immediately
     
@@ -289,12 +290,13 @@ int main(void) {
     IEC0bits.T2IE = 1; // enable interrupt source
     T2CONbits.TON = 1; // Turn on Timer 2
     //PR2 = 8000; // Load the period value. 
-    PR2 = 7000;
+    PR2 = 500;
     // this seems to change the timer frequency? 
     // What are the units? I think they are how many ticks it takes per timer cycle?
-
+    
     
     //I2C1_Init();
+//    commutate();
     while (1) {
         
         /*
@@ -308,58 +310,58 @@ int main(void) {
         */
         
         
-        int should_commutate = 0;
-        LATBbits.LATB4 = 0;
-        switch (step) {
-            case 0:
-                // C crossing high -> low
-                if (phase_c_voltage < other_v) {
-                    commutate();
-                    should_commutate = 1;
-                }
-                break;
-            case 1:
-                // B crossing low -> high
-                if (phase_b_voltage > other_v) {
-                    //commutate();
-                    //LATBbits.LATB4 = 1;
-                    //should_commutate = 1;
-                }
-                break;
-            case 2:
-                // A crossing high -> low
-                if (phase_a_voltage > half_dc_voltage) {
-                    commutate();
-                    should_commutate = 1;
-                }
-                break;
-            case 3:
-                // C crossing low -> high
-                if (phase_c_voltage > other_v) {
-                    commutate();
-                    should_commutate = 1;
-                }
-                break;
-            case 4:
-                // B crossing high -> low
-                if (phase_b_voltage < other_v) {
-                    commutate();
-                    should_commutate = 1;
-                }
-                break;
-            case 5:
-                // A crossing low -> high
-                if (phase_a_voltage < half_dc_voltage) {
-                    commutate();
-                    should_commutate = 1;
-                }
-                break;
-        }
+//        int should_commutate = 0;
+//        LATBbits.LATB4 = 0;
+//        switch (step) {
+//            case 0:
+//                // C crossing high -> low
+//                if (phase_c_voltage < other_v) {
+////                    commutate();
+//                    should_commutate = 1;
+//                }
+//                break;
+//            case 1:
+//                // B crossing low -> high
+//                if (phase_b_voltage > other_v) {
+//                    //commutate();
+//                    //LATBbits.LATB4 = 1;
+//                    //should_commutate = 1;
+//                }
+//                break;
+//            case 2:
+//                // A crossing high -> low
+//                if (phase_a_voltage > half_dc_voltage) {
+////                    commutate();
+//                    should_commutate = 1;
+//                }
+//                break;
+//            case 3:
+//                // C crossing low -> high
+//                if (phase_c_voltage > other_v) {
+////                    commutate();
+//                    should_commutate = 1;
+//                }
+//                break;
+//            case 4:
+//                // B crossing high -> low
+//                if (phase_b_voltage < other_v) {
+////                    commutate();
+//                    should_commutate = 1;
+//                }
+//                break;
+//            case 5:
+//                // A crossing low -> high
+//                if (phase_a_voltage < half_dc_voltage) {
+////                    commutate();
+//                    should_commutate = 1;
+//                }
+//                break;
+//        }
 
-        if (should_commutate) {
-            commutate();
-            TMR2 = 0;
-        }
+//        if (should_commutate) {
+//            commutate();
+//            TMR2 = 0;
+//        }
         //LATBbits.LATB4 = 0;
         //should_commutate = 0;
         //LATBbits.LATB4 = should_commutate;
