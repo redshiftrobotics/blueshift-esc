@@ -31,8 +31,8 @@
 #include <stdio.h>
 
 #define FP 3685000 // 7.37 MHz / 2
-#define BAUDRATE 9600
-#define BRGVAL ((FP/BAUDRATE)/16)-1
+#define BAUDRATE 38400
+#define BRGVAL ((FP/BAUDRATE)/4)-1
 #define DELAY_105uS asm volatile ("REPEAT, #4201"); Nop(); // 105uS delay
 
 unsigned int i = 0;
@@ -53,7 +53,7 @@ int main(void) {
     U1MODEbits.STSEL = 0; // 1-Stop bit
     U1MODEbits.PDSEL = 0; // No Parity, 8-Data bits
     U1MODEbits.ABAUD = 0; // Auto-Baud disabled
-    U1MODEbits.BRGH = 0; // Standard-Speed mode
+    U1MODEbits.BRGH = 1; // High-Speed mode
     U1BRG = BRGVAL; // Set the baud rate as calculated above
     
     // Interrupt after the transmit buffer is empty
