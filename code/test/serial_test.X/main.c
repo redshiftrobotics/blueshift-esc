@@ -16,9 +16,6 @@
 #pragma config IOL1WAY = ON             // Peripheral pin select configuration (Allow only one reconfiguration)
 #pragma config FCKSM = CSDCMD           // Clock Switching Mode bits (Both Clock switching and Fail-safe Clock Monitor are disabled)
 
-#pragma U1MODEbits.BRGH = 0; // Standard-Speed mode
-
-
 // FOSCSEL
 #pragma config FNOSC = FRC              // Oscillator Source Selection (Internal Fast RC (FRC))
 #pragma config IESO = ON                // Two-speed Oscillator Start-up Enable bit (Start up device with FRC, then switch to user-selected oscillator source)
@@ -36,8 +33,20 @@
 #define FP 3685000 // 7.37 MHz / 2
 #define BAUDRATE 9600
 #define BRGVAL ((FP/BAUDRATE)/16)-1
-unsigned int i;
 #define DELAY_105uS asm volatile ("REPEAT, #4201"); Nop(); // 105uS delay
+
+unsigned int i = 0;
+
+void __attribute__((__interrupt__, auto_psv)) _U1TXInterrupt(void)
+{
+    IFS0bits.U1TXIF = 0; // Clear TX Interrupt flag
+    
+    // To print a variable
+    printf("%d\r\n", i);
+    // To print text
+    // printf("Greetings from Pakistan\r\n");
+    i++;
+}
 
 int main(void) {
     RPOR2bits.RP4R = 0b00011; // Remap TX to RP4
@@ -45,24 +54,26 @@ int main(void) {
     U1MODEbits.PDSEL = 0; // No Parity, 8-Data bits
     U1MODEbits.ABAUD = 0; // Auto-Baud disabled
     U1MODEbits.BRGH = 0; // Standard-Speed mode
-    U1BRG = BRGVAL; // Baud Rate setting for 9600
-    U1STAbits.UTXISEL0 = 0; // Interrupt after one TX character is transmitted
+    U1BRG = BRGVAL; // Set the baud rate as calculated above
+    
+    // Interrupt after the transmit buffer is empty
+    // This is not the most efficient, since we may wait longer than we need to before sending the next message
+    // But it shouldn't be an issue at high baud rates and is probably more reliable
+    U1STAbits.UTXISEL0 = 1;
     U1STAbits.UTXISEL1 = 0;
+    
     IEC0bits.U1TXIE = 1; // Enable UART TX interrupt
     U1MODEbits.UARTEN = 1; // Enable UART
     U1STAbits.UTXEN = 1; // Enable UART TX
+    
     /* Wait at least 105 microseconds (1/9600) before sending first char */
     DELAY_105uS
+            
     U1TXREG = 'a'; // Transmit one character
+    
     while(1)
     {           
     }
 
     return 1;
-} 
-
-void __attribute__((__interrupt__)) _U1TXInterrupt(void)
-{
-    IFS0bits.U1TXIF = 0; // Clear TX Interrupt flag
-    U1TXREG = 'a'; // Transmit one character
 }
