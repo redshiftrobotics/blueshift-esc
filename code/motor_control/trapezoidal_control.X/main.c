@@ -290,7 +290,7 @@ int main(void) {
     IEC0bits.T2IE = 1; // enable interrupt source
     T2CONbits.TON = 1; // Turn on Timer 2
     //PR2 = 8000; // Load the period value. 
-    PR2 = 500;
+    PR2 = 100;
     // this seems to change the timer frequency? 
     // What are the units? I think they are how many ticks it takes per timer cycle?
     
