@@ -1,8 +1,6 @@
 #include <xc.h>
 #include <stdbool.h>
 
-// https://www.microchip.com/forums/m783008.aspx
-#define    FCY    16000000UL    // Instruction cycle frequency, Hz - required for __delayXXX() to work
 #include <libpic30.h>        // __delayXXX() functions macros defined here
 
 // Modified from Microchip Code Sample CE445
@@ -166,7 +164,8 @@ int main(void) {
     OSCTUNbits.TUN = 4; // Update the frequency to 7.49
     // Setting the frequency to 7.49 allows for the maximum PWM resolution of 1.04 ns
     // Actually I don't know if this does anything, because the resolution is 8.32 ns in Center Aligned Mode
-   
+    #define FCY 7490000    // Instruction cycle frequency, Hz - required for __delayXXX() to work (https://www.microchip.com/forums/m783008.aspx)
+    
     // Auxiliary Clock setup (Used by the PWM generator)
     // Info on ACLKCON is in the Oscillator Datasheet, not in the PWM one
     ACLKCONbits.FRCSEL = 1; // FRC is input to Auxiliary PLL
