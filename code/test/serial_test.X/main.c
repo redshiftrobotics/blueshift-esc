@@ -28,7 +28,6 @@
 // Use project enums instead of #define for ON and OFF.
 
 #include <xc.h>
-#include <stdio.h>
 
 #define FP 3685000 // 7.37 MHz / 2
 #define BAUDRATE 38400
@@ -37,15 +36,19 @@
 
 int i = 0;
 
+void send_str(char* str) {
+    for (i = 0; str[i] != 0; i++) {
+        while (U1STAbits.UTXBF) {
+            continue;
+        }
+        U1TXREG = str[i];
+    }
+}
+
 void __interrupt(no_auto_psv) _U1TXInterrupt(void)
 {
     IFS0bits.U1TXIF = 0; // Clear TX Interrupt flag
-    
-    // To print a variable
-    printf("i = %d\r\n", i);
-    // To print text
-    // printf("Greetings from Pakistan\r\n");
-    i++;
+    send_str("1 -1 5\n");
 }
 
 int main(void) {
