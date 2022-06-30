@@ -1,18 +1,3 @@
-#include <xc.h>
-//#include <stdbool.h>
-//#include <stdio.h>
-
-// These are set in the oscillator setup section of main
-#define FOSC 7490000 // Instruction cycle frequency, Hz - required for __delayXXX() to work (https://www.microchip.com/forums/m783008.aspx)
-#define FP FOSC/2 // FP and FCY are the same value
-#define FCY FOSC/2
-
-#include <libpic30.h> // __delayXXX() functions macros defined here
-
-// Modified from Microchip Code Sample CE445
-#include "i2c/i2c.h"
-#include "adc/adc.h"
-
 // DSPIC33FJ09GS302 Configuration Bit Settings
 // 'C' source line config statements
 // FICD
@@ -41,6 +26,23 @@
 
 // #pragma config statements should precede project file includes.
 // Use project enums instead of #define for ON and OFF.=
+
+#include <xc.h>
+//#include <stdbool.h>
+//#include <stdio.h>
+
+// These are set in the oscillator setup section of main
+#define FOSC 7490000 // Instruction cycle frequency, Hz - required for __delayXXX() to work (https://www.microchip.com/forums/m783008.aspx)
+#define FP FOSC/2 // FP and FCY are the same value
+#define FCY FOSC/2
+
+#include <libpic30.h> // __delayXXX() functions macros defined here
+
+// Modified from Microchip Code Sample CE445
+#include "i2c/i2c.h"
+#include "adc/adc.h"
+
+#include "serial/serial.h"
 
 static int period = 23960;
 static int speed = 10000;
@@ -152,19 +154,20 @@ void __interrupt(no_auto_psv) _ADCP3Interrupt(void) {
     _ADCP3IF = 0; // Clear ADC Pair 3 interrupt flag
 }
 
-//const char *printf_new_line = '\r\n';
-//const char *printf_decimal = '%d';
+char str[10];
 
 void __interrupt(no_auto_psv) _U1TXInterrupt(void)
 {
     IFS0bits.U1TXIF = 0; // Clear TX Interrupt flag
-    
-//    printf("%d %d %d\r\n", phase_a_voltage, phase_b_voltage, phase_c_voltage);
-//    printf("%d", phase_a_voltage);
-//    printf("%d", phase_b_voltage);
-//    printf("%d\r\n", phase_c_voltage);
-//    printf(printf_decimal, phase_a_voltage);
-//    printf(printf_new_line);
+    clean(str);
+    send_str(_float_to_char(phase_a_voltage, str, 9));
+    send_str(" ");
+    clean(str);
+    send_str(_float_to_char(phase_b_voltage, str, 9));
+    send_str(" ");
+    clean(str);
+    send_str(_float_to_char(phase_c_voltage, str, 9));
+    send_str("\r\n");
 }
 
 int main(void) {
