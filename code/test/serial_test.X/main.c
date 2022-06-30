@@ -83,11 +83,10 @@ char str[10];
 void __interrupt(no_auto_psv) _U1TXInterrupt(void)
 {
     IFS0bits.U1TXIF = 0; // Clear TX Interrupt flag
-    send_str("1 -1 5\n");
     clean(str);
-    _float_to_char(13.14, str, 6);
-    send_str(str);
-//    send_str("a");
+    send_str(_float_to_char(13.14, str, 9));
+    send_str(" ");
+    send_str(_float_to_char(3.14, str, 9));
     send_str("\r\n");
     i++;
 }
