@@ -1,7 +1,13 @@
 #include <xc.h>
-#include <stdbool.h>
+//#include <stdbool.h>
+//#include <stdio.h>
 
-#include <libpic30.h>        // __delayXXX() functions macros defined here
+// These are set in the oscillator setup section of main
+#define FOSC 7490000 // Instruction cycle frequency, Hz - required for __delayXXX() to work (https://www.microchip.com/forums/m783008.aspx)
+#define FP FOSC/2 // FP and FCY are the same value
+#define FCY FOSC/2
+
+#include <libpic30.h> // __delayXXX() functions macros defined here
 
 // Modified from Microchip Code Sample CE445
 #include "i2c/i2c.h"
@@ -146,6 +152,21 @@ void __interrupt(no_auto_psv) _ADCP3Interrupt(void) {
     _ADCP3IF = 0; // Clear ADC Pair 3 interrupt flag
 }
 
+//const char *printf_new_line = '\r\n';
+//const char *printf_decimal = '%d';
+
+void __interrupt(no_auto_psv) _U1TXInterrupt(void)
+{
+    IFS0bits.U1TXIF = 0; // Clear TX Interrupt flag
+    
+//    printf("%d %d %d\r\n", phase_a_voltage, phase_b_voltage, phase_c_voltage);
+//    printf("%d", phase_a_voltage);
+//    printf("%d", phase_b_voltage);
+//    printf("%d\r\n", phase_c_voltage);
+//    printf(printf_decimal, phase_a_voltage);
+//    printf(printf_new_line);
+}
+
 int main(void) {
     // IO Setup
     TRISA = 0x0000; // Set all of register A as outputs
@@ -164,7 +185,6 @@ int main(void) {
     OSCTUNbits.TUN = 4; // Update the frequency to 7.49
     // Setting the frequency to 7.49 allows for the maximum PWM resolution of 1.04 ns
     // Actually I don't know if this does anything, because the resolution is 8.32 ns in Center Aligned Mode
-    #define FCY 7490000    // Instruction cycle frequency, Hz - required for __delayXXX() to work (https://www.microchip.com/forums/m783008.aspx)
     
     // Auxiliary Clock setup (Used by the PWM generator)
     // Info on ACLKCON is in the Oscillator Datasheet, not in the PWM one
@@ -174,6 +194,31 @@ int main(void) {
     ACLKCONbits.ENAPLL = 1; // Enable Auxiliary PLL
     while(ACLKCONbits.APLLCK != 1); // Wait for Auxiliary PLL to Lock
     // ACLK: (FRC * 16) / APSTSCLR = (7.49 * 16) / 1 = 119.84 MHz
+    
+    // Serial Communication Setup
+    #define BAUDRATE 38400
+    #define BRGVAL ((FP/BAUDRATE)/4)-1
+    
+    RPOR2bits.RP4R = 0b00011; // Remap TX to RP4
+    U1MODEbits.STSEL = 0; // 1-Stop bit
+    U1MODEbits.PDSEL = 0; // No Parity, 8-Data bits
+    U1MODEbits.ABAUD = 0; // Auto-Baud disabled
+    U1MODEbits.BRGH = 1; // High-Speed mode
+    U1BRG = BRGVAL; // Set the baud rate as calculated above
+
+    // Interrupt after the transmit buffer is empty
+    // This is not the most efficient, since we may wait longer than we need to before sending the next message
+    // But it shouldn't be an issue at high baud rates and is probably more reliable
+    U1STAbits.UTXISEL0 = 1;
+    U1STAbits.UTXISEL1 = 0;
+
+    IEC0bits.U1TXIE = 1; // Enable UART TX interrupt
+    U1MODEbits.UARTEN = 1; // Enable UART
+    U1STAbits.UTXEN = 1; // Enable UART TX
+
+    // Wait the length of time it would take to send one bit
+    __delay_us(1000000 / BAUDRATE);
+    U1TXREG = 'a'; // Transmit one character
     
     
     // PWM Setup

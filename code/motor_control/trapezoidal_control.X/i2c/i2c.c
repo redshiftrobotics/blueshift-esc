@@ -1,5 +1,4 @@
 #include <xc.h>
-#include <stdint.h>
 #include "i2c.h"
 
 uint8_t ramBuffer[256]; // I2C "RAM" (the registers that data is stored in)

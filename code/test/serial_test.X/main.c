@@ -34,9 +34,41 @@
 #define BRGVAL ((FP/BAUDRATE)/4)-1
 #define DELAY_105uS asm volatile ("REPEAT, #4201"); Nop(); // 105uS delay
 
-int i = 0;
+static char * _float_to_char(float x, char *p, int char_size) {
+    char *s = p + char_size; // go to end of buffer
+    uint16_t decimals;  // variable to store the decimals
+    int units;  // variable to store the units (part to left of decimal place)
+    if (x < 0) { // take care of negative numbers
+        decimals = (int)(x * -100) % 100; // make 1000 for 3 decimals etc.
+        units = (int)(-1 * x);
+    } else { // positive numbers
+        decimals = (int)(x * 100) % 100;
+        units = (int)x;
+    }
+
+    *--s = (decimals % 10) + '0';
+    decimals /= 10; // repeat for as many decimal places as you need
+    *--s = (decimals % 10) + '0';
+    *--s = '.';
+
+    while (units > 0) {
+        *--s = (units % 10) + '0';
+        units /= 10;
+    }
+    if (x < 0) *--s = '-'; // unary minus sign for negative numbers
+    return s;
+}
+
+void clean(char *var) {
+    int i = 0;
+    while(var[i] != '\0') {
+        var[i] = '\0';
+        i++;
+    }
+}
 
 void send_str(char* str) {
+    int i = 0;
     for (i = 0; str[i] != 0; i++) {
         while (U1STAbits.UTXBF) {
             continue;
@@ -45,10 +77,19 @@ void send_str(char* str) {
     }
 }
 
+int i = 0;
+char str[10];
+
 void __interrupt(no_auto_psv) _U1TXInterrupt(void)
 {
     IFS0bits.U1TXIF = 0; // Clear TX Interrupt flag
     send_str("1 -1 5\n");
+    clean(str);
+    _float_to_char(13.14, str, 6);
+    send_str(str);
+//    send_str("a");
+    send_str("\r\n");
+    i++;
 }
 
 int main(void) {
