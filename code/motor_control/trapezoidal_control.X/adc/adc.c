@@ -63,10 +63,10 @@ float convertToVoltage(int adcU){
     // float nRange = 3.3;
     // float range = nRange / oRange;
 
-    float volts = adcU * 0.00322266;
+    float volts = (float) adcU * 0.00322266;
 
     // oRange = 3.243;
     // nRange = 12;
 
-   return volts * 0.27025;
+   return volts * 3.7002775208;
 }

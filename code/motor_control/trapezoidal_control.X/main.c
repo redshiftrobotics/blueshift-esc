@@ -55,7 +55,7 @@ static int half_dc_voltage = 400;//503;
 int other_v = 10;
 
 int phase_a_current, phase_b_current, phase_c_current;
-int phase_a_voltage, phase_b_voltage, phase_c_voltage;
+float phase_a_voltage, phase_b_voltage, phase_c_voltage;
 
 void commutate(void) {
     step += step_dir;
@@ -143,14 +143,14 @@ void __interrupt(no_auto_psv) _ADCP0Interrupt(void) {
 }
 
 void __interrupt(no_auto_psv) _ADCP1Interrupt(void) {
-    phase_c_voltage = ADCBUF2;
-    phase_b_voltage = ADCBUF3;
+    phase_c_voltage = convertToVoltage(ADCBUF2);
+    phase_b_voltage = convertToVoltage(ADCBUF3);
     _ADCP1IF = 0; // Clear ADC Pair 1 interrupt flag
 }
 
 void __interrupt(no_auto_psv) _ADCP3Interrupt(void) {
     int temp = ADCBUF6;
-    phase_a_voltage = ADCBUF7;
+    phase_a_voltage = convertToVoltage(ADCBUF7);
     _ADCP3IF = 0; // Clear ADC Pair 3 interrupt flag
 }
 
@@ -161,13 +161,13 @@ void __interrupt(no_auto_psv) _U1TXInterrupt(void)
     IFS0bits.U1TXIF = 0; // Clear TX Interrupt flag
     clean(str);
     send_str(_float_to_char(phase_a_voltage, str, 9));
-    send_str(" ");
-    clean(str);
-    send_str(_float_to_char(phase_b_voltage, str, 9));
-    send_str(" ");
-    clean(str);
-    send_str(_float_to_char(phase_c_voltage, str, 9));
-    send_str("\r\n");
+//    send_str(" ");
+//    clean(str);
+//    send_str(_float_to_char(phase_b_voltage, str, 9));
+//    send_str(" ");
+//    clean(str);
+//    send_str(_float_to_char(phase_c_voltage, str, 9));
+    send_str(" 0 0\r\n");
 }
 
 int main(void) {
@@ -257,10 +257,10 @@ int main(void) {
     PWMCON2bits.DTC = 0b00; // Enable positive dead time generation
     
     // Setup PWM 2 IO
-    IOCON2bits.PENH = 1; // Enable PWM1H
-    IOCON2bits.PENL = 1; // Enable PWM1L
-    IOCON2bits.POLH = 0; // PWM1H active high
-    IOCON2bits.POLL = 0; // PWM1L active high
+    IOCON2bits.PENH = 1; // Enable PWM2H
+    IOCON2bits.PENL = 1; // Enable PWM2L
+    IOCON2bits.POLH = 0; // PWM2H active high
+    IOCON2bits.POLL = 0; // PWM2L active high
     IOCON2bits.PMOD = 3; // True Independent Output Mode
     
     
@@ -279,10 +279,10 @@ int main(void) {
     PWMCON4bits.DTC = 0b00; // Enable positive dead time generation
     
     // Setup PWM 4 IO
-    IOCON4bits.PENH = 1; // Enable PWM1H
-    IOCON4bits.PENL = 1; // Enable PWM1L
-    IOCON4bits.POLH = 0; // PWM1H active high
-    IOCON4bits.POLL = 0; // PWM1L active high
+    IOCON4bits.PENH = 1; // Enable PWM4H
+    IOCON4bits.PENL = 1; // Enable PWM4L
+    IOCON4bits.POLH = 0; // PWM4H active high
+    IOCON4bits.POLL = 0; // PWM4L active high
     IOCON4bits.PMOD = 3; // True Independent Output Mode
     
     PTCONbits.PTEN = 1; // Enable PWM now that setup is done
@@ -295,11 +295,11 @@ int main(void) {
     // ((119.84 * 8 * desired_pwm_period_μs) / 2) - 8 = PHASE1 and SPHASE1
     // ((119.84 * 8 * 50 μs) / 2) - 8 = 23960
     PHASE1 = period; // Set PWM1H frequency to 20 kHz
-    SPHASE1 = period; // SET PWM1L frequency to 20 kHz
+    SPHASE1 = period; // Set PWM1L frequency to 20 kHz
     PHASE2 = period; // Set PWM2H frequency to 20 kHz
-    SPHASE2 = period; // SET PWM2L frequency to 20 kHz
+    SPHASE2 = period; // Set PWM2L frequency to 20 kHz
     PHASE4 = period; // Set PWM4H frequency to 20 kHz
-    SPHASE4 = period; // SET PWM4L frequency to 20 kHz
+    SPHASE4 = period; // Set PWM4L frequency to 20 kHz
     
     // Set PWM Duty Cycle
     // Set Duty Cycle to a specific time
@@ -318,7 +318,7 @@ int main(void) {
     SDC4 = 0; // Set PWM4L duty cycle to 0 μs
     
         // Set PWM triggers for ADC
-    TRIG1 = period;//8; // Set the point at which the ADC module is triggered by the primary PWM
+    TRIG1 = 9504;//period;//8; // Set the point at which the ADC module is triggered by the primary PWM
     // This will definitely need to be adjusted later, we may even want to set it based on the duty cycle
     
     TRGCON1bits.TRGSTRT = 0; // Wait 0 PWM cycles before generating the first trigger event
