@@ -35,14 +35,14 @@
 #define BRGVAL ((FP/BAUDRATE)/4)-1
 #define DELAY_105uS asm volatile ("REPEAT, #4201"); Nop(); // 105uS delay
 
-unsigned int i = 0;
+int i = 0;
 
-void __attribute__((__interrupt__, auto_psv)) _U1TXInterrupt(void)
+void __interrupt(no_auto_psv) _U1TXInterrupt(void)
 {
     IFS0bits.U1TXIF = 0; // Clear TX Interrupt flag
     
     // To print a variable
-    printf("%d\r\n", i);
+    printf("i = %d\r\n", i);
     // To print text
     // printf("Greetings from Pakistan\r\n");
     i++;
