@@ -1,3 +1,3 @@
-Record=TopLevelDocument|FileName=Jonathan ESC.SchDoc|SheetNumber= 
-Record=SheetSymbol|SourceDocument=Jonathan ESC.SchDoc|Designator=U_MCU|SchDesignator=U_MCU|FileName=MCU.SchDoc|SheetNumber= |SymbolType=Normal|RawFileName=MCU.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
-Record=SheetSymbol|SourceDocument=Jonathan ESC.SchDoc|Designator=U_Three Phase Inverter|SchDesignator=U_Three Phase Inverter|FileName=Three Phase Inverter.SchDoc|SheetNumber= |SymbolType=Normal|RawFileName=Three Phase Inverter.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
+Record=TopLevelDocument|FileName=Jonathan ESC.SchDoc|SheetNumber=1
+Record=SheetSymbol|SourceDocument=Jonathan ESC.SchDoc|Designator=U_MCU|SchDesignator=U_MCU|FileName=MCU.SchDoc|SheetNumber=2|SymbolType=Normal|RawFileName=MCU.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
+Record=SheetSymbol|SourceDocument=Jonathan ESC.SchDoc|Designator=U_Three Phase Inverter|SchDesignator=U_Three Phase Inverter|FileName=Three Phase Inverter.SchDoc|SheetNumber=3|SymbolType=Normal|RawFileName=Three Phase Inverter.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
