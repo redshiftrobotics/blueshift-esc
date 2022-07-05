@@ -151,6 +151,9 @@ void __interrupt(no_auto_psv) _ADCP1Interrupt(void) {
 void __interrupt(no_auto_psv) _ADCP3Interrupt(void) {
     int temp = ADCBUF6;
     phase_a_voltage = convertToVoltage(ADCBUF7);
+    LATBbits.LATB3 = 1;
+    Nop();Nop();
+    LATBbits.LATB3 = 0;
     _ADCP3IF = 0; // Clear ADC Pair 3 interrupt flag
 }
 
@@ -300,7 +303,8 @@ int main(void) {
     SPHASE2 = period; // Set PWM2L frequency to 20 kHz
     PHASE4 = period; // Set PWM4H frequency to 20 kHz
     SPHASE4 = period; // Set PWM4L frequency to 20 kHz
-    
+    PTPER = period;
+        
     // Set PWM Duty Cycle
     // Set Duty Cycle to a specific time
     // * (ACLK * 8 * desired_duty_cycle_μs) / PCLKDIV = PDC1 and SDC1
@@ -319,11 +323,11 @@ int main(void) {
     
         // Set PWM triggers for ADC
     TRIG1 = 9504;//period;//8; // Set the point at which the ADC module is triggered by the primary PWM
-    // This will definitely need to be adjusted later, we may even want to set it based on the duty cycle
+    // This will definitely need to be adjusted later, we may even want to set it based on the duty 
     
-    TRGCON1bits.TRGSTRT = 0; // Wait 0 PWM cycles before generating the first trigger event
+    TRGCON1bits.TRGSTRT = 1; // Wait 0 PWM cycles before generating the first trigger event
     TRGCON1bits.TRGDIV = 0; // Trigger output every trigger event
-    TRGCON1bits.DTM = 0; // Disable dual trigger mode. I think this effectively disables trigger generation from the secondary pwm
+    TRGCON1bits.DTM = 1; // Disable dual trigger mode. I think this effectively disables trigger generation from the secondary pwm
    
     PWMCON1bits.TRGIEN = 1; // Trigger event generates interrupt request
     while (PWMCON1bits.TRGSTAT == 0);
@@ -337,7 +341,7 @@ int main(void) {
     IEC0bits.T2IE = 1; // enable interrupt source
     T2CONbits.TON = 1; // Turn on Timer 2
     //PR2 = 8000; // Load the period value. 
-    PR2 = 100;
+    PR2 = 1;
     // this seems to change the timer frequency? 
     // What are the units? I think they are how many ticks it takes per timer cycle?
     
