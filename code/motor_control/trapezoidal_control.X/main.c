@@ -164,13 +164,13 @@ void __interrupt(no_auto_psv) _U1TXInterrupt(void)
     IFS0bits.U1TXIF = 0; // Clear TX Interrupt flag
     clean(str);
     send_str(_float_to_char(phase_a_voltage, str, 9));
-//    send_str(" ");
-//    clean(str);
-//    send_str(_float_to_char(phase_b_voltage, str, 9));
-//    send_str(" ");
-//    clean(str);
-//    send_str(_float_to_char(phase_c_voltage, str, 9));
-    send_str(" 0 0\r\n");
+    send_str(" ");
+    clean(str);
+    send_str(_float_to_char(phase_b_voltage, str, 9));
+    send_str(" ");
+    clean(str);
+    send_str(_float_to_char(phase_c_voltage, str, 9));
+    send_str("\r\n");
 }
 
 int main(void) {
@@ -321,11 +321,10 @@ int main(void) {
     SDC4 = 0; // Set PWM4L duty cycle to 0 μs
     
         // Set PWM triggers for ADC
-    TRIG1 = 9504;//period;//8; // Set the point at which the ADC module is triggered by the primary PWM
-    // This will definitely need to be adjusted later, we may even want to set it based on the duty 
+    TRIG1 = 9504; // Set the point at which the ADC module is triggered by the primary PWM
     
     TRGCON1bits.TRGSTRT = 0; // Wait 0 PWM cycles before generating the first trigger event
-    TRGCON1bits.TRGDIV = 0; // Trigger output every trigger event
+    TRGCON1bits.TRGDIV = 0b0011; // Trigger output every trigger event
     TRGCON1bits.DTM = 0; // Disable dual trigger mode. I think this effectively disables trigger generation from the secondary pwm
    
     PWMCON1bits.TRGIEN = 1; // Trigger event generates interrupt request
