@@ -53,7 +53,7 @@ void ADC_Init(void){
     
     ADSTATbits.P3RDY = 0; // Clear ADC Pair 3 data ready bit
     ADCPC1bits.IRQEN3 = 1; // Enable interrupt generation for ADC Pair 3
-    ADCPC1bits.TRGSRC3 = 0b00111; // Use PWM Generator 1 primary to trigger conversion of ADC Pair 3
+    ADCPC1bits.TRGSRC3 = 0b00111; // Use PWM Generator 4 primary to trigger conversion of ADC Pair 3
     
     ADCONbits.ADON = 1; // Enable ADC now that setup is done
 }
