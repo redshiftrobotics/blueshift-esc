@@ -45,21 +45,19 @@
 #include "serial/serial.h"
 
 static int period = 23960;
-static int speed = 10000;
+static int speed = 15000;
 
 int step = 0;
 int step_dir = 1;
 
-
-static int half_dc_voltage = 400;//503;
-int other_v = 10;
+float half_dc_voltage = 4;
 
 int phase_a_current, phase_b_current, phase_c_current;
 float phase_a_voltage, phase_b_voltage, phase_c_voltage;
+int phase_a_comparator, phase_b_comparator, phase_c_comparator;
 
 void commutate(void) {
     step += step_dir;
-//    step = 3 ;
     
     if (step > 5) {
         step = 0;
@@ -144,33 +142,75 @@ void __interrupt(no_auto_psv) _ADCP0Interrupt(void) {
 
 void __interrupt(no_auto_psv) _ADCP1Interrupt(void) {
     phase_c_voltage = convertToVoltage(ADCBUF2);
+    phase_c_comparator = phase_c_voltage > half_dc_voltage;
     phase_b_voltage = convertToVoltage(ADCBUF3);
+    phase_b_comparator = phase_b_voltage > half_dc_voltage;
     _ADCP1IF = 0; // Clear ADC Pair 1 interrupt flag
 }
 
 void __interrupt(no_auto_psv) _ADCP3Interrupt(void) {
     int temp = ADCBUF6;
     phase_a_voltage = convertToVoltage(ADCBUF7);
-    LATBbits.LATB3 = 1;
-    Nop();Nop();
-    LATBbits.LATB3 = 0;
+    phase_a_comparator = phase_a_voltage > half_dc_voltage;
+    LATBbits.LATB3 = phase_a_comparator;
     _ADCP3IF = 0; // Clear ADC Pair 3 interrupt flag
 }
 
+char * delimeter = " ";
 char str[10];
 
 void __interrupt(no_auto_psv) _U1TXInterrupt(void)
 {
     IFS0bits.U1TXIF = 0; // Clear TX Interrupt flag
-    clean(str);
-    send_str(_float_to_char(phase_a_voltage, str, 9));
-    send_str(" ");
-    clean(str);
-    send_str(_float_to_char(phase_b_voltage, str, 9));
-    send_str(" ");
-    clean(str);
-    send_str(_float_to_char(phase_c_voltage, str, 9));
-    send_str("\r\n");
+//    clean(str);
+//    send_str(_float_to_char(phase_a_voltage, str, 9));
+//    send_str(delimeter);
+//    
+//    clean(str);
+//    send_str(_float_to_char(phase_b_voltage, str, 9));
+//    send_str(delimeter);
+//    
+//    clean(str);
+//    send_str(_float_to_char(phase_c_voltage, str, 9));
+//    send_str(delimeter);
+//    
+//    clean(str);
+//    send_str(_float_to_char(half_dc_voltage, str, 9));       
+//    send_str(delimeter);
+//    
+//    clean(str);
+//    send_str(_float_to_char(step, str, 9));
+//    send_str(delimeter);
+//
+//    clean(str);
+//    send_str(_float_to_char(phase_a_comparator, str, 9));
+//    send_str(delimeter);
+//
+//    clean(str);
+//    send_str(_float_to_char(phase_b_comparator, str, 9));
+//    send_str(delimeter);
+//
+//    clean(str);
+//    send_str(_float_to_char(phase_c_comparator, str, 9));
+//    send_str(delimeter);
+    
+//    if (phase_a_comparator) {
+//        send_str("1 ");
+//    } else {
+//        send_str("0 ");
+//    }
+//    if (phase_b_comparator) {
+//        send_str("1 ");
+//    } else {
+//        send_str("0 ");
+//    }
+//    if (phase_c_comparator) {
+//        send_str("1 ");
+//    } else {
+//        send_str("0 ");
+//    }
+
+//    send_str("\r\n");
 }
 
 int main(void) {
@@ -202,7 +242,7 @@ int main(void) {
     // ACLK: (FRC * 16) / APSTSCLR = (7.49 * 16) / 1 = 119.84 MHz
     
     // Serial Communication Setup
-    #define BAUDRATE 38400
+    #define BAUDRATE 1872500
     #define BRGVAL ((FP/BAUDRATE)/4)-1
     
     RPOR2bits.RP4R = 0b00011; // Remap TX to RP4
@@ -211,20 +251,21 @@ int main(void) {
     U1MODEbits.ABAUD = 0; // Auto-Baud disabled
     U1MODEbits.BRGH = 1; // High-Speed mode
     U1BRG = BRGVAL; // Set the baud rate as calculated above
+    // actual baud rate: 38402.3789991797
 
     // Interrupt after the transmit buffer is empty
     // This is not the most efficient, since we may wait longer than we need to before sending the next message
     // But it shouldn't be an issue at high baud rates and is probably more reliable
-    U1STAbits.UTXISEL0 = 1;
-    U1STAbits.UTXISEL1 = 0;
+//    U1STAbits.UTXISEL0 = 1;
+//    U1STAbits.UTXISEL1 = 0;
 
-    IEC0bits.U1TXIE = 1; // Enable UART TX interrupt
-    U1MODEbits.UARTEN = 1; // Enable UART
-    U1STAbits.UTXEN = 1; // Enable UART TX
+//    IEC0bits.U1TXIE = 1; // Enable UART TX interrupt
+//    U1MODEbits.UARTEN = 1; // Enable UART
+//    U1STAbits.UTXEN = 1; // Enable UART TX
 
     // Wait the length of time it would take to send one bit
-    __delay_us(1000000 / BAUDRATE);
-    U1TXREG = 'a'; // Transmit one character
+//    __delay_us(1000000 / BAUDRATE);
+//    U1TXREG = 'a'; // Transmit one character
     
     
     // PWM Setup
@@ -339,13 +380,14 @@ int main(void) {
     IEC0bits.T2IE = 1; // enable interrupt source
     T2CONbits.TON = 1; // Turn on Timer 2
     //PR2 = 8000; // Load the period value. 
-    PR2 = 1000;
+    PR2 = 200;
     // this seems to change the timer frequency? 
     // What are the units? I think they are how many ticks it takes per timer cycle?
     
     
     //I2C1_Init();
 //    commutate();
+//    half_dc_voltage = ((float) speed / (float) period) * 12;
     while (1) {
         
         /*
@@ -359,58 +401,53 @@ int main(void) {
         */
         
         
-//        int should_commutate = 0;
-//        LATBbits.LATB4 = 0;
-//        switch (step) {
-//            case 0:
-//                // C crossing high -> low
-//                if (phase_c_voltage < other_v) {
-////                    commutate();
-//                    should_commutate = 1;
-//                }
-//                break;
-//            case 1:
-//                // B crossing low -> high
-//                if (phase_b_voltage > other_v) {
-//                    //commutate();
-//                    //LATBbits.LATB4 = 1;
-//                    //should_commutate = 1;
-//                }
-//                break;
-//            case 2:
-//                // A crossing high -> low
-//                if (phase_a_voltage > half_dc_voltage) {
-////                    commutate();
-//                    should_commutate = 1;
-//                }
-//                break;
-//            case 3:
-//                // C crossing low -> high
-//                if (phase_c_voltage > other_v) {
-////                    commutate();
-//                    should_commutate = 1;
-//                }
-//                break;
-//            case 4:
-//                // B crossing high -> low
-//                if (phase_b_voltage < other_v) {
-////                    commutate();
-//                    should_commutate = 1;
-//                }
-//                break;
-//            case 5:
-//                // A crossing low -> high
-//                if (phase_a_voltage < half_dc_voltage) {
-////                    commutate();
-//                    should_commutate = 1;
-//                }
-//                break;
-//        }
+        int should_commutate = 0;
+        switch (step) {
+            case 0:
+                // C crossing high -> low
+                if (phase_c_voltage < half_dc_voltage) {
+                    should_commutate = 1;
+                }
+                break;
+            case 1:
+                // B crossing low -> high
+                if (phase_b_voltage > half_dc_voltage) {
+                    should_commutate = 1;
+                }
+                break;
+            case 2:
+                // A crossing high -> low
+                if (phase_a_voltage < half_dc_voltage) {
+                    should_commutate = 1;
+                }
+                break;
+            case 3:
+                // C crossing low -> high
+                if (phase_c_voltage > half_dc_voltage) {
+                    should_commutate = 1;
+                }
+                break;
+            case 4:
+                // B crossing high -> low
+                if (phase_b_voltage < half_dc_voltage) {
+                    should_commutate = 1;
+                }
+                break;
+            case 5:
+                // A crossing low -> high
+                if (phase_a_voltage > half_dc_voltage) {
+                    should_commutate = 1;
+                }
+                break;
+        }
 
-//        if (should_commutate) {
+        if (should_commutate) {
 //            commutate();
+//            LATBbits.LATB3 = 1;
+//            __delay_us(1);
+//            LATBbits.LATB3 = 0;
 //            TMR2 = 0;
-//        }
+        }
         //LATBbits.LATB4 = 0;
         //should_commutate = 0;
         //LATBbits.LATB4 = should_commutate;

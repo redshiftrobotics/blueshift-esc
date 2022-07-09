@@ -41,7 +41,7 @@ void ADC_Init(void){
     
     ADSTATbits.P1RDY = 0; // Clear ADC Pair 1 data ready bit
     ADCPC0bits.IRQEN1 = 1; // Enable interrupt generation for ADC Pair 1
-    ADCPC0bits.TRGSRC1 = 0b00100; // Use PWM Generator 1 primary to trigger conversion of ADC Pair 1
+    ADCPC0bits.TRGSRC1 = 0b00101; // Use PWM Generator 1 primary to trigger conversion of ADC Pair 1
     
     
     ADPCFGbits.PCFG6 = 0; // Configure AN6 as an analog input
