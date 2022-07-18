@@ -43,7 +43,7 @@
 static int period = 23960;
 static int speed = 5000;
 
-int step = 0;
+uint8_t step = 0;
 int step_dir = 1;
 
 int phase_a_current, phase_b_current, phase_c_current;
@@ -147,8 +147,8 @@ void __interrupt(no_auto_psv) _ADCP0Interrupt(void) {
     // This math is all actually wrong, we need to convert it from ADC sampling range, to amplifier range, to raw current
     phase_a_current = ADCBUF0;
     phase_b_current = ADCBUF1;
-    _ADCP0IF = 0; // Clear ADC Pair 0 interrupt flag
     phase_c_current = -(phase_a_current-phase_c_current);
+    _ADCP0IF = 0; // Clear ADC Pair 0 interrupt flag
 }
 
 void __interrupt(no_auto_psv) _ADCP1Interrupt(void) {
@@ -380,15 +380,16 @@ int main(void) {
 //    ADC_Init();
     
     T2CONbits.TON = 0; // Turn off Timer 2
-    T2CONbits.TCKPS = 0b01; // Set the pre-scaler to 1:1
+    T2CONbits.TCKPS = 0b01; // Set the pre-scaler to 1:8
     IPC1bits.T2IP = 0b001; // Set priority to 1
     IFS0bits.T2IF = 0;// clear interrupt
     IEC0bits.T2IE = 1; // enable interrupt source
     T2CONbits.TON = 1; // Turn on Timer 2
-    //PR2 = 8000; // Load the period value. 
-    PR2 = 1000;
-    // this seems to change the timer frequency? 
-    // What are the units? I think they are how many ticks it takes per timer cycle?
+    // Math comes from pages 5 and 11 of https://ww1.microchip.com/downloads/en/DeviceDoc/70205D.pdf
+    // TIMER_FREQUENCY = ( FCY / TCKPS ) / PRx
+    // (( 7490000 / 2 ) / 8) / 1000 = 468.125 Hz
+    PR2 = 1000; // Load the period value. 
+    
     
     
     //I2C1_Init();
