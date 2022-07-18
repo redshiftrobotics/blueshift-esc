@@ -45,7 +45,7 @@
 #include "serial/serial.h"
 
 static int period = 23960;
-static int speed = 10000;
+static int speed = 5000;
 
 int step = 0;
 int step_dir = 1;
@@ -62,15 +62,15 @@ float neutral_point = 0;
 int should_commutate_denoised = 0;
 
 void commutate(void) {
-    step += step_dir;
-    
-    if (step > 5) {
-        step = 0;
-    }
-    
-    if (step < 0) {
-        step = 5;
-    }
+//    step += step_dir;
+//    
+//    if (step > 5) {
+//        step = 0;
+//    }
+//    
+//    if (step < 0) {
+//        step = 5;
+//    }
     
     switch (step) {
         case 0:
@@ -131,7 +131,24 @@ void commutate(void) {
 }
 
 void __interrupt(no_auto_psv) _T2Interrupt(void) {
-    commutate();
+//    commutate();
+//    __delay_us(3822);
+    step = !step;
+    if (step) {
+        PDC1 = speed;
+        SDC1 = 0;
+        PDC2 = 0;
+        SDC2 = period;
+        PDC4 = 0;
+        SDC4 = 0;
+    } else {
+        PDC1 = 0;
+        SDC1 = 0;
+        PDC2 = 0;
+        SDC2 = period;
+        PDC4 = 0;
+        SDC4 = 0;        
+    }
     
     _T2IF = 0; // Reset the Timer2 interrupt
 }
@@ -202,8 +219,8 @@ void __interrupt(no_auto_psv) _ADCP3Interrupt(void) {
         should_commutate_denoised--;
     }
     if (should_commutate_denoised > 10) {
-        commutate();
-        TMR2 = 0;
+//        commutate();
+//        TMR2 = 0;
     }
     PORTBbits.RB3 = should_commutate;
     
@@ -255,29 +272,29 @@ int main(void) {
     // ACLK: (FRC * 16) / APSTSCLR = (7.49 * 16) / 1 = 119.84 MHz
     
     // Serial Communication Setup
-    #define BAUDRATE 38400
-    #define BRGVAL ((FP/BAUDRATE)/4)-1
-    
-    RPOR2bits.RP4R = 0b00011; // Remap TX to RP4
-    U1MODEbits.STSEL = 0; // 1-Stop bit
-    U1MODEbits.PDSEL = 0; // No Parity, 8-Data bits
-    U1MODEbits.ABAUD = 0; // Auto-Baud disabled
-    U1MODEbits.BRGH = 1; // High-Speed mode
-    U1BRG = BRGVAL; // Set the baud rate as calculated above
-
-    // Interrupt after the transmit buffer is empty
-    // This is not the most efficient, since we may wait longer than we need to before sending the next message
-    // But it shouldn't be an issue at high baud rates and is probably more reliable
-    U1STAbits.UTXISEL0 = 1;
-    U1STAbits.UTXISEL1 = 0;
-
-    IEC0bits.U1TXIE = 1; // Enable UART TX interrupt
-    U1MODEbits.UARTEN = 1; // Enable UART
-    U1STAbits.UTXEN = 1; // Enable UART TX
-
-    // Wait the length of time it would take to send one bit
-    __delay_us(1000000 / BAUDRATE);
-    U1TXREG = 'a'; // Transmit one character
+//    #define BAUDRATE 38400
+//    #define BRGVAL ((FP/BAUDRATE)/4)-1
+//    
+//    RPOR2bits.RP4R = 0b00011; // Remap TX to RP4
+//    U1MODEbits.STSEL = 0; // 1-Stop bit
+//    U1MODEbits.PDSEL = 0; // No Parity, 8-Data bits
+//    U1MODEbits.ABAUD = 0; // Auto-Baud disabled
+//    U1MODEbits.BRGH = 1; // High-Speed mode
+//    U1BRG = BRGVAL; // Set the baud rate as calculated above
+//
+//    // Interrupt after the transmit buffer is empty
+//    // This is not the most efficient, since we may wait longer than we need to before sending the next message
+//    // But it shouldn't be an issue at high baud rates and is probably more reliable
+//    U1STAbits.UTXISEL0 = 1;
+//    U1STAbits.UTXISEL1 = 0;
+//
+//    IEC0bits.U1TXIE = 1; // Enable UART TX interrupt
+//    U1MODEbits.UARTEN = 1; // Enable UART
+//    U1STAbits.UTXEN = 1; // Enable UART TX
+//
+//    // Wait the length of time it would take to send one bit
+//    __delay_us(1000000 / BAUDRATE);
+//    U1TXREG = 'a'; // Transmit one character
     
     
     // PWM Setup
@@ -383,10 +400,10 @@ int main(void) {
     PWMCON1bits.TRGIEN = 1; // Trigger event generates interrupt request
     while (PWMCON1bits.TRGSTAT == 0);
 
-    ADC_Init();
+//    ADC_Init();
     
     T2CONbits.TON = 0; // Turn off Timer 2
-    T2CONbits.TCKPS = 0b10; // Set the pre-scaler to 1:1
+    T2CONbits.TCKPS = 0b01; // Set the pre-scaler to 1:1
     IPC1bits.T2IP = 0b001; // Set priority to 1
     IFS0bits.T2IF = 0;// clear interrupt
     IEC0bits.T2IE = 1; // enable interrupt source
