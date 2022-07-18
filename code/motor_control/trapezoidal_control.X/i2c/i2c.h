@@ -1,3 +1,5 @@
+#pragma once
+
 void I2C1_Init(void);
 void __interrupt(no_auto_psv) _SI2C1Interrupt(void);
 
