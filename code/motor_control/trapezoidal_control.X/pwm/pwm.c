@@ -76,6 +76,7 @@ void PWM_Init() {
     // ((ACLK * 8 * desired_pwm_period_μs) / PCLKDIV) - 8 = PHASE1 and SPHASE1
     // ((119.84 * 8 * desired_pwm_period_μs) / 2) - 8 = PHASE1 and SPHASE1
     // ((119.84 * 8 * 50 μs) / 2) - 8 = 23960
+    // PERIOD is defined in pwm.h
     PHASE1 = PERIOD; // Set PWM1H frequency to 20 kHz
     SPHASE1 = PERIOD; // Set PWM1L frequency to 20 kHz
     PHASE2 = PERIOD; // Set PWM2H frequency to 20 kHz
@@ -147,4 +148,9 @@ void C_HIGH() {
 void C_OFF() {
     PDC1 = 0;
     SDC1 = 0;
+}
+
+void set_duty_cycle(int dc) {
+    // TODO: update trigger point based on duty cycle
+    duty_cycle = dc;
 }

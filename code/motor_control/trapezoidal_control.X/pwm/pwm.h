@@ -21,4 +21,6 @@ void C_LOW(void);
 void C_HIGH(void);
 void C_OFF(void);
 
+void set_duty_cycle(int dc);
+
 #endif

@@ -250,7 +250,7 @@ int main(void) {
 #endif
     
     PWM_Init();
-    duty_cycle = 5000;
+    set_duty_cycle(5000);
     
 //    ADC_Init();
     
