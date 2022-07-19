@@ -16,6 +16,7 @@
                 <sourceRootElem>i2c</sourceRootElem>
                 <sourceRootElem>adc</sourceRootElem>
                 <sourceRootElem>serial</sourceRootElem>
+                <sourceRootElem>pwm</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

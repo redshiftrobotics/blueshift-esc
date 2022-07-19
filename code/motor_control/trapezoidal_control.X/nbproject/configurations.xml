@@ -10,9 +10,13 @@
       <logicalFolder name="i2c" displayName="i2c" projectFiles="true">
         <itemPath>i2c/i2c.h</itemPath>
       </logicalFolder>
+      <logicalFolder name="pwm" displayName="pwm" projectFiles="true">
+        <itemPath>pwm/pwm.h</itemPath>
+      </logicalFolder>
       <logicalFolder name="serial" displayName="serial" projectFiles="true">
         <itemPath>serial/serial.h</itemPath>
       </logicalFolder>
+      <itemPath>globals.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -26,6 +30,9 @@
       </logicalFolder>
       <logicalFolder name="i2c" displayName="i2c" projectFiles="true">
         <itemPath>i2c/i2c.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="pwm" displayName="pwm" projectFiles="true">
+        <itemPath>pwm/pwm.c</itemPath>
       </logicalFolder>
       <logicalFolder name="serial" displayName="serial" projectFiles="true">
         <itemPath>serial/serial.c</itemPath>
@@ -42,6 +49,7 @@
     <Elem>i2c</Elem>
     <Elem>adc</Elem>
     <Elem>serial</Elem>
+    <Elem>pwm</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
