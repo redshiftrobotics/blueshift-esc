@@ -125,29 +125,29 @@ void A_OFF() {
 }
 
 void B_LOW() {
-    PDC1 = 0;
-    SDC1 = PERIOD;
+    PDC2 = 0;
+    SDC2 = PERIOD;
 }
 void B_HIGH() {
-    PDC1 = duty_cycle;
-    SDC1 = 0;
+    PDC2 = duty_cycle;
+    SDC2 = 0;
 }
 void B_OFF() {
-    PDC1 = 0;
-    SDC1 = 0;
+    PDC2 = 0;
+    SDC2 = 0;
 }
 
 void C_LOW() {
-    PDC1 = 0;
-    SDC1 = PERIOD;
+    PDC4 = 0;
+    SDC4 = PERIOD;
 }
 void C_HIGH() {
-    PDC1 = duty_cycle;
-    SDC1 = 0;
+    PDC4 = duty_cycle;
+    SDC4 = 0;
 }
 void C_OFF() {
-    PDC1 = 0;
-    SDC1 = 0;
+    PDC4 = 0;
+    SDC4 = 0;
 }
 
 void set_duty_cycle(int dc) {
