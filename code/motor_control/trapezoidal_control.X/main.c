@@ -29,6 +29,7 @@
 
 #include "globals.h"
 
+#include <libpic30.h> // __delayXXX() functions macros defined here. Make sure that this is included AFTER FCY is defined
 #include <xc.h>
 
 // Modified from Microchip Code Sample CE445
@@ -38,7 +39,6 @@
 #include "pwm/pwm.h"
 
 #ifdef SERIAL
-#include <libpic30.h> // __delayXXX() functions macros defined here. Make sure that this is included AFTER FCY is defined
 #include "serial/serial.h"
 #endif
 
@@ -210,6 +210,10 @@ void __interrupt(no_auto_psv) _U1TXInterrupt(void)
 }
 #endif
 
+int calc_note_period(float hz) {
+    return (( FCY / 2 ) / 8) / hz;
+}
+
 int main(void) {
     // IO Setup
     TRISA = 0x0000; // Set all of register A as outputs
@@ -268,7 +272,59 @@ int main(void) {
     
     
     //I2C1_Init();
+    int speed = 1000;
     while (1) {
+        PR2 = calc_note_period(659.25);
+        __delay_ms(speed/8);
+        PR2 = calc_note_period(783.99);
+        __delay_ms(speed/8);
+        PR2 = calc_note_period(1046.5);
+        __delay_ms(speed/8);
+        PR2 = calc_note_period(1318.51);
+        __delay_ms(speed/4);
+        PR2 = 64000;
+        __delay_ms(10);
+        PR2 = calc_note_period(1318.51);
+        __delay_ms(speed/4);
+        PR2 = calc_note_period(783.99);
+        __delay_ms(speed/8);
+        
+        PR2 = calc_note_period(1174.66);
+        __delay_ms(speed/4);
+        PR2 = calc_note_period(1396.91);
+        __delay_ms(speed/4);
+        PR2 = calc_note_period(1318.51);
+        __delay_ms(speed/4);
+        PR2 = calc_note_period(1046.5);
+        __delay_ms(speed/4);
+        
+        
+        PR2 = calc_note_period(523.25);
+        __delay_ms(speed/8);
+        PR2 = calc_note_period(659.25);
+        __delay_ms(speed/8);
+        PR2 = calc_note_period(783.99);
+        __delay_ms(speed/8);
+        PR2 = calc_note_period(1046.5);
+        __delay_ms(speed/4);
+        PR2 = 64000;
+        __delay_ms(10);
+        PR2 = calc_note_period(1046.5);
+        __delay_ms(speed/4);
+        PR2 = calc_note_period(587.33);
+        __delay_ms(speed/8);
+        
+        
+        PR2 = calc_note_period(287.77);
+        __delay_ms(speed/4);
+        PR2 = calc_note_period(1174.66);
+        __delay_ms(speed/4);
+        PR2 = calc_note_period(1046.5);
+        __delay_ms(speed/2);
+
+        T2CONbits.TON = 0;
+        __delay_ms(1000);
+        T2CONbits.TON = 1;
     }
   
    return 1;
