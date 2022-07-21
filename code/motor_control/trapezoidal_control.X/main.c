@@ -42,6 +42,13 @@
 #include "serial/serial.h"
 #endif
 
+state STATE = {
+    STOPPED,
+    POSITIVE,
+    0,
+    4.0
+};
+
 uint8_t step = 0;
 int step_dir = 1;
 
@@ -52,7 +59,11 @@ float neutral_point = 0;
 int should_commutate_denoised = 0;
 
 void commutate(void) {
-    step += step_dir;
+    if (STATE.dir == POSITIVE) {
+        step++;
+    } else {
+        step--;
+    }
     
     if (step > 5) {
         step = 0;
@@ -104,91 +115,114 @@ void commutate(void) {
 }
 
 void __interrupt(no_auto_psv) _T2Interrupt(void) {
-//    commutate();
-    step = !step;
-    if (step) {
-        A_HIGH();
-        B_LOW();
-    } else {
-        A_OFF();
-        B_OFF();
-        C_OFF();
+    switch (STATE.mode) {
+        case STOPPED:
+            break;
+        case OPEN_LOOP_CONTROL:
+            if (PR2 > 200) {
+                PR2 -= 100;
+            } else {
+                STATE.mode = TRANSITION_FROM_OPEN_TO_CLOSED_LOOP_CONTROL;
+            }
+            commutate();
+            break;
+        case TRANSITION_FROM_OPEN_TO_CLOSED_LOOP_CONTROL:
+            commutate();
+            break;
+        case CLOSED_LOOP_CONTROL:
+            break;
+        case MUSIC:
+            if (step == 0) {
+                step = 1;
+                A_HIGH();
+                B_LOW();
+            } else {
+                step = 0;
+                A_OFF();
+                B_OFF();
+                C_OFF();
+            }
+            break;
     }
     
     _T2IF = 0; // Reset the Timer2 interrupt
 }
 
 void __interrupt(no_auto_psv) _ADCP0Interrupt(void) {
-    // This math is all actually wrong, we need to convert it from ADC sampling range, to amplifier range, to raw current
-    phase_a_current = ADCBUF0;
-    phase_b_current = ADCBUF1;
-    phase_c_current = -(phase_a_current-phase_c_current);
+    if (STATE.mode == TRANSITION_FROM_OPEN_TO_CLOSED_LOOP_CONTROL || STATE.mode == CLOSED_LOOP_CONTROL) {
+        // This math is all actually wrong, we need to convert it from ADC sampling range, to amplifier range, to raw current
+        phase_a_current = ADCBUF0;
+        phase_b_current = ADCBUF1;
+        phase_c_current = -(phase_a_current-phase_c_current);   
+    }
     _ADCP0IF = 0; // Clear ADC Pair 0 interrupt flag
 }
 
 void __interrupt(no_auto_psv) _ADCP1Interrupt(void) {
-    phase_c_voltage = convertToVoltage(ADCBUF2);
-    phase_b_voltage = convertToVoltage(ADCBUF3);
+    if (STATE.mode == TRANSITION_FROM_OPEN_TO_CLOSED_LOOP_CONTROL || STATE.mode == CLOSED_LOOP_CONTROL) {
+        phase_c_voltage = convertToVoltage(ADCBUF2);
+        phase_b_voltage = convertToVoltage(ADCBUF3);
+    }
     _ADCP1IF = 0; // Clear ADC Pair 1 interrupt flag
 }
 
 void __interrupt(no_auto_psv) _ADCP3Interrupt(void) {
-    int temp = ADCBUF6;
-    phase_a_voltage = convertToVoltage(ADCBUF7);
-    neutral_point = (phase_a_voltage + phase_b_voltage + phase_c_voltage) / 3.0f;
-    
-    int should_commutate = 0;
-    switch (step) {
-        case 0:
-            // C crossing high -> low
-            if (phase_c_voltage < neutral_point) {
+    if (STATE.mode == TRANSITION_FROM_OPEN_TO_CLOSED_LOOP_CONTROL || STATE.mode == CLOSED_LOOP_CONTROL) {
+        int temp = ADCBUF6;
+        phase_a_voltage = convertToVoltage(ADCBUF7);
+        neutral_point = (phase_a_voltage + phase_b_voltage + phase_c_voltage) / 3.0f;
 
-                should_commutate = 1;
-            }
-            break;
-        case 1:
-            // B crossing low -> high
-            if (phase_b_voltage > neutral_point) {
-                should_commutate = 1;
-            }
-            break;
-        case 2:
-            // A crossing high -> low
-            if (phase_a_voltage < neutral_point) {
-                should_commutate = 1;
-            }
-            break;
-        case 3:
-            // C crossing low -> high
-            if (phase_c_voltage > neutral_point) {
-                should_commutate = 1;
-            }
-            break;
-        case 4:
-            // B crossing high -> low
-            if (phase_b_voltage < neutral_point) {
-                should_commutate = 1;
-            }
-            break;
-        case 5:
-            // A crossing low -> high
-            if (phase_a_voltage > neutral_point) {
-                should_commutate = 1;
-            }
-            break;
-    }
+        int should_commutate = 0;
+        switch (step) {
+            case 0:
+                // C crossing high -> low
+                if (phase_c_voltage < neutral_point) {
 
-    if (should_commutate) {
-        should_commutate_denoised++;
-    } else {
-        should_commutate_denoised--;
+                    should_commutate = 1;
+                }
+                break;
+            case 1:
+                // B crossing low -> high
+                if (phase_b_voltage > neutral_point) {
+                    should_commutate = 1;
+                }
+                break;
+            case 2:
+                // A crossing high -> low
+                if (phase_a_voltage < neutral_point) {
+                    should_commutate = 1;
+                }
+                break;
+            case 3:
+                // C crossing low -> high
+                if (phase_c_voltage > neutral_point) {
+                    should_commutate = 1;
+                }
+                break;
+            case 4:
+                // B crossing high -> low
+                if (phase_b_voltage < neutral_point) {
+                    should_commutate = 1;
+                }
+                break;
+            case 5:
+                // A crossing low -> high
+                if (phase_a_voltage > neutral_point) {
+                    should_commutate = 1;
+                }
+                break;
+        }
+
+        if (should_commutate) {
+            should_commutate_denoised++;
+        } else {
+            should_commutate_denoised--;
+        }
+        if (should_commutate_denoised > 10) {
+            commutate();
+            TMR2 = 0;
+        }
     }
-    if (should_commutate_denoised > 10) {
-//        commutate();
-//        TMR2 = 0;
-    }
-    PORTBbits.RB3 = should_commutate;
-    
     _ADCP3IF = 0; // Clear ADC Pair 3 interrupt flag
 }
 
@@ -322,9 +356,8 @@ int main(void) {
         PR2 = calc_note_period(1046.5);
         __delay_ms(speed/2);
 
-        T2CONbits.TON = 0;
+        PR2 = 64000;
         __delay_ms(1000);
-        T2CONbits.TON = 1;
     }
   
    return 1;
