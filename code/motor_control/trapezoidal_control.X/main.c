@@ -94,7 +94,6 @@ void commutate(void) {
             break;
         case 3:
             // A Low; B High; C Crossing
-            PDC1 = 0;
             A_LOW();
             B_HIGH();
             C_OFF();
@@ -115,24 +114,21 @@ void commutate(void) {
 }
 
 void __interrupt(no_auto_psv) _T2Interrupt(void) {
-    switch (STATE.mode) {
-        case STOPPED:
-            break;
-        case OPEN_LOOP_CONTROL:
-            if (PR2 > 200) {
-                PR2 -= 100;
+    if (STATE.mode == OPEN_LOOP_CONTROL){
+        if (PR2 > 80) {
+                PR2 -= 40; // in gryffins
             } else {
                 STATE.mode = TRANSITION_FROM_OPEN_TO_CLOSED_LOOP_CONTROL;
             }
-            commutate();
-            break;
-        case TRANSITION_FROM_OPEN_TO_CLOSED_LOOP_CONTROL:
-            commutate();
-            break;
-        case CLOSED_LOOP_CONTROL:
-            break;
-        case MUSIC:
-            if (step == 0) {
+           commutate();
+    } else if (STATE.mode = TRANSITION_FROM_OPEN_TO_CLOSED_LOOP_CONTROL){
+        commutate();
+    } else if (STATE.mode == CLOSED_LOOP_CONTROL){
+       
+    } else if (STATE.mode == STOPPED){
+        
+    } else if (STATE.mode == MUSIC){
+        if (step == 0) {
                 step = 1;
                 A_HIGH();
                 B_LOW();
@@ -142,8 +138,9 @@ void __interrupt(no_auto_psv) _T2Interrupt(void) {
                 B_OFF();
                 C_OFF();
             }
-            break;
     }
+    
+    
     
     _T2IF = 0; // Reset the Timer2 interrupt
 }
@@ -219,8 +216,8 @@ void __interrupt(no_auto_psv) _ADCP3Interrupt(void) {
             should_commutate_denoised--;
         }
         if (should_commutate_denoised > 10) {
-            commutate();
-            TMR2 = 0;
+            STATE.mode = CLOSED_LOOP_CONTROL;
+            commutate();            
         }
     }
     _ADCP3IF = 0; // Clear ADC Pair 3 interrupt flag
@@ -293,7 +290,7 @@ int main(void) {
 //    ADC_Init();
     
     T2CONbits.TON = 0; // Turn off Timer 2
-    T2CONbits.TCKPS = 0b01; // Set the pre-scaler to 1:8
+    T2CONbits.TCKPS = 0b10; // Set the pre-scaler to 1:64
     IPC1bits.T2IP = 0b001; // Set priority to 1
     IFS0bits.T2IF = 0;// clear interrupt
     IEC0bits.T2IE = 1; // enable interrupt source
@@ -301,64 +298,25 @@ int main(void) {
     // Math comes from pages 5 and 11 of https://ww1.microchip.com/downloads/en/DeviceDoc/70205D.pdf
     // TIMER_FREQUENCY = ( FCY / TCKPS ) / PRx
     // (( 7490000 / 2 ) / 8) / 1000 = 468.125 Hz
-    PR2 = 1000; // Load the period value. 
+    PR2 = 10000; // Load the period value. 
     
     
     
     //I2C1_Init();
-    int speed = 1000;
+    //int speed = 1000;
+       
+        
+ 
     while (1) {
-        PR2 = calc_note_period(659.25);
-        __delay_ms(speed/8);
-        PR2 = calc_note_period(783.99);
-        __delay_ms(speed/8);
-        PR2 = calc_note_period(1046.5);
-        __delay_ms(speed/8);
-        PR2 = calc_note_period(1318.51);
-        __delay_ms(speed/4);
-        PR2 = 64000;
-        __delay_ms(10);
-        PR2 = calc_note_period(1318.51);
-        __delay_ms(speed/4);
-        PR2 = calc_note_period(783.99);
-        __delay_ms(speed/8);
-        
-        PR2 = calc_note_period(1174.66);
-        __delay_ms(speed/4);
-        PR2 = calc_note_period(1396.91);
-        __delay_ms(speed/4);
-        PR2 = calc_note_period(1318.51);
-        __delay_ms(speed/4);
-        PR2 = calc_note_period(1046.5);
-        __delay_ms(speed/4);
-        
-        
-        PR2 = calc_note_period(523.25);
-        __delay_ms(speed/8);
-        PR2 = calc_note_period(659.25);
-        __delay_ms(speed/8);
-        PR2 = calc_note_period(783.99);
-        __delay_ms(speed/8);
-        PR2 = calc_note_period(1046.5);
-        __delay_ms(speed/4);
-        PR2 = 64000;
-        __delay_ms(10);
-        PR2 = calc_note_period(1046.5);
-        __delay_ms(speed/4);
-        PR2 = calc_note_period(587.33);
-        __delay_ms(speed/8);
-        
-        
-        PR2 = calc_note_period(287.77);
-        __delay_ms(speed/4);
-        PR2 = calc_note_period(1174.66);
-        __delay_ms(speed/4);
-        PR2 = calc_note_period(1046.5);
-        __delay_ms(speed/2);
+       set_duty_cycle(5000);
+       PR2 = 400;
+       STATE.mode = OPEN_LOOP_CONTROL;
+       __delay_ms(5000);
 
-        PR2 = 64000;
-        __delay_ms(1000);
+
+     
     }
+    
   
    return 1;
 }
