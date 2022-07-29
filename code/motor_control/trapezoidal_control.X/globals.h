@@ -12,7 +12,7 @@ enum direction{POSITIVE, NEGATIVE};
 
 typedef struct {
     enum mode mode;
-    enum direction dir;
+    enum direction dir; // TODO: make velocity positive or negative and get rid of dir
     float velocity;
     float current_limit;
 } state;

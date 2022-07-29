@@ -50,7 +50,6 @@ state STATE = {
 };
 
 uint8_t step = 0;
-int step_dir = 1;
 
 int phase_a_current, phase_b_current, phase_c_current;
 float phase_a_voltage, phase_b_voltage, phase_c_voltage;
@@ -150,7 +149,7 @@ void __interrupt(no_auto_psv) _ADCP0Interrupt(void) {
         // This math is all actually wrong, we need to convert it from ADC sampling range, to amplifier range, to raw current
         phase_a_current = ADCBUF0;
         phase_b_current = ADCBUF1;
-        phase_c_current = -(phase_a_current-phase_c_current);   
+        phase_c_current = -(phase_a_current-phase_b_current);   
     }
     _ADCP0IF = 0; // Clear ADC Pair 0 interrupt flag
 }
@@ -216,6 +215,7 @@ void __interrupt(no_auto_psv) _ADCP3Interrupt(void) {
             should_commutate_denoised--;
         }
         if (should_commutate_denoised > 10) {
+            should_commutate_denoised = 0;
             STATE.mode = CLOSED_LOOP_CONTROL;
             commutate();            
         }
@@ -287,7 +287,7 @@ int main(void) {
     PWM_Init();
     set_duty_cycle(5000);
     
-//    ADC_Init();
+    ADC_Init();
     
     T2CONbits.TON = 0; // Turn off Timer 2
     T2CONbits.TCKPS = 0b10; // Set the pre-scaler to 1:64
