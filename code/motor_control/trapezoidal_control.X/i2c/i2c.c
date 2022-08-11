@@ -1,5 +1,4 @@
 #include <xc.h>
-#include <stdint.h>
 #include "i2c.h"
 #include "ESC_registers.h"
 
@@ -112,6 +111,7 @@ uint8_t readRegister(uint8_t addr){
     else{
         invalidCommand = 1;
     }
+    return 1;
 }
 
 void writeRegister(uint8_t addr, uint8_t data){
