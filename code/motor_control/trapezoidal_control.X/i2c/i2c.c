@@ -1,10 +1,13 @@
 #include <xc.h>
 #include <stdint.h>
 #include "i2c.h"
+#include "ESC_registers.h"
 
 uint8_t ramBuffer[256]; // I2C "RAM" (the registers that data is stored in)
 uint8_t *ramPtr;        // Pointer to RAM memory locations
+uint8_t addr;
 struct FlagType flag;
+uint8_t invalidCommand = 0;
 
 void I2C1_Init(void)
 {   
@@ -31,6 +34,8 @@ void I2C1_Init(void)
 void __interrupt(no_auto_psv) _SI2C1Interrupt(void)
 {
     unsigned char temp;   // Used to clear receive buffers
+    
+    //For when we are writing (R_W==0) and were receiving our own address
     if( (I2C1STATbits.R_W == 0) && (I2C1STATbits.D_A == 0) )    // Check if addresses match
     {
         temp = I2C1RCV;     // Clear Receive Buffer
@@ -38,16 +43,20 @@ void __interrupt(no_auto_psv) _SI2C1Interrupt(void)
     }
     else if( (I2C1STATbits.R_W == 0) && (I2C1STATbits.D_A == 1) ) // Check for data
     {
+        //Gets called when the controller is telling us with address to interact with 
         if( flag.AddrFlag )
         {
             flag.AddrFlag = 0;
             flag.DataFlag = 1; // Next byte will be data
             ramPtr = ramPtr + I2C1RCV;
+            addr = I2C1RCV;
 
             #if defined( USE_I2C_Clock_Stretch )
             I2C1CONbits.SCLREL = 1;                 //Release SCL1 line
             #endif
         }
+        
+        //Gets called when writing data
         else if( flag.DataFlag )
         {
             *ramPtr = ( unsigned char ) I2C1RCV; // Store data into RAM
@@ -59,10 +68,12 @@ void __interrupt(no_auto_psv) _SI2C1Interrupt(void)
             #endif
         }
     }
+    
+    //Gets Called when Reading Data
     else if( (I2C1STATbits.R_W == 1) && (I2C1STATbits.D_A == 0) )
     {
         temp = I2C1RCV;
-        I2C1TRN = *ramPtr; // Read data from RAM & send data to follower device
+        I2C1TRN = readRegister(addr); // Read data from RAM & send data to follower device
         I2C1CONbits.SCLREL = 1; //Release SCL1 line
         while( I2C1STATbits.TBF );
 
@@ -71,4 +82,64 @@ void __interrupt(no_auto_psv) _SI2C1Interrupt(void)
     }
 
     _SI2C1IF = 0; // Clear I2C1 follower interrupt flag
+}
+
+uint8_t readRegister(uint8_t addr){
+    if(addr == PowerUp){
+        LATBbits.LATB4 = 1;
+    }
+    else if(addr == LastCommandSuccess){
+        LATBbits.LATB4 = 0;
+    }
+    else if(addr == BadCommand){
+        invalidCommand = 1;
+    }
+    else if(addr == ResetPic){
+        //Do something
+    }
+    else if(addr == MotorSpeed0){
+        //Do something
+    }
+    else if(addr == MotorSpeed1){
+        //Do something
+    }
+    else if(addr == CurrentLimit0){
+        //Do something
+    }
+    else if(addr == CurrentLimit1){
+        //Do something
+    }
+    else{
+        invalidCommand = 1;
+    }
+}
+
+void writeRegister(uint8_t addr, uint8_t data){
+    if(addr == PowerUp){
+        //Do something
+    }
+    else if(addr == LastCommandSuccess){
+        //Do something
+    }
+    else if(addr == BadCommand){
+        invalidCommand = 1;
+    }
+    else if(addr == ResetPic){
+        //Do something
+    }
+    else if(addr == MotorSpeed0){
+        //Do something
+    }
+    else if(addr == MotorSpeed1){
+        //Do something
+    }
+    else if(addr == CurrentLimit0){
+        //Do something
+    }
+    else if(addr == CurrentLimit1){
+        //Do something
+    }
+    else{
+        invalidCommand = 1;
+    }
 }

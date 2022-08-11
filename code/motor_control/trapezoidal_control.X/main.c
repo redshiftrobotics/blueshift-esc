@@ -287,7 +287,7 @@ int main(void) {
     PWM_Init();
     set_duty_cycle(5000);
     
-    ADC_Init();
+//    ADC_Init();
     
     T2CONbits.TON = 0; // Turn off Timer 2
     T2CONbits.TCKPS = 0b10; // Set the pre-scaler to 1:64
@@ -310,6 +310,8 @@ int main(void) {
        set_duty_cycle(5000);
        PR2 = 400;
        STATE.mode = OPEN_LOOP_CONTROL;
+       __delay_ms(5000);
+       set_duty_cycle(10000);
        __delay_ms(5000);
 
 

@@ -12,4 +12,8 @@ struct FlagType
     uint8_t DataFlag: 1;
 };
 extern struct FlagType flag;
+
+uint8_t readRegister(uint8_t addr);
+
+void writeRegister(uint8_t addr, uint8_t data);
 #endif

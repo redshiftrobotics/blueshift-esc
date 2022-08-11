@@ -9,6 +9,7 @@
       </logicalFolder>
       <logicalFolder name="i2c" displayName="i2c" projectFiles="true">
         <itemPath>i2c/i2c.h</itemPath>
+        <itemPath>i2c/ESC_registers.h</itemPath>
       </logicalFolder>
       <logicalFolder name="pwm" displayName="pwm" projectFiles="true">
         <itemPath>pwm/pwm.h</itemPath>
@@ -62,7 +63,7 @@
         <platformTool>pk4hybrid</platformTool>
         <languageToolchain>XC16</languageToolchain>
         <languageToolchainVersion>2.00</languageToolchainVersion>
-        <platform>4</platform>
+        <platform>3</platform>
       </toolsSet>
       <packs>
         <pack name="dsPIC33F-GS_DFP" vendor="Microchip" version="1.3.63"/>
@@ -379,7 +380,7 @@
         <platformTool>noID</platformTool>
         <languageToolchain>XC16</languageToolchain>
         <languageToolchainVersion>2.00</languageToolchainVersion>
-        <platform>4</platform>
+        <platform>3</platform>
       </toolsSet>
       <packs>
         <pack name="dsPIC33F-GS_DFP" vendor="Microchip" version="1.3.63"/>
