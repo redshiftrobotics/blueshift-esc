@@ -295,15 +295,14 @@ int main(void) {
     IFS0bits.T2IF = 0;// clear interrupt
     IEC0bits.T2IE = 1; // enable interrupt source
     T2CONbits.TON = 1; // Turn on Timer 2
-    // Math comes from pages 5 and 11 of https://ww1.microchip.com/downloads/en/DeviceDoc/70205D.pdf
-    // TIMER_FREQUENCY = ( FCY / TCKPS ) / PRx
-    // (( 7490000 / 2 ) / 8) / 1000 = 468.125 Hz
+//     Math comes from pages 5 and 11 of https://ww1.microchip.com/downloads/en/DeviceDoc/70205D.pdf
+//     TIMER_FREQUENCY = ( FCY / TCKPS ) / PRx
+//     (( 7490000 / 2 ) / 8) / 1000 = 468.125 Hz
     PR2 = 10000; // Load the period value. 
     
     
     
-    //I2C1_Init();
-    //int speed = 1000;
+    I2C1_Init();
        
         
  
