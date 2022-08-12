@@ -2,6 +2,7 @@
 #ifndef ESC_registers
 #define	ESC_registers
 
+//words have to be consecutive :0
 uint8_t PowerUp = 0x00;
 uint8_t LastCommandSuccess = 0x01;
 uint8_t BadCommand = 0x02;

@@ -2,11 +2,17 @@
 #include "i2c.h"
 #include "ESC_registers.h"
 
-uint8_t ramBuffer[256]; // I2C "RAM" (the registers that data is stored in)
-uint8_t *ramPtr;        // Pointer to RAM memory locations
+
 uint8_t addr;
+
+uint8_t wordLowTemp = 0;
+int wordLowAddr = -1;
+
 struct FlagType flag;
-uint8_t invalidCommand = 0;
+
+//TODO: imagine a world, where we set invalid command and command success after we read them
+uint8_t lastCommandInvalid = 0;
+uint8_t lastCommandSuccess = 1;
 
 void I2C1_Init(void)
 {   
@@ -25,7 +31,6 @@ void I2C1_Init(void)
     IEC1bits.SI2C1IE = 1; // Enable follower I2C event interrupts
     IPC4bits.SI2C1IP = 0b111; // Set follower I2C interrupt priority
     
-    ramPtr = &ramBuffer[0]; // Set the RAM pointer and points to beginning of ramBuffer
     flag.AddrFlag = 0;
     flag.DataFlag = 0;
 }
@@ -47,7 +52,6 @@ void __interrupt(no_auto_psv) _SI2C1Interrupt(void)
         {
             flag.AddrFlag = 0;
             flag.DataFlag = 1; // Next byte will be data
-            ramPtr = ramPtr + I2C1RCV;
             addr = I2C1RCV;
 
             #if defined( USE_I2C_Clock_Stretch )
@@ -58,10 +62,9 @@ void __interrupt(no_auto_psv) _SI2C1Interrupt(void)
         //Gets called when writing data
         else if( flag.DataFlag )
         {
-            *ramPtr = ( unsigned char ) I2C1RCV; // Store data into RAM
+            writeRegister(addr,I2C1RCV); // Store data into RAM
             flag.AddrFlag = 0; // End of transmit
             flag.DataFlag = 0;
-            ramPtr = &ramBuffer[0]; // Reset the RAM pointer
             #if defined( USE_I2C_Clock_Stretch )
             I2C1CONbits.SCLREL = 1; //Release SCL1 line
             #endif
@@ -76,25 +79,24 @@ void __interrupt(no_auto_psv) _SI2C1Interrupt(void)
         I2C1CONbits.SCLREL = 1; //Release SCL1 line
         while( I2C1STATbits.TBF );
 
-        //Wait till all
-        ramPtr = &ramBuffer[0]; // Reset the RAM pointer
     }
 
     _SI2C1IF = 0; // Clear I2C1 follower interrupt flag
 }
 
 uint8_t readRegister(uint8_t addr){
+    uint8_t thisCommandSuccess = 1;
+    uint8_t thisCommandInvalid = 0;
+    uint8_t tempReturn = 0;
     if(addr == PowerUp){
-        LATBbits.LATB4 = 1;
+        //DO something
     }
+    //For the next two if statments/registers Don't reset lastCommandSuccess or lastCOmmandInvalid when you read from them.
     else if(addr == LastCommandSuccess){
-        LATBbits.LATB4 = 0;
+        tempReturn = lastCommandSuccess;
     }
     else if(addr == BadCommand){
-        invalidCommand = 1;
-    }
-    else if(addr == ResetPic){
-        //Do something
+        tempReturn = lastCommandInvalid;
     }
     else if(addr == MotorSpeed0){
         //Do something
@@ -108,30 +110,38 @@ uint8_t readRegister(uint8_t addr){
     else if(addr == CurrentLimit1){
         //Do something
     }
-    else{
-        invalidCommand = 1;
+    else if (addr == 0x08){
+        tempReturn = LATBbits.LATB4;
     }
-    return 1;
+    else{
+        thisCommandInvalid = 1;
+    }
+    
+    
+    lastCommandSuccess = thisCommandSuccess;
+    lastCommandInvalid = thisCommandInvalid;
+    return tempReturn;
 }
 
 void writeRegister(uint8_t addr, uint8_t data){
-    if(addr == PowerUp){
-        //Do something
-    }
-    else if(addr == LastCommandSuccess){
-        //Do something
-    }
-    else if(addr == BadCommand){
-        invalidCommand = 1;
-    }
-    else if(addr == ResetPic){
+    lastCommandSuccess = 1;
+    lastCommandInvalid = 0;
+//    if (wordLowAddr != -1 && wordLowAddr + 1 != addr){
+//        // TODO: plz fix!! FIXME: plz fix!!! make it nested with also setting invalid command if addr is invalid set lastCommandInvalid to 1;
+//        lastCommandSuccess=0;
+//        return;
+//    }
+    if (addr == ResetPic){
         //Do something
     }
     else if(addr == MotorSpeed0){
-        //Do something
+        wordLowAddr = addr;
+        wordLowTemp = data;
     }
     else if(addr == MotorSpeed1){
-        //Do something
+        LATBbits.LATB4 = 1;
+        wordLowAddr = -1; 
+        wordLowTemp = 0;
     }
     else if(addr == CurrentLimit0){
         //Do something
@@ -139,7 +149,12 @@ void writeRegister(uint8_t addr, uint8_t data){
     else if(addr == CurrentLimit1){
         //Do something
     }
-    else{
-        invalidCommand = 1;
+    else if (addr == 0x08){
+        LATBbits.LATB4 = data;
     }
+    else{
+        lastCommandInvalid = 1;
+    }
+    LATBbits.LATB4 = lastCommandSuccess;
+    LATBbits.LATB3 = lastCommandInvalid;
 }
