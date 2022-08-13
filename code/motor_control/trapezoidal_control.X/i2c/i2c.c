@@ -1,3 +1,6 @@
+#include "globals.h"
+
+#include <libpic30.h> // __delayXXX() functions macros defined here. Make sure that this is included AFTER FCY is defined
 #include <xc.h>
 #include "i2c.h"
 #include "ESC_registers.h"
@@ -98,6 +101,7 @@ uint8_t readRegister(uint8_t addr){
     else if(addr == BadCommand){
         tempReturn = lastCommandInvalid;
     }
+    
     else if(addr == MotorSpeed0){
         //Do something
     }
@@ -110,36 +114,41 @@ uint8_t readRegister(uint8_t addr){
     else if(addr == CurrentLimit1){
         //Do something
     }
-    else if (addr == 0x08){
+    else if(addr == 0x08){
         tempReturn = LATBbits.LATB4;
     }
     else{
         thisCommandInvalid = 1;
+        thisCommandSuccess = 0;
     }
     
-    
-    lastCommandSuccess = thisCommandSuccess;
-    lastCommandInvalid = thisCommandInvalid;
+    if (addr != BadCommand && addr != LastCommandSuccess){
+        lastCommandSuccess = thisCommandSuccess;
+        lastCommandInvalid = thisCommandInvalid;
+    }
+
     return tempReturn;
 }
 
 void writeRegister(uint8_t addr, uint8_t data){
     lastCommandSuccess = 1;
     lastCommandInvalid = 0;
-//    if (wordLowAddr != -1 && wordLowAddr + 1 != addr){
-//        // TODO: plz fix!! FIXME: plz fix!!! make it nested with also setting invalid command if addr is invalid set lastCommandInvalid to 1;
-//        lastCommandSuccess=0;
-//        return;
-//    }
+    if (wordLowAddr != -1 && wordLowAddr + 1 != addr){
+        lastCommandInvalid = 1;
+        lastCommandSuccess = 0;
+        wordLowAddr = -1; 
+        wordLowTemp = 0;
+        return;
+    }
     if (addr == ResetPic){
-        //Do something
+        Reset();
     }
     else if(addr == MotorSpeed0){
         wordLowAddr = addr;
         wordLowTemp = data;
     }
     else if(addr == MotorSpeed1){
-        LATBbits.LATB4 = 1;
+        //Do Stuff
         wordLowAddr = -1; 
         wordLowTemp = 0;
     }
@@ -149,12 +158,11 @@ void writeRegister(uint8_t addr, uint8_t data){
     else if(addr == CurrentLimit1){
         //Do something
     }
-    else if (addr == 0x08){
+    else if(addr == 0x08){
         LATBbits.LATB4 = data;
     }
     else{
         lastCommandInvalid = 1;
+        lastCommandSuccess = 0;
     }
-    LATBbits.LATB4 = lastCommandSuccess;
-    LATBbits.LATB3 = lastCommandInvalid;
 }
