@@ -1,6 +1,3 @@
-#include "globals.h"
-
-#include <libpic30.h> // __delayXXX() functions macros defined here. Make sure that this is included AFTER FCY is defined
 #include <xc.h>
 #include "i2c.h"
 #include "ESC_registers.h"
@@ -10,6 +7,9 @@ uint8_t addr;
 
 uint8_t wordLowTemp = 0;
 int wordLowAddr = -1;
+
+uint8_t motorLow = 0;
+uint8_t motorHigh = 0;
 
 struct FlagType flag;
 
@@ -103,10 +103,12 @@ uint8_t readRegister(uint8_t addr){
     }
     
     else if(addr == MotorSpeed0){
-        //Do something
+        // TODO: this is a temp fix when kavi is done with set speed function this needs to change
+        tempReturn = motorLow;
     }
     else if(addr == MotorSpeed1){
-        //Do something
+        // TODO: this is a temp fix when kavi is done with set speed function this needs to change
+        tempReturn = motorHigh;
     }
     else if(addr == CurrentLimit0){
         //Do something
@@ -141,14 +143,16 @@ void writeRegister(uint8_t addr, uint8_t data){
         return;
     }
     if (addr == ResetPic){
-        Reset();
+        asm("RESET");
     }
     else if(addr == MotorSpeed0){
         wordLowAddr = addr;
         wordLowTemp = data;
     }
     else if(addr == MotorSpeed1){
-        //Do Stuff
+        // TODO: this is a temp fix when kavi is done with set speed function this needs to change
+        motorLow=wordLowTemp;
+        motorHigh=data;
         wordLowAddr = -1; 
         wordLowTemp = 0;
     }
