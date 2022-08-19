@@ -1,6 +1,7 @@
 #pragma once 
 #ifndef ESC_registers
 #define	ESC_registers
+#define MAX_CONSECUTIVE_BITS 8
 
 //words have to be consecutive :0
 uint8_t PowerUp = 0x00;
